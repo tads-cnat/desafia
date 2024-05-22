@@ -1,7 +1,19 @@
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
+import ProtectedRoutes from "./utils/ProtectedRoutes";
+import { Dashboard } from "./pages";
 
 function App() {
-  return <></>;
+  return (
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route element={<ProtectedRoutes />} />
+        </Routes>
+      </BrowserRouter>
+    </>
+  );
 }
 
 export default App;
