@@ -1,10 +1,16 @@
 from django.urls import path
-from ninja import NinjaAPI
-from api.views import *
+from ninja_extra import NinjaExtraAPI
 
-api = NinjaAPI()
+from api.controllers import *
 
-api.add_router("/", pergunta_view)
+api = NinjaExtraAPI(
+    title="PNP API",
+    version="2.0.0",
+    urls_namespace="pnp",
+)
+
+
+api.register_controllers(PerguntaController)
 
 urlpatterns = [
     path("", api.urls),
