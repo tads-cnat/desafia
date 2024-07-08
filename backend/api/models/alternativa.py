@@ -1,12 +1,12 @@
 from django.db import models
 
 from .common import Common
-from .pergunta import Pergunta
+from .questao import Questao
 
 
 class Alternativa(Common):
-    pergunta_relacionada = models.ForeignKey(
-        Pergunta, related_name='alternativas', on_delete=models.CASCADE)
+    questao_relacionada = models.ForeignKey(
+        Questao, related_name='alternativas', on_delete=models.CASCADE)
     texto = models.CharField(max_length=100)
     correta = models.BooleanField(default=False)
 
