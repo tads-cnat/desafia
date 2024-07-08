@@ -1,23 +1,20 @@
 import { Organizador } from "../Organizador";
 import { Participante } from "../Participante";
+import { Questao } from "../Questao";
 
 class Partida {
 	jogadores: Participante[];
-	organizador: Organizador;
+	organizador?: Organizador;
 	codigo: string;
 	questaoIndice: number;
 	questoes: Questao[];
 
-	constructor(
-		organizador: Organizador,
-		codigo: string,
-		questoes: Questoes[]
-	) {
+	constructor(codigo: string) {
 		this.jogadores = [];
-		this.organizador = organizador;
+		this.organizador = undefined;
 		this.codigo = codigo;
 		this.questaoIndice = 0;
-		this.questoes = questoes;
+		this.questoes = [];
 	}
 
 	joinPlayer(jogador: Participante) {
@@ -27,6 +24,10 @@ class Partida {
 
 	getCodigo(): string {
 		return this.codigo;
+	}
+
+	setQuestoes(questoes: Questao[]): void {
+		this.questoes = questoes;
 	}
 }
 

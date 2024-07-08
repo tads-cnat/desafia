@@ -1,9 +1,7 @@
 import express from "express";
 import http from "http";
-import cors from "cors";
 import { Server, type Socket } from "socket.io";
 import { Partida } from "./models/Partida";
-import { Organizador } from "./models/Organizador";
 import { Participante } from "./models/Participante";
 
 class GameServer {
@@ -29,12 +27,8 @@ class GameServer {
 	}
 
 	initialize() {
-		this.partida = new Partida(
-			new Organizador("Teste"),
-			this.generateGameCode()
-		);
+		this.partida = new Partida(this.generateGameCode());
 		this.handleConnections();
-		this.app.use(cors());
 	}
 
 	handleConnections() {
