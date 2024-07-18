@@ -9,7 +9,7 @@ function Dashboard() {
 
   return (
     <>
-      <h1>Dashboard</h1>
+      {/* <h1>Dashboard</h1>
       <div className="min-h-screen flex flex-col align-center items-center">
         <form
           className="w-full max-w-sm flex flex-col justify-center items-center gap-y-1"
@@ -30,7 +30,8 @@ function Dashboard() {
             <button className="btn btn-primary">Conectar</button>
           </div>
         </form>
-      </div>
+      </div> */}
+      <h1>Dashboard</h1>
     </>
   );
 }

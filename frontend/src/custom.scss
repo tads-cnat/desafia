@@ -1,0 +1,29 @@
+// Definição das cores personalizadas
+$primary: #539839;
+$primary-light: #70b554;
+$primary-dark: #3e7a2c;
+$secondary: #b93120;
+$secondary-light: #d14331;
+$secondary-dark: #961a18;
+$success: #539839;
+$info: #5bc0de;
+$warning: #f0ad4e;
+$danger: #b93120;
+$light: #f8f9fa;
+$dark: #343a40;
+
+// Redefinindo as cores do tema
+$theme-colors: (
+  "primary": $primary,
+  "secondary": $secondary,
+  "success": $success,
+  "info": $info,
+  "warning": $warning,
+  "danger": $danger,
+  "light": $light,
+  "dark": $dark,
+);
+
+$font-family-base: "Roboto Slab", serif;
+/* import bootstrap to set changes */
+@import "../node_modules/bootstrap/scss/bootstrap";
