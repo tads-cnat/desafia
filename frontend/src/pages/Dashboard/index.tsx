@@ -1,38 +1,50 @@
-import { useForm } from "react-hook-form";
+import { FieldValues, useForm } from "react-hook-form";
 
 function Dashboard() {
-  const { register, handleSubmit } = useForm();
+    const { register, handleSubmit } = useForm();
 
-  function conectar(data) {
-    console.log(data);
-  }
+    function conectar(data: FieldValues) {
+        console.log(data);
+    }
 
-  return (
-    <>
-      <h1>Dashboard</h1>
-      <div className="min-h-screen flex flex-col align-center items-center">
-        <form
-          className="w-full max-w-sm flex flex-col justify-center items-center gap-y-1"
-          onSubmit={handleSubmit(conectar)}
-        >
-          <label className="form-control w-full">
-            <div className="label">
-              <span className="label-text">Servidor</span>
+    return (
+        <>
+            <div className="flex flex-col h-screen justify-center items-center">
+                <form
+                    onSubmit={handleSubmit(conectar)}
+                    className="border-solid border rounded-lg p-5"
+                >
+                    <label className="form-control w-full max-w-xs mb-3">
+                        <div className="label">
+                            <span className="label-text">Nome</span>
+                        </div>
+                        <input
+                            type="text"
+                            placeholder="Insira o nome do jogador aqui"
+                            className="input input-bordered w-full max-w-xs"
+                            {...register("username")}
+                        />
+                    </label>
+                    <label className="form-control w-full max-w-xs mb-5">
+                        <div className="label">
+                            <span className="label-text">
+                                Endereço do servidor
+                            </span>
+                        </div>
+                        <input
+                            type="text"
+                            placeholder="127.0.0.1:8000"
+                            className="input input-bordered w-full max-w-xs"
+                            {...register("address")}
+                        />
+                    </label>
+                    <div className="flex w-full justify-end">
+                        <button className="btn btn-primary">Juntar-se</button>
+                    </div>
+                </form>
             </div>
-            <input
-              {...register("ip")}
-              type="text"
-              placeholder="http://localhost:3000"
-              className="input input-bordered w-full"
-            />
-          </label>
-          <div className="w-full flex flex-row-reverse">
-            <button className="btn btn-primary">Conectar</button>
-          </div>
-        </form>
-      </div>
-    </>
-  );
+        </>
+    );
 }
 
 export default Dashboard;
