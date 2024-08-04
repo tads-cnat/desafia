@@ -9,11 +9,16 @@ function Alternativa({
     onClick,
     content,
 }: AlternativaProps): JSX.Element {
-    const colorClass = `bg-${color}-500 hover:bg-${color}-600`;
+    const colorVariants: Record<string, string> = {
+        blue: "bg-blue-600 hover:bg-blue-500",
+        red: "bg-red-500 hover:bg-red-400",
+        yellow: "bg-yellow-300 hover:bg-yellow-400 ",
+        green: "bg-green-300 hover:bg-green-400",
+    };
 
     return (
         <button
-            className={`flex-1 m-1 ${colorClass} transition text-white cursor-pointer rounded flex justify-center items-center`}
+            className={`${colorVariants[color]} flex-1 m-1 transition text-white cursor-pointer rounded flex justify-center items-center`}
             onClick={onClick}
         >
             <h1 className="text-9xl">{content}</h1>
