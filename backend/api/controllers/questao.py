@@ -6,44 +6,44 @@ from ninja_extra.permissions import IsAdminUser, IsAuthenticated
 from ninja_jwt.authentication import JWTAuth
 from ninja_extra.schemas import NinjaPaginationResponseSchema
 
-from api.models import Pergunta
-from api.schemas import PerguntaIn, PerguntaOut, IdSchema, OkSchema, ErrorSchema
+from api.models import Questao
+from api.schemas import QuestaoIn, QuestaoOut, IdSchema, OkSchema, ErrorSchema
 
 from .base import ModelController
 
 
 @api_controller(
-    "/perguntas",
-    tags=["perguntas"],
+    "/questoes",
+    tags=["questoes"],
     # permissions=[IsAuthenticated],
     # auth=JWTAuth(),
 )
-class PerguntaController(ModelController):
-    model = Pergunta
-    SchemaIn = PerguntaIn
-    SchemaOut = PerguntaOut
+class QuestaoController(ModelController):
+    model = Questao
+    SchemaIn = QuestaoIn
+    SchemaOut = QuestaoOut
 
     @route.get(
         "",
         response=NinjaPaginationResponseSchema[SchemaOut],
-        url_name="pergunta-list",
+        url_name="questao-list",
     )
     @paginate()
     @throttle
-    def get_perguntas(self):
+    def get_questoes(self):
         return self.get_queryset()
 
-    @route.get("/{pk}/", response=SchemaOut, url_name="pergunta-detail")
-    def get_pergunta(self, pk: int):
+    @route.get("/{pk}/", response=SchemaOut, url_name="questao-detail")
+    def get_questao(self, pk: int):
         return get_object_or_404(self.model, id=pk)
 
     @route.post(
         "",
         response=[(201, IdSchema), (400, OkSchema)],
-        url_name="pergunta-create",
+        url_name="questao-create",
         permissions=[IsAuthenticated, IsAdminUser],
     )
-    def create_pergunta(self, payload: SchemaIn):
+    def create_questao(self, payload: SchemaIn):
         try:
             model = payload.create(**payload.model_dump())
             return 201, {"id": model.pk}  # noqa: TRY300
@@ -53,10 +53,10 @@ class PerguntaController(ModelController):
     @route.put(
         "/{int:pk}",
         response=[(200, SchemaOut), (400, ErrorSchema)],
-        url_name="pergunta-update",
+        url_name="questao-update",
         permissions=[IsAuthenticated, IsAdminUser],
     )
-    def update_pergunta(self, pk: int, payload: SchemaIn):
+    def update_questao(self, pk: int, payload: SchemaIn):
         try:
             obj = self.get_object_or_exception(
                 payload.get_queryset(), id__exact=pk)
@@ -68,11 +68,11 @@ class PerguntaController(ModelController):
 
     @route.delete(
         "/{int:pk}",
-        url_name="pergunta-delete",
+        url_name="questao-delete",
         permissions=[IsAuthenticated, IsAdminUser],
         response={204: dict},
     )
-    def delete_pergunta(self, pk: int):
+    def delete_questao(self, pk: int):
         obj = self.get_object_or_exception(
             self.get_queryset(),
             id=pk,

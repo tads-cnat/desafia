@@ -3,6 +3,10 @@ import http from "http";
 import { Server, type Socket } from "socket.io";
 import { Partida } from "./models/Partida";
 import { Participante } from "./models/Participante";
+import BaseService from "./services/BaseService";
+import axiosInstance from "./services/AxiosInstance";
+import { Alternativa } from "./models/Alternativa";
+import { Questao } from "./models/Questao";
 
 class GameServer {
 	app: any;
@@ -12,6 +16,7 @@ class GameServer {
 	>;
 	io: any;
 	partida?: Partida;
+	service?: BaseService;
 
 	constructor() {
 		this.app = express();
@@ -24,11 +29,13 @@ class GameServer {
 		});
 
 		this.partida = undefined;
+		this.service = undefined;
 	}
 
 	initialize() {
 		this.partida = new Partida(this.generateGameCode());
 		this.handleConnections();
+		this.getQuestionario();
 	}
 
 	handleConnections() {
@@ -68,6 +75,30 @@ class GameServer {
 
 	generateGameCode(): string {
 		return Math.random().toString(36).substring(2, 6).toUpperCase();
+	}
+
+	setService(service: BaseService) {
+		this.service = service;
+	}
+
+	getQuestionario() {
+		this.service
+			?.getQuestionario()
+			.then(({ data }) => {
+				const questoes = data.questoes.map((q: any) => {
+					const alternativas = q.alternativas.map((a: any) => {
+						return new Alternativa(a.id, a.texto, a.cooreta);
+					});
+
+					return new Questao(q.id, q.enunciado, alternativas);
+				});
+
+				this.partida?.setQuestoes(questoes);
+			})
+			.catch((err) => {
+				console.error("Erro ao coletar o questionário!");
+				console.error(err);
+			});
 	}
 }
 

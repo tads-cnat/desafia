@@ -10,7 +10,8 @@ api = NinjaExtraAPI(
 )
 
 
-api.register_controllers(PerguntaController)
+api.register_controllers(QuestaoController)
+api.register_controllers(QuestionarioController)
 
 urlpatterns = [
     path("", api.urls),
