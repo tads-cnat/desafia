@@ -1,5 +1,6 @@
 import express from "express";
 import http from "http";
+import cors from "cors";
 import { Server, type Socket } from "socket.io";
 import { Partida } from "./models/Partida";
 import { Participante } from "./models/Participante";
@@ -37,6 +38,10 @@ class GameServer {
 		this.handleConnections();
 		this.getQuestionario();
 	}
+
+	configureCors() {
+        this.app.use(cors());
+    }
 
 	handleConnections() {
 		this.io.on("connection", (socket: Socket) => {

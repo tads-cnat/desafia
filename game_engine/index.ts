@@ -1,7 +1,7 @@
 import { GameServer } from "./src/GameServer";
 import BaseService from "./src/services/BaseService";
 
-const QUESTIONARIO_ID = 2;
+const QUESTIONARIO_ID = 1;
 
 const server = new GameServer();
 
