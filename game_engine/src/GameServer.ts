@@ -40,8 +40,8 @@ class GameServer {
 	}
 
 	configureCors() {
-        this.app.use(cors());
-    }
+		this.app.use(cors());
+	}
 
 	handleConnections() {
 		this.io.on("connection", (socket: Socket) => {
@@ -53,6 +53,11 @@ class GameServer {
 
 			socket.on("answerQuestion", (data) => {
 				this.handleAnswerQuestion(socket, data);
+			});
+
+			socket.on("mudar_estado", (data) => {
+				console.log("Mudaram o estado para: " + data);
+				this.io.sockets.emit("novo_estado", data);
 			});
 
 			socket.on("disconnect", () => {
