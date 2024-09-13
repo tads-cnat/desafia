@@ -15,7 +15,8 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.52.1",
     "react-router-dom": "^6.23.1",
-    "socket.io-client": "^4.7.5"
+    "socket.io-client": "^4.7.5",
+    "zustand": "^4.5.5"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.13",
