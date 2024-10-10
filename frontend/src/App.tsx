@@ -1,9 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ProtectedRoutes from "./utils/ProtectedRoutes";
 import { Dashboard } from "./pages";
-import Escolhas from "./pages/Escolhas";
-import ResultadoQuestao from "./pages/ResultadoQuestao";
-import Esperando from "./pages/Esperando";
+import PartidaJogador from "./pages/PartidaJogador";
 
 function App() {
     return (
@@ -11,9 +9,7 @@ function App() {
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<Dashboard />} />
-                    <Route path="/escolhas" element={<Escolhas />} />
-                    <Route path="/resultado" element={<ResultadoQuestao />} />
-                    <Route path="/esperando" element={<Esperando />} />
+                    <Route path="/partida" element={<PartidaJogador />} />
                     <Route element={<ProtectedRoutes />} />
                 </Routes>
             </BrowserRouter>
