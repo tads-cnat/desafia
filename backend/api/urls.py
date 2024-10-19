@@ -1,4 +1,5 @@
 from django.urls import path
+from ninja_jwt.controller import NinjaJWTDefaultController
 from ninja_extra import NinjaExtraAPI
 
 from api.controllers import *
@@ -12,6 +13,11 @@ api = NinjaExtraAPI(
 
 api.register_controllers(QuestaoController)
 api.register_controllers(QuestionarioController)
+api.register_controllers(AlternativaController)
+
+
+api.register_controllers(NinjaJWTDefaultController)
+
 
 urlpatterns = [
     path("", api.urls),
