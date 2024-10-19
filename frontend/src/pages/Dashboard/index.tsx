@@ -1,35 +1,31 @@
-import { FieldValues, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useState } from "react";
-import io, { Socket } from "socket.io-client";
-import { DefaultEventsMap } from "@socket.io/component-emitter";
+import WebsocketService from "../../data/WebSocketService";
 
 function Dashboard() {
     const { register, handleSubmit } = useForm();
-    const [socket, setSocket] =
-        useState<Socket<DefaultEventsMap, DefaultEventsMap>>();
-    const [nomeJogador, setNomeJogador] = useState<string>("");
+    const [connected, setConnected] = useState(false);
 
-    function conectar(data: FieldValues) {
+    function conectar(data) {
         const { address } = data;
-        const newSocket = io(address);
-
-        newSocket.on("connect", () => {
-            console.log("Conectado ao servidor");
-        });
-
-        newSocket.on("disconnect", () => {
-            console.log("Desconectado do servidor");
-        });
-
-        newSocket.on("connect_error", (err) => {
-            console.error("Erro de conexão:", err);
-        });
-
-        setSocket(newSocket);
+        WebsocketService.connect(address, handleMessage)
+            .then(() => {
+                setConnected(true);
+                console.log("Conexão estabelecida com sucesso.");
+            })
+            .catch((error) => {
+                console.error("Erro ao estabelecer conexão:", error);
+            });
     }
 
-    function juntar() {
-        socket?.emit("");
+    function handleMessage(message) {
+        console.log("Mensagem do servidor:", message);
+    }
+
+    function disconnect() {
+        WebsocketService.close();
+        setConnected(false);
+        console.log("Desconectado do servidor.");
     }
 
     return (
@@ -51,34 +47,15 @@ function Dashboard() {
                 </label>
                 <div className="flex w-full justify-end">
                     <button type="submit" className="btn btn-primary">
-                        Conectar
+                        {connected ? "Conectado" : "Conectar"}
                     </button>
                 </div>
             </form>
-            {socket && (
-                <div className="mt-5 border-solid border rounded-lg p-5">
-                    <label className="form-control w-full max-w-xs mb-3">
-                        <div className="label">
-                            <span className="label-text">Nome</span>
-                        </div>
-                        <input
-                            type="text"
-                            placeholder="Insira o nome do jogador aqui"
-                            className="input input-bordered w-full max-w-xs"
-                            value={nomeJogador}
-                            onChange={(e) => setNomeJogador(e.target.value)}
-                        />
-                    </label>
-
-                    <div className="flex w-full justify-end">
-                        <button
-                            type="submit"
-                            className="btn btn-secondary"
-                            onClick={juntar}
-                        >
-                            Juntar-se
-                        </button>
-                    </div>
+            {connected && (
+                <div className="mt-5">
+                    <button onClick={disconnect} className="btn btn-secondary">
+                        Desconectar
+                    </button>
                 </div>
             )}
         </div>
