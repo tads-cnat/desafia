@@ -1,65 +1,86 @@
-import { useForm } from "react-hook-form";
-import { useState } from "react";
-import WebsocketService from "../../data/WebSocketService";
+import React, { useState, useEffect, useRef } from "react";
 
-function Dashboard() {
-    const { register, handleSubmit } = useForm();
-    const [connected, setConnected] = useState(false);
+interface Message {
+    message: string;
+}
 
-    function conectar(data) {
-        const { address } = data;
-        WebsocketService.connect(address, handleMessage)
-            .then(() => {
-                setConnected(true);
-                console.log("Conexão estabelecida com sucesso.");
-            })
-            .catch((error) => {
-                console.error("Erro ao estabelecer conexão:", error);
-            });
-    }
+interface QuizGameProps {
+    gameId: string;
+}
 
-    function handleMessage(message) {
-        console.log("Mensagem do servidor:", message);
-    }
+const Dashboard: React.FC<QuizGameProps> = ({ gameId = "123" }) => {
+    const [messages, setMessages] = useState<Message[]>([]);
+    const [inputMessage, setInputMessage] = useState<string>("");
+    const socket = useRef<WebSocket | null>(null);
 
-    function disconnect() {
-        WebsocketService.close();
-        setConnected(false);
-        console.log("Desconectado do servidor.");
-    }
+    useEffect(() => {
+        // Abrindo a conexão com o WebSocket
+        socket.current = new WebSocket(
+            `ws://localhost:8000/ws/game/${gameId}/`,
+        );
+
+        socket.current.onopen = () => {
+            console.log("WebSocket connection opened");
+        };
+
+        socket.current.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            setMessages((prevMessages) => [
+                ...prevMessages,
+                { message: data.message },
+            ]);
+        };
+
+        socket.current.onclose = () => {
+            console.log("WebSocket connection closed");
+        };
+
+        return () => {
+            socket.current?.close();
+        };
+    }, []);
+
+    const sendMessage = () => {
+        if (socket.current && inputMessage.trim() !== "") {
+            socket.current.send(
+                JSON.stringify({
+                    message: inputMessage,
+                }),
+            );
+            setInputMessage(""); // Limpa o campo de mensagem
+        }
+    };
 
     return (
-        <div className="flex flex-col h-screen justify-center items-center">
-            <form
-                onSubmit={handleSubmit(conectar)}
-                className="border-solid border rounded-lg p-5"
+        <div>
+            <h1>Game Room: {gameId}</h1>
+
+            <div
+                style={{
+                    border: "1px solid black",
+                    padding: "10px",
+                    maxHeight: "300px",
+                    overflowY: "scroll",
+                }}
             >
-                <label className="form-control w-full max-w-xs mb-5">
-                    <div className="label">
-                        <span className="label-text">Endereço do servidor</span>
+                {messages.map((msg, index) => (
+                    <div key={index}>
+                        <span>{msg.message}</span>
                     </div>
-                    <input
-                        type="text"
-                        placeholder="127.0.0.1:3000"
-                        className="input input-bordered w-full max-w-xs"
-                        {...register("address")}
-                    />
-                </label>
-                <div className="flex w-full justify-end">
-                    <button type="submit" className="btn btn-primary">
-                        {connected ? "Conectado" : "Conectar"}
-                    </button>
-                </div>
-            </form>
-            {connected && (
-                <div className="mt-5">
-                    <button onClick={disconnect} className="btn btn-secondary">
-                        Desconectar
-                    </button>
-                </div>
-            )}
+                ))}
+            </div>
+
+            <div style={{ marginTop: "10px" }}>
+                <input
+                    type="text"
+                    value={inputMessage}
+                    onChange={(e) => setInputMessage(e.target.value)}
+                    placeholder="Type your message here..."
+                />
+                <button onClick={sendMessage}>Send</button>
+            </div>
         </div>
     );
-}
+};
 
 export default Dashboard;
