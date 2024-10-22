@@ -1,23 +1,16 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Esperando from "../Esperando";
 import Escolhas from "../Escolhas";
 import ResultadoQuestao from "../ResultadoQuestao";
-import WebSocketService from "../../services/WebSocketService";
 
 type Estado = "em_espera" | "respondendo" | "resultado";
 
 function PartidaJogador(): JSX.Element {
     const [estado, setEstado] = useState<Estado>("em_espera");
-    const socket = new WebSocketService("http://localhost:3000");
 
     function enviarMensagem(mensagem: string) {
         console.log(mensagem);
-        socket.emitir("mudar_estado", mensagem);
     }
-
-    socket.quando("mudar_estado", (data) => {
-        console.log("Alguem trocou o estado para: " + data);
-    });
 
     return (
         <>
