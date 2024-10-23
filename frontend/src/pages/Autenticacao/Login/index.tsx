@@ -1,13 +1,16 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Input from "../../../components/Input";
+import AuthService from "../../../services/AuthService";
 
 function Login(): JSX.Element {
     const [showPassword, setShowPassword] = useState(false);
     const { register, handleSubmit } = useForm();
 
-    function login(data: Record<string, string>) {
-        console.log(data);
+    function login(data: { username: string; password: string }) {
+        const { username, password } = data;
+
+        AuthService.login(username, password);
     }
 
     return (
