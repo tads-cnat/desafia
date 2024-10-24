@@ -1,21 +1,33 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Input from "../../../components/Input";
 import AuthService from "../../../services/AuthService";
+import useAuth from "../../../store/AuthStore";
+
+interface LoginForm {
+    username: string;
+    password: string;
+}
 
 function Login(): JSX.Element {
-    const [showPassword, setShowPassword] = useState(false);
-    const { register, handleSubmit } = useForm();
+    const { login, auth } = useAuth();
+    const { register, handleSubmit } = useForm<LoginForm>();
 
-    function login(data: { username: string; password: string }) {
+    async function handleLoginSubmission(data: LoginForm) {
         const { username, password } = data;
 
-        AuthService.login(username, password);
+        const loginResponse = await AuthService.login(username, password);
+
+        login(loginResponse);
+
+        console.log(auth);
     }
 
     return (
         <div className="w-screen h-screen flex justify-center items-center">
-            <form className="max-w-sm" onSubmit={handleSubmit(login)}>
+            <form
+                className="max-w-sm"
+                onSubmit={handleSubmit(handleLoginSubmission)}
+            >
                 <Input
                     {...register("username", { required: true })}
                     type="text"

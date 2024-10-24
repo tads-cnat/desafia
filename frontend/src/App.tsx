@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import ProtectedRoutes from "./utils/ProtectedRoutes";
 import Login from "./pages/Autenticacao/Login";
+import RequireAuth from "./hoc/RequireAuth";
+import PersistLogin from "./hoc/PersistLogin";
 
 function App() {
     return (
@@ -12,7 +13,9 @@ function App() {
                     {/* <Route path="/registro" element={<Registro />} /> */}
                     {/* <Route path="/" element={<Home />}></Route> */}
 
-                    <Route element={<ProtectedRoutes />} />
+                    <Route element={<PersistLogin />}>
+                        <Route element={<RequireAuth />} />
+                    </Route>
                 </Routes>
             </BrowserRouter>
         </>

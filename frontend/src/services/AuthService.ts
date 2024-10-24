@@ -1,10 +1,12 @@
+import axios from "../api/axios";
+import { LoginResponse } from "../types/application/LoginResponse";
 import GenericService from "./GenericService";
 
 class AuthService extends GenericService {
-    async login(username: string, password: string) {
-        const res = await super.post({ username, password });
+    async login(username: string, password: string): Promise<LoginResponse> {
+        const res = await axios.post(this.serviceUrl, { username, password });
 
-        console.log(res);
+        return { ...res.data };
     }
 }
 
