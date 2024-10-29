@@ -1,11 +1,11 @@
 import { FieldValues, useForm } from "react-hook-form";
-import Input from "../../../components/Input";
-import AuthService from "../../../services/AuthService";
-import useAuth from "../../../store/AuthStore";
+import Input from "../components/Input";
+import AuthService from "../services/AuthService";
+import useAuth from "../store/AuthStore";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { AxiosError } from "axios";
-import Alert from "../../../components/Alert";
+import Alert from "../components/Alert";
 
 interface LoginForm {
     username?: string;

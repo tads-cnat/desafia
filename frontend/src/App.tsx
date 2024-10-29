@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Login from "./pages/Autenticacao/Login";
+import Login from "./pages/Login";
 import RequireAuth from "./hoc/RequireAuth";
 import PersistLogin from "./hoc/PersistLogin";
 import { Dashboard } from "./pages";
