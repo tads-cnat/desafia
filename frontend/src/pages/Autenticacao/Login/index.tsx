@@ -3,6 +3,9 @@ import Input from "../../../components/Input";
 import AuthService from "../../../services/AuthService";
 import useAuth from "../../../store/AuthStore";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { AxiosError } from "axios";
+import Alert from "../../../components/Alert";
 
 interface LoginForm {
     username?: string;
@@ -10,8 +13,9 @@ interface LoginForm {
 }
 
 function Login(): JSX.Element {
-    const { login, auth } = useAuth();
+    const { login } = useAuth();
     const { register, handleSubmit, control } = useForm<LoginForm>();
+    const [responseError, setResponseError] = useState<string | undefined>();
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -25,16 +29,26 @@ function Login(): JSX.Element {
             login(loginResponse);
             navigate(from, { replace: true });
         } catch (err) {
+            handleError(err as AxiosError);
             console.error(err);
         }
+    }
+
+    function handleError(err: AxiosError) {
+        const { response } = err as AxiosError<{ detail: string }>;
+
+        setResponseError(response?.data?.detail);
     }
 
     return (
         <div className="w-screen h-screen flex flex-col m-auto justify-center items-center">
             <form
-                className="max-w-sm"
+                className="min-w-sm"
                 onSubmit={handleSubmit(handleLoginSubmission)}
             >
+                {responseError && (
+                    <Alert type="error" message={responseError} />
+                )}
                 <Input
                     {...register("username", { required: true })}
                     type="text"

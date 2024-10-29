@@ -7,6 +7,6 @@ export default {
     plugins: [daisyui, typography],
 
     daisyui: {
-        themes: ["dark", "emerald", "light"],
+        themes: ["emerald", "dark", "light"],
     },
 };

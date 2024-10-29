@@ -3,6 +3,7 @@ import Login from "./pages/Autenticacao/Login";
 import RequireAuth from "./hoc/RequireAuth";
 import PersistLogin from "./hoc/PersistLogin";
 import { Dashboard } from "./pages";
+import Layout from "./hoc/Layout";
 
 function App() {
     return (
@@ -14,7 +15,13 @@ function App() {
 
                     <Route element={<PersistLogin />}>
                         <Route element={<RequireAuth />}>
-                            <Route path="/" element={<Dashboard />} />
+                            <Route element={<Layout />}>
+                                <Route path="/" element={<Dashboard />} />
+                                <Route
+                                    path="/dashboard"
+                                    element={<Dashboard />}
+                                />
+                            </Route>
                         </Route>
                     </Route>
                 </Routes>
