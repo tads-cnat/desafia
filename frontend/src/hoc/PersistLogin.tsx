@@ -34,12 +34,17 @@ const PersistLogin = () => {
         };
     }, []);
 
-    useEffect(() => {
-        console.log(`isLoading: ${isLoading}`);
-        console.log(`aT: ${JSON.stringify(auth?.access)}`);
-    }, [isLoading]);
-
-    return <>{isLoading ? <p>Loading...</p> : <Outlet />}</>;
+    return (
+        <>
+            {isLoading ? (
+                <div className="w-screen h-screen flex justify-center items-center">
+                    <span className="loading loading-spinner loading-lg" />
+                </div>
+            ) : (
+                <Outlet />
+            )}
+        </>
+    );
 };
 
 export default PersistLogin;

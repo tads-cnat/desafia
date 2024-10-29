@@ -1,7 +1,8 @@
-import { useForm } from "react-hook-form";
+import { FieldValues, useForm } from "react-hook-form";
 import Input from "../../../components/Input";
 import AuthService from "../../../services/AuthService";
 import useAuth from "../../../store/AuthStore";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface LoginForm {
     username: string;
@@ -12,12 +13,20 @@ function Login(): JSX.Element {
     const { login, auth } = useAuth();
     const { register, handleSubmit } = useForm<LoginForm>();
 
-    async function handleLoginSubmission(data: LoginForm) {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || "/";
+
+    async function handleLoginSubmission(data: FieldValues) {
         const { username, password } = data;
 
-        const loginResponse = await AuthService.login(username, password);
-
-        login(loginResponse);
+        try {
+            const loginResponse = await AuthService.login(username, password);
+            login(loginResponse);
+            navigate(from, { replace: true });
+        } catch (err) {
+            console.error(err);
+        }
 
         console.log(auth);
     }

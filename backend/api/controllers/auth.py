@@ -15,9 +15,6 @@ class MyTokenObtainPairOutSchema(Schema):
 class MyTokenObtainPairSchema(TokenObtainPairInputSchema):
     def output_schema(self):
         out_dict = self.get_response_schema_init_kwargs()
-        print("###########################")
-        print(self._user)
-        print("###########################")
         out_dict.update(user=UserSchema.from_orm(self._user))
         return MyTokenObtainPairOutSchema(**out_dict)
 
