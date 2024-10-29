@@ -5,13 +5,13 @@ import useAuth from "../../../store/AuthStore";
 import { useLocation, useNavigate } from "react-router-dom";
 
 interface LoginForm {
-    username: string;
-    password: string;
+    username?: string;
+    password?: string;
 }
 
 function Login(): JSX.Element {
     const { login, auth } = useAuth();
-    const { register, handleSubmit } = useForm<LoginForm>();
+    const { register, handleSubmit, control } = useForm<LoginForm>();
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -27,12 +27,10 @@ function Login(): JSX.Element {
         } catch (err) {
             console.error(err);
         }
-
-        console.log(auth);
     }
 
     return (
-        <div className="w-screen h-screen flex justify-center items-center">
+        <div className="w-screen h-screen flex flex-col m-auto justify-center items-center">
             <form
                 className="max-w-sm"
                 onSubmit={handleSubmit(handleLoginSubmission)}
@@ -42,6 +40,7 @@ function Login(): JSX.Element {
                     type="text"
                     label="Nome de usuário"
                     placeholder="Insira seu nome de usuário"
+                    control={control}
                 />
 
                 <Input
@@ -49,6 +48,7 @@ function Login(): JSX.Element {
                     label="Senha"
                     placeholder="Insira sua senha"
                     type="password"
+                    control={control}
                 />
 
                 <div className="flex justify-end">
