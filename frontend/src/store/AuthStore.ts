@@ -39,6 +39,10 @@ const useAuth = create(
 
 export const getAuth = (): LoginResponse | undefined => useAuth.getState().auth;
 
+export const updateAuth = (newAuth: LoginResponse): void => {
+    useAuth.getState().login(newAuth);
+};
+
 export const logout = (): void => {
     useAuth.getState().logout();
 };

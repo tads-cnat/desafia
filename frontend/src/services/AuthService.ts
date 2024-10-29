@@ -8,6 +8,14 @@ class AuthService extends GenericService {
 
         return { ...res.data };
     }
+
+    async refresh(refreshToken: string): Promise<LoginResponse> {
+        const res = await axios.post(`${this.serviceUrl}/refresh`, {
+            refresh: refreshToken,
+        });
+
+        return { ...res.data };
+    }
 }
 
 export default new AuthService("login");
