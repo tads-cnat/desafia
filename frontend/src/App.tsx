@@ -18,7 +18,19 @@ function App() {
                             <Route element={<Layout />}>
                                 <Route path="/" element={<Dashboard />} />
                                 <Route
-                                    path="/dashboard"
+                                    path="/meus-questionarios"
+                                    element={<Dashboard />}
+                                />
+                                <Route
+                                    path="/minhas-questoes"
+                                    element={<Dashboard />}
+                                />
+                                <Route
+                                    path="/novo-questionario"
+                                    element={<Dashboard />}
+                                />
+                                <Route
+                                    path="/nova-questao"
                                     element={<Dashboard />}
                                 />
                             </Route>

@@ -1,4 +1,5 @@
-import useAuth from "../../store/AuthStore";
+import { Link } from "react-router-dom";
+import useAuth from "../store/AuthStore";
 
 interface DrawerProps {
     children: React.ReactNode;
@@ -20,13 +21,10 @@ function Drawer(props: DrawerProps): JSX.Element {
                 />
                 <ul className="menu menu-lg bg-base-200 text-base-content min-h-full w-80 p-4">
                     <li>
-                        <a>Minhas questões</a>
+                        <Link to="/minhas-questoes">Minhas questões</Link>
                     </li>
                     <li>
-                        <a>Meus questionários</a>
-                    </li>
-                    <li>
-                        <a>Histórico</a>
+                        <Link to="/meus-questionarios">Meus questionários</Link>
                     </li>
                     <li>
                         <a onClick={logout}>Logout</a>

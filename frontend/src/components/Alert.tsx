@@ -1,5 +1,5 @@
-import Action from "../../types/interface/action";
-import { AlertIcon, ErrorIcon, SuccessIcon, WarningIcon } from "./icons";
+import Action from "../types/interface/action";
+import { AlertIcon, ErrorIcon, SuccessIcon, WarningIcon } from "./Icons";
 
 interface AlertProps {
     type?: "info" | "success" | "warning" | "error" | "default";

@@ -6,7 +6,7 @@ import {
     useState,
 } from "react";
 import { useController, Control, FieldValues } from "react-hook-form";
-import { Color } from "../../types/interface/color";
+import { Color } from "../types/interface/color";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
     label?: string;
