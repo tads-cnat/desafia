@@ -13,8 +13,8 @@ from .base import ModelController
 
 
 @api_controller(
-    "/questoes",
-    tags=["questoes"],
+    "/questao",
+    tags=["questao"],
     permissions=[IsAuthenticated],
 )
 class QuestaoController(ModelController):

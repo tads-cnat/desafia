@@ -13,8 +13,8 @@ from .base import ModelController
 
 
 @api_controller(
-    "/questoes",
-    tags=["questoes"],
+    "/alternativa",
+    tags=["alternativa"],
     permissions=[IsAuthenticated],
 )
 class AlternativaController(ModelController):
@@ -32,7 +32,7 @@ class AlternativaController(ModelController):
     def get_questoes(self):
         return self.get_queryset()
 
-    @route.get("/{id}/", response=SchemaOut, url_name="altrnativa-detail")
+    @route.get("/{id}/", response=SchemaOut, url_name="alternativa-detail")
     def get_questao(self, id: int):
         return get_object_or_404(self.model, id=id)
 

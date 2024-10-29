@@ -13,10 +13,10 @@ from .base import ModelController
 
 
 @api_controller(
-    "/questionarios",
-    tags=["questionarios"],
-    # auth=JWTAuth(),
-    # permissions=[IsAuthenticated],
+    "/questionario",
+    tags=["questionario"],
+    auth=JWTAuth(),
+    permissions=[IsAuthenticated],
 )
 class QuestionarioController(ModelController):
     model = Questionario
@@ -24,7 +24,7 @@ class QuestionarioController(ModelController):
     SchemaIn = QuestionarioIn
 
     @route.get(
-        "",
+        "/",
         response=NinjaPaginationResponseSchema[SchemaOut],
         url_name="questionario-list",
     )
@@ -50,7 +50,7 @@ class QuestionarioController(ModelController):
 
         return questionario
 
-    @route.post("/questionarios/{id}/questoes/", response={200: QuestionarioOut, 400: ErrorSchema})
+    @route.post("/{id}/questoes/", response={200: QuestionarioOut, 400: ErrorSchema})
     def add_questoes(self, request, id: int, payload: List[int]):
         questionario = get_object_or_404(Questionario, id=id)
         questoes = Questao.objects.filter(id__in=payload)
@@ -58,7 +58,7 @@ class QuestionarioController(ModelController):
 
         return questionario
 
-    @route.delete("/questionarios/{id}/questoes/", response={200: QuestionarioOut, 404: dict})
+    @route.delete("/{id}/questoes/", response={200: QuestionarioOut, 404: dict})
     def remove_questoes(self, request, id: int, payload: List[int]):
         questionario = get_object_or_404(Questionario, id=id)
         questoes = Questao.objects.filter(id__in=payload)
