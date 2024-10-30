@@ -1,3 +1,4 @@
+import datetime
 from ninja import ModelSchema, Schema
 from typing import List
 from .questao import QuestaoOut
@@ -14,7 +15,8 @@ class QuestionarioOut(ModelSchema):
 
     class Config:
         model = Questionario
-        model_fields = ['id', 'nome', 'descricao', 'categoria', 'questoes']
+        model_fields = ['id', 'nome', 'descricao', 'categoria',
+                        'questoes', 'created_at', 'updated_at']
 
 
 class QuestionarioIn(Schema):
