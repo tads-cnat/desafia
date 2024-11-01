@@ -12,7 +12,9 @@ function Drawer(props: DrawerProps): JSX.Element {
     return (
         <div className="drawer lg:drawer-open">
             <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
-            <div className="drawer-content">{children}</div>
+            <div className="drawer-content">
+                <div className="min-w-full h-screen">{children}</div>
+            </div>
             <div className="drawer-side">
                 <label
                     htmlFor="my-drawer-2"
@@ -20,6 +22,9 @@ function Drawer(props: DrawerProps): JSX.Element {
                     className="drawer-overlay"
                 />
                 <ul className="menu menu-lg bg-base-200 text-base-content min-h-full w-80 p-4">
+                    <li>
+                        <Link to="/">Início</Link>
+                    </li>
                     <li>
                         <Link to="/minhas-questoes">Minhas questões</Link>
                     </li>

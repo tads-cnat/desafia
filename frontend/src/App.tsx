@@ -4,6 +4,7 @@ import RequireAuth from "./hoc/RequireAuth";
 import { Dashboard } from "./pages";
 import Layout from "./hoc/Layout";
 import MeusQuestionarios from "./pages/MeusQuestionarios";
+import MinhasQuestoes from "./pages/MinhasQuestoes";
 
 function App() {
     return (
@@ -22,7 +23,7 @@ function App() {
                             />
                             <Route
                                 path="/minhas-questoes"
-                                element={<Dashboard />}
+                                element={<MinhasQuestoes />}
                             />
                             <Route
                                 path="/novo-questionario"

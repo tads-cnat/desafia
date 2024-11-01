@@ -15,6 +15,7 @@ from .base import ModelController
 @api_controller(
     "/alternativa",
     tags=["alternativa"],
+    auth=JWTAuth(),
     permissions=[IsAuthenticated],
 )
 class AlternativaController(ModelController):
@@ -23,7 +24,7 @@ class AlternativaController(ModelController):
     SchemaOut = QuestaoOut
 
     @route.get(
-        "",
+        "/",
         response=NinjaPaginationResponseSchema[SchemaOut],
         url_name="alternativa-list",
     )

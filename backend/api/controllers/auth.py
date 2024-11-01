@@ -1,4 +1,4 @@
-from ninja_jwt.schema import TokenObtainPairInputSchema
+from ninja_jwt.schema import TokenObtainPairInputSchema, TokenRefreshInputSchema
 from ninja_jwt.controller import TokenObtainPairController
 from ninja_extra import api_controller, route
 from ninja import Schema
@@ -19,10 +19,21 @@ class MyTokenObtainPairSchema(TokenObtainPairInputSchema):
         return MyTokenObtainPairOutSchema(**out_dict)
 
 
-@api_controller('/login', tags=['Auth'])
+class MyTokenRefreshOutSchema(Schema):
+    access: str
+
+
+@api_controller('/login/', tags=['Auth'])
 class MyTokenObtainPairController(TokenObtainPairController):
     @route.post(
-        "", response=MyTokenObtainPairOutSchema, url_name="token_obtain_pair"
+        "/", response=MyTokenObtainPairOutSchema, url_name="token_obtain_pair"
     )
     def obtain_token(self, user_token: MyTokenObtainPairSchema):
         return user_token.output_schema()
+
+    @route.post(
+        "/refresh/", response=MyTokenRefreshOutSchema, url_name="token_refresh"
+    )
+    def refresh_token(self, refresh_token: TokenRefreshInputSchema):
+        access_token = refresh_token.get_access_token()
+        return MyTokenRefreshOutSchema(access=access_token)
