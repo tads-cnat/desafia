@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import QuestaoService from "../services/QuestaoService";
 import { Questao } from "../types/models/Questao";
 import { Link } from "react-router-dom";
-import Skeleton from "react-loading-skeleton";
 import SkeletonLoading from "../components/SkeletonLoading";
 
 function MinhasQuestoes(): JSX.Element {

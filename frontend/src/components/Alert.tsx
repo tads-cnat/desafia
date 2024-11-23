@@ -11,6 +11,10 @@ interface AlertProps {
 function Alert(props: AlertProps): JSX.Element {
     const { type = "default", primary, secondary, message } = props;
 
+    if (message.length === 0) {
+        return <></>;
+    }
+
     const icon = getIcon(type);
 
     function getIcon(type: string) {

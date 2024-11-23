@@ -1,5 +1,9 @@
-import { FieldValues, useFieldArray, useForm } from "react-hook-form";
+import { FieldValues, set, useFieldArray, useForm } from "react-hook-form";
 import Input from "../components/Input";
+import { Questao } from "../types/models/Questao";
+import { useEffect, useState } from "react";
+import QuestaoService from "../services/QuestaoService";
+import Alert from "../components/Alert";
 
 function NovaQuestao(): JSX.Element {
     const { register, control, handleSubmit } = useForm<FieldValues>({
@@ -17,15 +21,35 @@ function NovaQuestao(): JSX.Element {
         },
     });
 
+    const [error, setError] = useState<{ message: string } | undefined>(
+        undefined,
+    );
+
     function onSubmit(data: FieldValues) {
-        console.log(data);
+        const { enunciado, alternativas } = data as Questao;
+
+        const atLeastOneCorrect = alternativas?.some((a) => a.correta);
+        if (!atLeastOneCorrect) {
+            setError({
+                message: "Selecione pelo menos uma alternativa como correta",
+            });
+            return;
+        }
+
+        QuestaoService.post({ enunciado, alternativas })
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((err) => {
+                console.log("Erro ao salvar questão");
+            });
     }
 
     return (
         <div>
-            <h1 className="text-2xl mb-4">Nova Questão</h1>
-
             <form className="max-w-sm" onSubmit={handleSubmit(onSubmit)}>
+                {/* <Alert message={} type="error" /> */}
+                <h1 className="text-2xl my-4">Nova Questão</h1>
                 <Input
                     {...register("enunciado", { required: true })}
                     type="text"
@@ -44,6 +68,9 @@ function NovaQuestao(): JSX.Element {
                                     {...register(
                                         `alternativas.${index}.correta`,
                                     )}
+                                    onChange={() => {
+                                        setError(undefined);
+                                    }}
                                 />
                                 <Input
                                     {...register(
@@ -67,6 +94,9 @@ function NovaQuestao(): JSX.Element {
                             </div>
                         </div>
                     ))}
+                    {error && (
+                        <p className="text-error text-sm">{error.message}</p>
+                    )}
                     <button
                         className="btn w-full"
                         type="button"

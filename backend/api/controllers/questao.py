@@ -1,3 +1,4 @@
+from django.db import transaction
 from django.shortcuts import get_object_or_404
 from ninja_extra import api_controller, route, status, throttle
 from ninja_extra.exceptions import NotFound
@@ -39,8 +40,15 @@ class QuestaoController(ModelController):
 
     @route.post("/", response={200: SchemaOut, 400: ErrorSchema})
     def create_questao(self, request, payload: SchemaIn):
-        questao_data = payload.model_dump()
-        questao_model = self.model.objects.create(**questao_data)
+        questao_data = payload.dict()
+        alternativas_data = questao_data.pop("alternativas", [])
+
+        with transaction.atomic():
+            questao_model = self.model.objects.create(**questao_data)
+
+            for alternativa in alternativas_data:
+                questao_model.alternativas.create(**alternativa)
+
         return questao_model
 
     @route.post("/{id}/alternativa/", response={200: AlternativaOut, 400: ErrorSchema})

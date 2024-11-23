@@ -67,7 +67,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
                     </span>
                 )}
             </label>
-            {error && (
+            {error?.message && (
                 <p className="text-red-500 text-sm mt-1">{error.message}</p>
             )}
         </>
