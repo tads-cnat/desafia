@@ -65,7 +65,7 @@ function Login(): JSX.Element {
                     control={control}
                 />
 
-                <div className="flex justify-end">
+                <div className="flex justify-end mt-2">
                     <button className="btn btn-primary self-end">Entrar</button>
                 </div>
             </form>

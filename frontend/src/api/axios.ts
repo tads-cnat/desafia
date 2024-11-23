@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getAuth, updateAuth } from "../store/AuthStore";
+import { getAuth, logout, updateAuth } from "../store/AuthStore";
 import AuthService from "../services/AuthService";
 const BASE_URL = "http://localhost:8000/api";
 
@@ -32,10 +32,17 @@ axiosPrivate.interceptors.response.use(
 
         if (auth && error?.response?.status === 401 && !prevRequest?.sent) {
             prevRequest.sent = true;
-            const newAuthTokens = await AuthService.refresh(auth?.refresh);
-            prevRequest.headers["Authorization"] =
-                `Bearer ${newAuthTokens.access}`;
-            updateAuth(newAuthTokens);
+
+            AuthService.refresh(auth?.refresh)
+                .then((newAuthTokens) => {
+                    prevRequest.headers["Authorization"] =
+                        `Bearer ${newAuthTokens.access}`;
+                    updateAuth(newAuthTokens);
+                })
+                .catch((err) => {
+                    console.error(err);
+                    logout();
+                });
             return axiosPrivate(prevRequest);
         }
         return Promise.reject(error);
