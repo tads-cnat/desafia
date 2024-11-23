@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import useAuth from "../store/AuthStore";
+import ThemeChanger from "./ThemeChanger";
 
 interface DrawerProps {
     children: React.ReactNode;
@@ -12,16 +13,9 @@ function Drawer(props: DrawerProps): JSX.Element {
     return (
         <div className="drawer lg:drawer-open">
             <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
-            <div className="drawer-content min-w-full h-screen">
-                <div className="container mx-auto my-5 h-screen">
-                    {children}
-                </div>
-                <label
-                    htmlFor="my-drawer-2"
-                    className="btn btn-primary drawer-button"
-                >
-                    Toggle
-                </label>
+            <div className="drawer-content min-w-full min-h-screen">
+                <ThemeChanger />
+                <div className="container mx-auto my-5">{children}</div>
             </div>
             <div className="drawer-side">
                 <label

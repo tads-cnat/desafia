@@ -2,16 +2,23 @@ import { useEffect, useState } from "react";
 import QuestaoService from "../services/QuestaoService";
 import { Questao } from "../types/models/Questao";
 import { Link } from "react-router-dom";
+import Skeleton from "react-loading-skeleton";
+import SkeletonLoading from "../components/SkeletonLoading";
 
 function MinhasQuestoes(): JSX.Element {
     const [questoes, setQuestoes] = useState<Questao[]>([]);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
+        setLoading(true);
         QuestaoService.getAll()
             .then((response) => {
                 setQuestoes(response.items);
             })
-            .catch((error) => {});
+            .catch((error) => {})
+            .finally(() => {
+                setLoading(false);
+            });
     }, []);
 
     return (
@@ -22,26 +29,30 @@ function MinhasQuestoes(): JSX.Element {
                     <i className="fa-solid fa-plus" /> Nova Questão
                 </Link>
             </div>
-            <table className="table">
-                <thead>
-                    <tr>
-                        <th>Enunciado</th>
-                        <th />
-                    </tr>
-                </thead>
-                <tbody>
-                    {questoes.map((questao) => {
-                        return (
-                            <tr key={questao.id} className="hover">
-                                <td>{questao.enunciado}</td>
-                                <td className="cursor-pointer">
-                                    <i className="fa-solid fa-caret-right" />
-                                </td>
-                            </tr>
-                        );
-                    })}
-                </tbody>
-            </table>
+            {loading ? (
+                <SkeletonLoading count={1} />
+            ) : (
+                <table className="table">
+                    <thead>
+                        <tr>
+                            <th>Enunciado</th>
+                            <th />
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {questoes.map((questao) => {
+                            return (
+                                <tr key={questao.id} className="hover">
+                                    <td>{questao.enunciado}</td>
+                                    <td className="cursor-pointer">
+                                        <i className="fa-solid fa-caret-right" />
+                                    </td>
+                                </tr>
+                            );
+                        })}
+                    </tbody>
+                </table>
+            )}
         </>
     );
 }

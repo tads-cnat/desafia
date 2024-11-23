@@ -6,6 +6,7 @@ import Layout from "./hoc/Layout";
 import MeusQuestionarios from "./pages/MeusQuestionarios";
 import MinhasQuestoes from "./pages/MinhasQuestoes";
 import NovaQuestao from "./pages/NovaQuestao";
+import "react-loading-skeleton/dist/skeleton.css";
 
 function App() {
     return (
