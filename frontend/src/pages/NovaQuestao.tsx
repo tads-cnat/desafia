@@ -1,9 +1,10 @@
-import { FieldValues, set, useFieldArray, useForm } from "react-hook-form";
+import { FieldValues, useFieldArray, useForm } from "react-hook-form";
 import Input from "../components/Input";
 import { Questao } from "../types/models/Questao";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import QuestaoService from "../services/QuestaoService";
-import Alert from "../components/Alert";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 function NovaQuestao(): JSX.Element {
     const { register, control, handleSubmit } = useForm<FieldValues>({
@@ -20,6 +21,7 @@ function NovaQuestao(): JSX.Element {
             maxLength: 4,
         },
     });
+    const navigate = useNavigate();
 
     const [error, setError] = useState<{ message: string } | undefined>(
         undefined,
@@ -30,18 +32,18 @@ function NovaQuestao(): JSX.Element {
 
         const atLeastOneCorrect = alternativas?.some((a) => a.correta);
         if (!atLeastOneCorrect) {
-            setError({
-                message: "Selecione pelo menos uma alternativa como correta",
-            });
+            toast.error("Selecione pelo menos uma alternativa como correta");
             return;
         }
 
         QuestaoService.post({ enunciado, alternativas })
             .then((response) => {
-                console.log(response);
+                toast.success("Questão salva com sucesso");
+                navigate("/minhas-questoes");
             })
             .catch((err) => {
-                console.log("Erro ao salvar questão");
+                console.error(err);
+                toast.error("Erro ao salvar questão");
             });
     }
 
