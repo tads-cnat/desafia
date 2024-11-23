@@ -5,6 +5,7 @@ import { Dashboard } from "./pages";
 import Layout from "./hoc/Layout";
 import MeusQuestionarios from "./pages/MeusQuestionarios";
 import MinhasQuestoes from "./pages/MinhasQuestoes";
+import NovaQuestao from "./pages/NovaQuestao";
 
 function App() {
     return (
@@ -31,7 +32,7 @@ function App() {
                             />
                             <Route
                                 path="/nova-questao"
-                                element={<Dashboard />}
+                                element={<NovaQuestao />}
                             />
                         </Route>
                     </Route>

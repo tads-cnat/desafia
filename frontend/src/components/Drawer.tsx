@@ -12,8 +12,16 @@ function Drawer(props: DrawerProps): JSX.Element {
     return (
         <div className="drawer lg:drawer-open">
             <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
-            <div className="drawer-content">
-                <div className="min-w-full h-screen">{children}</div>
+            <div className="drawer-content min-w-full h-screen">
+                <div className="container mx-auto my-5 h-screen">
+                    {children}
+                </div>
+                <label
+                    htmlFor="my-drawer-2"
+                    className="btn btn-primary drawer-button"
+                >
+                    Toggle
+                </label>
             </div>
             <div className="drawer-side">
                 <label

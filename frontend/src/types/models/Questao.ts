@@ -1,9 +1,9 @@
 import { Alternativa } from "./Alternativa";
 
 export interface Questao {
-    id: number;
+    id?: number;
     enunciado: string;
     alternativas: Alternativa[];
-    created_at: Date;
-    updated_at: Date;
+    created_at?: Date;
+    updated_at?: Date;
 }

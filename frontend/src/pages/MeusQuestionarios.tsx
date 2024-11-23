@@ -600,29 +600,43 @@ function MeusQuestionarios(): JSX.Element {
     useEffect(() => {
         QuestionariosService.getAll().then((response) => {
             const { count, items } = response;
-            setQuestionarios(questoes);
+            console.log(count, items);
+            setQuestionarios(items);
         });
     }, []);
 
     return (
         <>
-            <div className="mx-10 my-5">
-                <div className="flex justify-between w-100">
-                    <h1 className="text-4xl">Meus Questionários</h1>
-                    <button className="btn btn-primary">
-                        <i className="fa-solid fa-plus" /> Novo Questionário
-                    </button>
-                </div>
-                <div className="flex">
-                    {questionarios?.map((questionario, key) => {
+            <div className="flex justify-between w-100">
+                <h1 className="text-2xl">Meus questionários</h1>
+                <button className="btn btn-primary">
+                    <i className="fa-solid fa-plus" /> Nova Questão
+                </button>
+            </div>
+            <table className="table">
+                <thead>
+                    <tr>
+                        <th>Título do questionario</th>
+                        <th>Número de questões</th>
+                        <th>Categoria</th>
+                        <th />
+                    </tr>
+                </thead>
+                <tbody>
+                    {questionarios?.map((questionario) => {
                         return (
-                            <div className="m-4" key={key}>
-                                <CardQuestionario questionario={questionario} />
-                            </div>
+                            <tr key={questionario.id} className="hover">
+                                <td>{questionario.nome}</td>
+                                <td>{questionario.questoes.length}</td>
+                                <td>{questionario.categoria}</td>
+                                <td className="cursor-pointer">
+                                    <i className="fa-solid fa-caret-right" />
+                                </td>
+                            </tr>
                         );
                     })}
-                </div>
-            </div>
+                </tbody>
+            </table>
         </>
     );
 }
