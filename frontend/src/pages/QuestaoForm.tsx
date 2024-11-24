@@ -1,13 +1,14 @@
 import { FieldValues, useFieldArray, useForm } from "react-hook-form";
 import Input from "../components/Input";
 import { Questao } from "../types/models/Questao";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import QuestaoService from "../services/QuestaoService";
 import { toast } from "sonner";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import LoadingPage from "./LoadingPage";
 
-function NovaQuestao(): JSX.Element {
-    const { register, control, handleSubmit } = useForm<FieldValues>({
+function QuestaoForm(): JSX.Element {
+    const { register, control, handleSubmit, setValue } = useForm<FieldValues>({
         defaultValues: {
             enunciado: "",
             alternativas: [{ texto: "" }, { texto: "" }],
@@ -22,10 +23,30 @@ function NovaQuestao(): JSX.Element {
         },
     });
     const navigate = useNavigate();
-
+    const { id } = useParams();
     const [error, setError] = useState<{ message: string } | undefined>(
         undefined,
     );
+    const [loading, setLoading] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (id) {
+            setLoading(true);
+            QuestaoService.get(Number(id))
+                .then((questao) => {
+                    const { enunciado, alternativas } = questao;
+                    setValue("enunciado", enunciado);
+                    setValue("alternativas", alternativas);
+                })
+                .catch(() => {
+                    toast.error("Erro ao carregar a questão");
+                    navigate("/minhas-questoes");
+                })
+                .finally(() => {
+                    setLoading(false);
+                });
+        }
+    }, [id]);
 
     function onSubmit(data: FieldValues) {
         const { enunciado, alternativas } = data as Questao;
@@ -35,9 +56,12 @@ function NovaQuestao(): JSX.Element {
             toast.error("Selecione pelo menos uma alternativa como correta");
             return;
         }
+        const saveQuestao = id
+            ? QuestaoService.put(Number(id), { enunciado, alternativas })
+            : QuestaoService.post({ enunciado, alternativas });
 
-        QuestaoService.post({ enunciado, alternativas })
-            .then((response) => {
+        saveQuestao
+            .then(() => {
                 toast.success("Questão salva com sucesso");
                 navigate("/minhas-questoes");
             })
@@ -47,10 +71,16 @@ function NovaQuestao(): JSX.Element {
             });
     }
 
+    if (loading) {
+        return <LoadingPage />;
+    }
+
     return (
-        <div>
-            <form className="max-w-sm" onSubmit={handleSubmit(onSubmit)}>
-                {/* <Alert message={} type="error" /> */}
+        <>
+            <form
+                className="max-w-sm mx-auto"
+                onSubmit={handleSubmit(onSubmit)}
+            >
                 <h1 className="text-2xl my-4">Nova Questão</h1>
                 <Input
                     {...register("enunciado", { required: true })}
@@ -107,14 +137,23 @@ function NovaQuestao(): JSX.Element {
                     >
                         <i className="fa-solid fa-plus" /> Adicionar alternativa
                     </button>
+                    <div className="divider" />
+                    {id && (
+                        <button
+                            type="button"
+                            onClick={() => navigate(-1)}
+                            className="btn w-full"
+                        >
+                            Cancelar edição
+                        </button>
+                    )}
+                    <button type="submit" className="btn btn-primary w-full">
+                        Salvar Questão
+                    </button>
                 </div>
-                <div className="divider" />
-                <button type="submit" className="btn btn-primary w-full">
-                    Salvar Questão
-                </button>
             </form>
-        </div>
+        </>
     );
 }
 
-export default NovaQuestao;
+export default QuestaoForm;

@@ -5,9 +5,10 @@ import { Dashboard } from "./pages";
 import Layout from "./hoc/Layout";
 import MeusQuestionarios from "./pages/MeusQuestionarios";
 import MinhasQuestoes from "./pages/MinhasQuestoes";
-import NovaQuestao from "./pages/NovaQuestao";
+import QuestaoForm from "./pages/QuestaoForm";
 import "react-loading-skeleton/dist/skeleton.css";
 import Toast from "./components/Toast";
+import Configuracoes from "./pages/Configuracoes";
 
 function App() {
     return (
@@ -30,12 +31,20 @@ function App() {
                                 element={<MinhasQuestoes />}
                             />
                             <Route
+                                path="/questao/:id/"
+                                element={<QuestaoForm />}
+                            />
+                            <Route
                                 path="/novo-questionario"
                                 element={<Dashboard />}
                             />
                             <Route
                                 path="/nova-questao"
-                                element={<NovaQuestao />}
+                                element={<QuestaoForm />}
+                            />
+                            <Route
+                                path="/configuracoes"
+                                element={<Configuracoes />}
                             />
                         </Route>
                     </Route>

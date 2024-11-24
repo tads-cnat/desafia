@@ -14,8 +14,9 @@ function Drawer(props: DrawerProps): JSX.Element {
         <div className="drawer lg:drawer-open">
             <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
             <div className="drawer-content min-w-full min-h-screen">
-                <ThemeChanger />
-                <div className="container mx-auto my-5">{children}</div>
+                <div className="my-5">
+                    <div className="mx-auto max-w-screen-lg">{children}</div>
+                </div>
             </div>
             <div className="drawer-side">
                 <label
@@ -23,16 +24,23 @@ function Drawer(props: DrawerProps): JSX.Element {
                     aria-label="close sidebar"
                     className="drawer-overlay"
                 />
-                <ul className="menu menu-lg bg-base-200 text-base-content min-h-full w-80 p-4">
-                    <li>
-                        <Link to="/">Início</Link>
-                    </li>
-                    <li>
-                        <Link to="/minhas-questoes">Minhas questões</Link>
-                    </li>
-                    <li>
-                        <Link to="/meus-questionarios">Meus questionários</Link>
-                    </li>
+                <ul className="menu menu-lg bg-base-200 text-base-content min-h-full w-80 p-4 flex flex-col justify-between">
+                    <div>
+                        <li>
+                            <Link to="/">Início</Link>
+                        </li>
+                        <li>
+                            <Link to="/minhas-questoes">Minhas questões</Link>
+                        </li>
+                        <li>
+                            <Link to="/meus-questionarios">
+                                Meus questionários
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to="/configuracoes">Configurações</Link>
+                        </li>
+                    </div>
                     <li>
                         <a onClick={logout}>Logout</a>
                     </li>

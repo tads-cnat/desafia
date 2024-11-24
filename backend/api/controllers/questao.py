@@ -57,3 +57,37 @@ class QuestaoController(ModelController):
         questao = get_object_or_404(self.model, id=id)
         alternativa_model = questao.alternativas.create(**alternativa_data)
         return alternativa_model
+
+    @route.put("/{id}/", response={200: QuestaoOut, 400: ErrorSchema}, url_name="questao-update")
+    def update_questao(self, id: int, payload: QuestaoIn):
+        questao = get_object_or_404(
+            self.model.objects.prefetch_related("alternativas"), id=id)
+        questao_data = payload.dict()
+        alternativas_data = questao_data.pop("alternativas", [])
+
+        with transaction.atomic():
+            for attr, value in questao_data.items():
+                setattr(questao, attr, value)
+            questao.save()
+
+            existing_ids = [alt["id"]
+                            for alt in alternativas_data if "id" in alt]
+            questao.alternativas.exclude(id__in=existing_ids).delete()
+
+            for alternativa in alternativas_data:
+                if "id" in alternativa:
+                    alternativa_model = questao.alternativas.get(
+                        id=alternativa["id"])
+                    for attr, value in alternativa.items():
+                        setattr(alternativa_model, attr, value)
+                    alternativa_model.save()
+                else:
+                    questao.alternativas.create(**alternativa)
+
+        return questao
+
+    @route.delete("/{id}/", response={200: OkSchema, 404: ErrorSchema}, url_name="questao-delete")
+    def delete_questao(self, id: int):
+        questao = get_object_or_404(self.model, id=id)
+        questao.delete()
+        return {"message": "Questão excluída com sucesso"}

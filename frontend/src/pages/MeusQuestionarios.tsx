@@ -607,10 +607,10 @@ function MeusQuestionarios(): JSX.Element {
 
     return (
         <>
-            <div className="flex justify-between w-100">
-                <h1 className="text-2xl">Meus questionários</h1>
-                <button className="btn btn-primary">
-                    <i className="fa-solid fa-plus" /> Nova Questão
+            <div className="flex justify-between">
+                <h1 className="text-2xl ml-4">Meus questionários</h1>
+                <button className="btn">
+                    <i className="fa-solid fa-plus" /> Novo Questionário
                 </button>
             </div>
             <table className="table">
@@ -629,8 +629,12 @@ function MeusQuestionarios(): JSX.Element {
                                 <td>{questionario.nome}</td>
                                 <td>{questionario.questoes.length}</td>
                                 <td>{questionario.categoria}</td>
-                                <td className="cursor-pointer">
-                                    <i className="fa-solid fa-caret-right" />
+                                <td>
+                                    <div className="grid grid-cols-1">
+                                        <button className="btn btn-sm">
+                                            <i className="fa-solid fa-caret-right" />
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         );
