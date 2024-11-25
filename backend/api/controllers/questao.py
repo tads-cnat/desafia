@@ -34,9 +34,18 @@ class QuestaoController(ModelController):
     def get_questoes(self):
         return self.get_queryset()
 
-    @route.get("/{id}/", response=SchemaOut, url_name="questao-detail")
-    def get_questao(self, id: int):
-        return get_object_or_404(self.model, id=id)
+    @route.get(
+        "/",
+        response=NinjaPaginationResponseSchema[QuestaoOut],
+        url_name="questao-list",
+    )
+    @paginate()
+    @throttle
+    def get_questoes(self, request, q: str = None):
+        queryset = self.get_queryset()
+        if q:
+            queryset = queryset.filter(enunciado__icontains=q)
+        return queryset
 
     @route.post("/", response={200: SchemaOut, 400: ErrorSchema})
     def create_questao(self, request, payload: SchemaIn):

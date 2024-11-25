@@ -18,7 +18,15 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
-    const { label, placeholder, type = "text", control, name, ...rest } = props;
+    const {
+        label,
+        placeholder,
+        type = "text",
+        control,
+        name,
+        className = "",
+        ...rest
+    } = props;
     const id = useId();
 
     const [showPassword, setShowPassword] = useState(false);
@@ -44,7 +52,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
             <label
                 className={
                     "input input-bordered flex items-center gap-2 " +
-                    (error ? ` input-accent` : "")
+                    (error ? ` input-accent` : "") +
+                    className
                 }
             >
                 <input

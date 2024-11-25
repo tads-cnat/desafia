@@ -13,8 +13,8 @@ function Drawer(props: DrawerProps): JSX.Element {
         <div className="drawer lg:drawer-open">
             <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
             <div className="drawer-content min-w-full min-h-screen">
-                <div className="my-5">
-                    <div className="mx-auto max-w-screen-lg">{children}</div>
+                <div className="py-5 mx-auto h-full max-w-screen-lg">
+                    {children}
                 </div>
             </div>
             <div className="drawer-side">

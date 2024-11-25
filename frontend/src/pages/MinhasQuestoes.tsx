@@ -17,7 +17,7 @@ function MinhasQuestoes(): JSX.Element {
             .then((response) => {
                 setQuestoes(response.items);
             })
-            .catch((error) => {})
+            .catch(() => {})
             .finally(() => {
                 setLoading(false);
             });
