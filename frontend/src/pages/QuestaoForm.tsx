@@ -81,7 +81,10 @@ function QuestaoForm(): JSX.Element {
                 className="max-w-sm mx-auto"
                 onSubmit={handleSubmit(onSubmit)}
             >
-                <h1 className="text-2xl my-4">Nova Questão</h1>
+                <h1 className="text-2xl my-4">
+                    {id ? " Editar" : " Nova"} Questão
+                </h1>
+
                 <Input
                     {...register("enunciado", { required: true })}
                     type="text"

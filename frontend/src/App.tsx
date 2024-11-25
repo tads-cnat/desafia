@@ -9,6 +9,7 @@ import QuestaoForm from "./pages/QuestaoForm";
 import "react-loading-skeleton/dist/skeleton.css";
 import Toast from "./components/Toast";
 import Configuracoes from "./pages/Configuracoes";
+import QuestionarioForm from "./pages/QuestionarioForm";
 
 function App() {
     return (
@@ -36,7 +37,7 @@ function App() {
                             />
                             <Route
                                 path="/novo-questionario"
-                                element={<Dashboard />}
+                                element={<QuestionarioForm />}
                             />
                             <Route
                                 path="/nova-questao"
