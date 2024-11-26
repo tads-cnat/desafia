@@ -5,6 +5,7 @@
 | Data       | Versão | Descrição      | Autores                        |
 | ---------- | ------ | -------------- | ------------------------------ |
 | 09/05/2024 | 1.0    | Versão inicial | Maure Andrade e Marília Freire |
+| 26/11/2024 | 1.0    | Versão inicial | Maure Andrade                  |
 
 ## 1. Introdução
 
@@ -37,17 +38,17 @@ Nosso projeto visa desenvolver uma alternativa ao Kahoot, uma plataforma popular
 
 ### 3.1. Resumo das partes interessadas
 
-| Nome                          | Descrição                                                                                    | Responsabilidades                                                                                                               |
-| ----------------------------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| Organizadores                 | Professores que utilizam a plataforma para criar questionários e conduzir jogos interativos. | Criar questionários, liderar jogos, avaliar o desempenho dos participantes, fornecer feedback.                                  |
-| Alunos/Participantes          | Os indivíduos que participam dos jogos interativos criados pelos organizadores.              | Responder às perguntas, competir com outros participantes, aprender através da participação ativa.                              |
-| Desenvolvedores da Plataforma | A equipe responsável pelo desenvolvimento e manutenção da plataforma.                        | Desenvolver novos recursos, corrigir bugs, garantir a segurança e estabilidade do sistema, otimizar o desempenho da plataforma. |
+| Nome                          | Descrição                                                                                                             | Responsabilidades                                                                                                               |
+| ----------------------------- | --------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| Organizadores                 | Pessoa responsável por criar e gerenciar os questionários e as partidas, geralmente um professor ou instrutor         | Criar questionários, gerenciar partidas, avaliar o desempenho dos participantes, fornecer feedback.                             |
+| Alunos/Participantes          | Usuário que participa de uma partida, respondendo às questões do questionário, com o objetivo de aprender e competir. | Responder às questões, competir com outros participantes, aprender através da participação ativa.                               |
+| Desenvolvedores da Plataforma | A equipe responsável pelo desenvolvimento e manutenção da plataforma.                                                 | Desenvolver novos recursos, corrigir bugs, garantir a segurança e estabilidade do sistema, otimizar o desempenho da plataforma. |
 
 ### 3.2. Ambiente do usuário
 
-O uso da plataforma pode envolver várias pessoas, dependendo do contexto de uso. Em um cenário educacional típico, pode haver um ou vários instrutores que criam os questionários e lideram os jogos, enquanto os alunos participam respondendo às perguntas.
+O uso da plataforma envolve várias pessoas, dependendo do contexto de uso. Em um cenário educacional típico, há um instrutor que cria os questionários e lideram as partidas, enquanto os alunos participam respondendo às questões.
 
-Um jogo ao vivo pode ter um ciclo relativamente curto, com duração de 10 a 30 minutos. Para os organizadores, o tempo investido na criação de um questionário pode depender da complexidade das perguntas e do nível de interatividade desejado. Para os participantes, o tempo gasto respondendo às perguntas durante um jogo ao vivo pode ser relativamente curto, com apenas alguns segundos para cada pergunta.
+Uma partida pode ter um ciclo relativamente curto, com duração de 5 a 30 minutos. Para os organizadores, o tempo investido na criação de um questionário pode depender da complexidade das questões. Para os participantes, o tempo gasto respondendo às questões durante uma partida pode ser relativamente curto, com apenas alguns segundos para cada pergunta.
 
 O ambiente ideal para o acesso à plataforma é uma sala de aula, mas também pode ser acessada com os usuários separados, desde que haja conectividade com a internet. Além disso, a plataforma pode ser usada em conjunto com outras ferramentas de ensino ou colaboração existentes, como Google Classroom, Google Meet, Moodle, Slack ou Microsoft Teams, dependendo do contexto de uso.
 
@@ -55,26 +56,27 @@ O ambiente ideal para o acesso à plataforma é uma sala de aula, mas também po
 
 ### 4.1. Requisitos funcionais
 
-| Nome                                        | Descrição                                                                                                                                       | Prioridade |
-| ------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
-| Registro de usuário                         | Permitir que os usuários registrem suas contas na plataforma para acessar os recursos completos.                                                |            |
-| Perfil de usuário                           | Permitir que os usuários registrados possam editar suas informações pessoais.                                                                   |            |
-| Criação de perguntas                        | Permitir que usuários cadastrados possam criar perguntas (múltipla escolha, verdadeiro/falso) para usá-las em questionários.                    |            |
-| Configuração de tempo                       | Possibilitar definir um tempo máximo de resposta para cada pergunta.                                                                            |            |
-| Criação de questionários                    | Capacidade de criar questionários interativos com perguntas de múltipla escolha, verdadeiro/falso, etc.                                         |            |
-| Configuração de privacidade                 | Cada questão pode ser configurada como pública (para ser usada por outros docentes) ou privadas.                                                |            |
-| Edição de questionários                     | Permitir aos usuários editar questionários existentes, adicionando, removendo ou modificando perguntas.                                         |            |
-| Execução de questionário                    | Permitir ao criador a execução de um jogo de forma síncrona ou assíncrona (com data/hora de início e fim configurável).                         |            |
-| Participação em partidas                    | Permitir que os usuários participem de jogos ao vivo (partidas) organizados por outros usuários.                                                |            |
-| Classificação e pontuação                   | Rastrear e exibir a pontuação dos participantes durante os jogos, classificando-os com base no desempenho.                                      |            |
-| Monitoramento                               | Permitir que os organizadores das partidas consigam gerenciar o andamento do jogo.                                                              |            |
-| Exportação de questionário                  | Permitir ao criador de um questionário exportá-lo em pdf ou outro formato intermediário como .csv                                               |            |
-| Estatísticas de acertos e erros por questão | Geração de relatórios que mostram a taxa de acerto e erro para cada pergunta do questionário ao final de uma partida                            |            |
-| Ranking dos participantes                   | Geração de rankings dos participantes com base no desempenho geral, levando em conta tanto a corretude das respostas quanto o tempo de resposta |            |
-| Desempenho médio final dos participantes    | Geração de um relatório da média de desempenho geral dos participantes sobre a aplicação do questionário                                        |            |
-| Histórico de execuções                      | Manter o histórico das execuções dos questionários                                                                                              |            |
-| Categorização de questões                   | As questões, ao serem criadas, poderão ser categorizadas por assunto                                                                            |            |
-| Relatórios e análises                       | Gerar relatórios sobre o jogo, com estatísticas de acertos e erros e etc.                                                                       |            |
+> Os requisitos funcionais estão listados de acordo com a prioridade acertada pela equipe, começando pelo requisito mais desejado ao menos desejado.
+
+| Nome                                        | Descrição                                                                                                                                       |
+| ------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| Execução de questionário                    | Permitir ao criador a execução de uma partida de forma síncrona.                                                                                |
+| Participação em partidas                    | Permitir que os usuários participem de partidas organizados por Organizadores.                                                                  |
+| Criação de questões                         | Permitir que usuários cadastrados possam criar questões (múltipla escolha, verdadeiro/falso) para usá-las em questionários.                     |
+| Criação de questionários                    | Capacidade de criar questionários interativos com questões de múltipla escolha, verdadeiro/falso, etc.                                          |
+| Edição de questionários                     | Permitir aos usuários editar questionários existentes, adicionando, removendo ou modificando questões.                                          |
+| Classificação e pontuação                   | Rastrear e exibir a pontuação dos participantes durante as partidas, classificando-os com base no desempenho.                                   |
+| Monitoramento                               | Permitir que os organizadores das partidas consigam gerenciar o andamento da partida.                                                           |
+| Configuração de tempo                       | Possibilitar definir um tempo máximo de resposta para cada pergunta.                                                                            |
+| Ranking dos participantes                   | Geração de rankings dos participantes com base no desempenho geral, levando em conta tanto a corretude das respostas quanto o tempo de resposta |
+| Desempenho médio final dos participantes    | Geração de um relatório da média de desempenho geral dos participantes sobre a aplicação do questionário                                        |
+| Relatórios e análises                       | Gerar relatórios sobre a aplicação do questionário naquela partida, com estatísticas de acertos e erros e etc.                                  |
+| Histórico de execuções                      | Manter o histórico das execuções dos questionários                                                                                              |
+| Estatísticas de acertos e erros por questão | Geração de relatórios que mostram a taxa de acerto e erro para cada pergunta do questionário ao final de uma partida                            |
+| Configuração de privacidade                 | Cada questão pode ser configurada como pública (para ser usada por outros docentes) ou privadas.                                                |
+| Exportação de questionário                  | Permitir ao criador de um questionário exportá-lo em pdf ou outro formato intermediário como .csv                                               |
+| Registro de usuário                         | Permitir que os usuários registrem suas contas na plataforma para acessar os recursos completos.                                                |
+| Perfil de usuário                           | Permitir que os usuários registrados possam editar suas informações pessoais.                                                                   |
 
 ### 4.2. Requisitos não-funcionais
 
@@ -84,3 +86,15 @@ O ambiente ideal para o acesso à plataforma é uma sala de aula, mas também po
 | Escalabilidade  | O sistema deve ser capaz de escalar facilmente para lidar com um aumento repentino no número de usuários ou jogos, garantindo que a experiência do usuário não seja comprometida durante picos de tráfego.             |
 | Usabilidade     | A interface do usuário deve ser intuitiva e fácil de usar, garantindo que os usuários possam navegar e interagir com a plataforma sem dificuldades, independentemente do seu nível de habilidade tecnológica.          |
 | Responsividade  | A interface móvel deve ser totalmente responsiva, adaptando-se de forma dinâmica e eficaz a uma ampla variedade de dispositivos móveis, incluindo smartphones e tablets, com diferentes tamanhos de tela e resoluções. |
+
+## 5. Glossário
+
+Aqui está a atualização do glossário com as descrições solicitadas e outros termos que podem ser relevantes para o entendimento do documento de visão:
+
+## 5. Glossário
+
+| Termo        | Descrição                                                                                                                                                                              |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Questão      | Pergunta criada para ser incluída em um questionário, que pode ser do tipo múltipla escolha ou verdadeiro/falso.                                                                       |
+| Questionário | Conjunto de questões organizadas de forma estruturada para realizar uma atividade de aprendizagem interativa, geralmente com o objetivo de avaliar os conhecimentos dos participantes. |
+| Partida      | Sessão interativa de execução de um questionário, na qual os participantes respondem às questões em tempo real, com pontuação e ranking gerados conforme o desempenho.                 |
