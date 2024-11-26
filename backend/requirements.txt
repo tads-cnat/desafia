@@ -2,4 +2,10 @@ Django==5.0.7
 django-ninja==1.1.0
 django-ninja-extra==0.20.7
 django-ninja-jwt==5.3.1
-psycopg2-binary
+django-cors-headers==4.3.1
+channels==4.0.0
+channels-redis==4.0.0
+daphne==4.0.0
+pytest-asyncio==0.20.1
+pytest-django==4.5.2
+psycopg2-binary==2.9.10

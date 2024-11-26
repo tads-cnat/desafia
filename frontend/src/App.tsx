@@ -1,20 +1,54 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import ProtectedRoutes from "./utils/ProtectedRoutes";
+import Login from "./pages/Login";
+import RequireAuth from "./hoc/RequireAuth";
 import { Dashboard } from "./pages";
-import Escolhas from "./pages/Escolhas";
-import ResultadoQuestao from "./pages/ResultadoQuestao";
-import Esperando from "./pages/Esperando";
+import Layout from "./hoc/Layout";
+import MeusQuestionarios from "./pages/MeusQuestionarios";
+import MinhasQuestoes from "./pages/MinhasQuestoes";
+import QuestaoForm from "./pages/QuestaoForm";
+import "react-loading-skeleton/dist/skeleton.css";
+import Toast from "./components/Toast";
+import Configuracoes from "./pages/Configuracoes";
+import QuestionarioForm from "./pages/QuestionarioForm";
 
 function App() {
     return (
         <>
+            <Toast />
             <BrowserRouter>
                 <Routes>
-                    <Route path="/" element={<Dashboard />} />
-                    <Route path="/escolhas" element={<Escolhas />} />
-                    <Route path="/resultado" element={<ResultadoQuestao />} />
-                    <Route path="/esperando" element={<Esperando />} />
-                    <Route element={<ProtectedRoutes />} />
+                    {/* Rotas abertas para todos */}
+                    <Route path="/login" element={<Login />} />
+
+                    <Route element={<RequireAuth />}>
+                        <Route element={<Layout />}>
+                            <Route path="/" element={<Dashboard />} />
+                            <Route
+                                path="/meus-questionarios"
+                                element={<MeusQuestionarios />}
+                            />
+                            <Route
+                                path="/minhas-questoes"
+                                element={<MinhasQuestoes />}
+                            />
+                            <Route
+                                path="/questao/:id/"
+                                element={<QuestaoForm />}
+                            />
+                            <Route
+                                path="/novo-questionario"
+                                element={<QuestionarioForm />}
+                            />
+                            <Route
+                                path="/nova-questao"
+                                element={<QuestaoForm />}
+                            />
+                            <Route
+                                path="/configuracoes"
+                                element={<Configuracoes />}
+                            />
+                        </Route>
+                    </Route>
                 </Routes>
             </BrowserRouter>
         </>

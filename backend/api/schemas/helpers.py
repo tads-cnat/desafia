@@ -3,7 +3,7 @@ from ninja import Schema
 
 
 class OkSchema(Schema):
-    details: dict
+    message: str
 
 
 class IdSchema(Schema):

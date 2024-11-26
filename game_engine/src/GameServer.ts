@@ -1,5 +1,6 @@
 import express from "express";
 import http from "http";
+import cors from "cors";
 import { Server, type Socket } from "socket.io";
 import { Partida } from "./models/Partida";
 import { Participante } from "./models/Participante";
@@ -38,6 +39,10 @@ class GameServer {
 		this.getQuestionario();
 	}
 
+	configureCors() {
+		this.app.use(cors());
+	}
+
 	handleConnections() {
 		this.io.on("connection", (socket: Socket) => {
 			console.log(`User connected: ${socket.id}`);
@@ -48,6 +53,11 @@ class GameServer {
 
 			socket.on("answerQuestion", (data) => {
 				this.handleAnswerQuestion(socket, data);
+			});
+
+			socket.on("mudar_estado", (data) => {
+				console.log("Mudaram o estado para: " + data);
+				this.io.sockets.emit("novo_estado", data);
 			});
 
 			socket.on("disconnect", () => {
