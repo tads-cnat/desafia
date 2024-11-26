@@ -5,7 +5,7 @@
 | Data       | Versão | Descrição      | Autores                        |
 | ---------- | ------ | -------------- | ------------------------------ |
 | 09/05/2024 | 1.0    | Versão inicial | Maure Andrade e Marília Freire |
-| 26/11/2024 | 1.0    | Versão inicial | Maure Andrade e Marília Freire |
+| 26/11/2024 | 1.0    | Versão inicial | Maure Andrade                  |
 
 ## 1. Introdução
 
