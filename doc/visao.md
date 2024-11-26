@@ -89,10 +89,6 @@ O ambiente ideal para o acesso à plataforma é uma sala de aula, mas também po
 
 ## 5. Glossário
 
-Aqui está a atualização do glossário com as descrições solicitadas e outros termos que podem ser relevantes para o entendimento do documento de visão:
-
-## 5. Glossário
-
 | Termo        | Descrição                                                                                                                                                                              |
 | ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Questão      | Pergunta criada para ser incluída em um questionário, que pode ser do tipo múltipla escolha ou verdadeiro/falso.                                                                       |
