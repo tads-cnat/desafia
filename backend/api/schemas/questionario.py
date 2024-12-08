@@ -24,5 +24,5 @@ class QuestionarioOut(ModelSchema):
 class QuestionarioIn(Schema):
     nome: str
     descricao: str
-    categoria: IdSchema
+    categoria_id: int
     questoes_id: List[int]

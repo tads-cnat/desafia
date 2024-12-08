@@ -10,47 +10,50 @@ import "react-loading-skeleton/dist/skeleton.css";
 import Toast from "./components/Toast";
 import Configuracoes from "./pages/Configuracoes";
 import QuestionarioForm from "./pages/QuestionarioForm";
+import { ReloadProvider } from "./contexts/ReloadContext";
 
 function App() {
     return (
         <>
-            <Toast />
-            <BrowserRouter>
-                <Routes>
-                    {/* Rotas abertas para todos */}
-                    <Route path="/login" element={<Login />} />
+            <ReloadProvider>
+                <Toast />
+                <BrowserRouter>
+                    <Routes>
+                        {/* Rotas abertas para todos */}
+                        <Route path="/login" element={<Login />} />
 
-                    <Route element={<RequireAuth />}>
-                        <Route element={<Layout />}>
-                            <Route path="/" element={<Dashboard />} />
-                            <Route
-                                path="/meus-questionarios"
-                                element={<MeusQuestionarios />}
-                            />
-                            <Route
-                                path="/minhas-questoes"
-                                element={<MinhasQuestoes />}
-                            />
-                            <Route
-                                path="/questao/:id/"
-                                element={<QuestaoForm />}
-                            />
-                            <Route
-                                path="/novo-questionario"
-                                element={<QuestionarioForm />}
-                            />
-                            <Route
-                                path="/nova-questao"
-                                element={<QuestaoForm />}
-                            />
-                            <Route
-                                path="/configuracoes"
-                                element={<Configuracoes />}
-                            />
+                        <Route element={<RequireAuth />}>
+                            <Route element={<Layout />}>
+                                <Route path="/" element={<Dashboard />} />
+                                <Route
+                                    path="/meus-questionarios"
+                                    element={<MeusQuestionarios />}
+                                />
+                                <Route
+                                    path="/minhas-questoes"
+                                    element={<MinhasQuestoes />}
+                                />
+                                <Route
+                                    path="/questao/:id/"
+                                    element={<QuestaoForm />}
+                                />
+                                <Route
+                                    path="/novo-questionario"
+                                    element={<QuestionarioForm />}
+                                />
+                                <Route
+                                    path="/nova-questao"
+                                    element={<QuestaoForm />}
+                                />
+                                <Route
+                                    path="/configuracoes"
+                                    element={<Configuracoes />}
+                                />
+                            </Route>
                         </Route>
-                    </Route>
-                </Routes>
-            </BrowserRouter>
+                    </Routes>
+                </BrowserRouter>
+            </ReloadProvider>
         </>
     );
 }

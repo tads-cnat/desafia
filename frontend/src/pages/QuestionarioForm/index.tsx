@@ -3,14 +3,27 @@ import { useState } from "react";
 import InformacoesBasicasQuestionario from "./InformacoesBasicasQuestionario";
 import EscolhaQuestoesQuestionario from "./EscolhaQuestoesQuestionario";
 import { toast } from "sonner";
+import QuestionarioService from "../../services/QuestionarioService";
+import { useNavigate } from "react-router-dom";
+import { QuestionarioAPI } from "../../types/models/Questionario";
+import NovaCategoriaModal from "../../components/NovaCategoriaModal";
 
 function QuestionarioForm(): JSX.Element {
     const methods = useForm();
     const [step, setStep] = useState<number>(1);
+    const navigate = useNavigate();
 
     function submitForm(data: FieldValues): void {
-        console.log(data);
-        toast.success("Questionário criado com sucesso!");
+        QuestionarioService.post(data as QuestionarioAPI)
+            .then((res) => {
+                console.log(res);
+                toast.success("Questionário criado com sucesso!");
+                navigate("/meus-questionarios");
+            })
+            .catch((err) => {
+                console.error(err);
+                toast.error("Erro ao criar questionário");
+            });
     }
 
     return (
@@ -60,6 +73,9 @@ function QuestionarioForm(): JSX.Element {
                     </div>
                 </div>
             </form>
+            <dialog id="nova_categoria_modal" className="modal">
+                <NovaCategoriaModal />
+            </dialog>
         </>
     );
 }

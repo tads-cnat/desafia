@@ -3,9 +3,8 @@ import Input from "../components/Input";
 import AuthService from "../services/AuthService";
 import useAuth from "../store/AuthStore";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
 import { AxiosError } from "axios";
-import Alert from "../components/Alert";
+import { toast } from "sonner";
 
 interface LoginForm {
     username?: string;
@@ -15,7 +14,6 @@ interface LoginForm {
 function Login(): JSX.Element {
     const { login } = useAuth();
     const { register, handleSubmit, control } = useForm<LoginForm>();
-    const [responseError, setResponseError] = useState<string | undefined>();
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -27,6 +25,7 @@ function Login(): JSX.Element {
         try {
             const loginResponse = await AuthService.login(username, password);
             login(loginResponse);
+            toast.success("Login efetuado com sucesso!");
             navigate(from, { replace: true });
         } catch (err) {
             handleError(err as AxiosError);
@@ -37,7 +36,7 @@ function Login(): JSX.Element {
     function handleError(err: AxiosError) {
         const { response } = err as AxiosError<{ detail: string }>;
 
-        setResponseError(response?.data?.detail);
+        toast.error(response?.data?.detail);
     }
 
     return (
@@ -46,9 +45,6 @@ function Login(): JSX.Element {
                 className="min-w-sm"
                 onSubmit={handleSubmit(handleLoginSubmission)}
             >
-                {responseError && (
-                    <Alert type="error" message={responseError} />
-                )}
                 <Input
                     {...register("username", { required: true })}
                     type="text"

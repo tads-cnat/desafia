@@ -7,6 +7,7 @@ from typing import List
 from ninja_extra.schemas import NinjaPaginationResponseSchema
 
 from api.models import Questionario, Questao
+from api.models.categoria import Categoria
 from api.schemas import QuestionarioOut, QuestionarioIn, ErrorSchema
 
 from .base import ModelController
@@ -39,10 +40,12 @@ class QuestionarioController(ModelController):
 
     @route.post("/", response={200: SchemaOut, 400: ErrorSchema})
     def create_questionario(self, payload: QuestionarioIn):
+
+        categoria = Categoria.objects.get(id=payload.categoria_id)
         questionario = self.model.objects.create(
             nome=payload.nome,
             descricao=payload.descricao,
-            categoria=payload.categoria,
+            categoria=categoria,
         )
 
         questoes = Questao.objects.filter(id__in=payload.questoes_id)
