@@ -6,3 +6,4 @@ from .questao import Questao
 from .questionario import Questionario
 from .resposta import Resposta
 from .usuario import Usuario
+from .categoria import Categoria

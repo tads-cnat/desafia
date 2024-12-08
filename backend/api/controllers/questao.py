@@ -24,15 +24,9 @@ class QuestaoController(ModelController):
     SchemaIn = QuestaoIn
     SchemaOut = QuestaoOut
 
-    @route.get(
-        "/",
-        response=NinjaPaginationResponseSchema[SchemaOut],
-        url_name="questao-list",
-    )
-    @paginate()
-    @throttle
-    def get_questoes(self):
-        return self.get_queryset()
+    @route.get("/{id}/", response=SchemaOut, url_name="questao-detail")
+    def get_questao(self, id: int):
+        return get_object_or_404(self.model, id=id)
 
     @route.get(
         "/",

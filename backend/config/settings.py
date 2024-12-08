@@ -84,9 +84,9 @@ ASGI_APPLICATION = 'config.asgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'desafia',
+        'NAME': 'desafiadb',
         'USER': 'desafia',
-        'PASSWORD': 'desafia',
+        'PASSWORD': 'desafia-password',
         'HOST': os.getenv('POSTGRES_HOST', 'localhost'),
         'PORT': os.getenv('POSTGRES_PORT', '5432'),
     }

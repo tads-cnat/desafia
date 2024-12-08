@@ -1,16 +1,21 @@
 from django.core.management.base import BaseCommand
-from api.models import Questionario, Questao, Alternativa, Usuario
+from api.models import Questionario, Questao, Alternativa
 from django.contrib.auth import get_user_model
 from django.apps import apps
 
+from api.models.categoria import Categoria
+
 
 class Command(BaseCommand):
-    help = 'Seed the database with a questionnaire and 10 real questions'
+    help = 'Seed the database with a questionnaire about Scrum fundamentals and 10 questions'
 
     def handle(self, *args, **kwargs):
+        # Limpa os dados existentes na aplicação
         app = apps.get_app_config('api')
         for model in app.get_models():
             model.objects.all().delete()
+
+        # Cria um usuário administrador
         User = get_user_model()
         user, created = User.objects.get_or_create(
             username='admin', defaults={'nome': 'Administrador'}
@@ -19,106 +24,127 @@ class Command(BaseCommand):
             user.set_password('admin')
             user.save()
 
+        categoria = Categoria.objects.create(
+            nome="Metodologias Ágeis",
+        )
+
+        # Cria o questionário de fundamentos do Scrum
         questionario = Questionario.objects.create(
-            nome='Questionário de Conhecimentos Gerais',
-            descricao='Este é um questionário de conhecimentos gerais.',
-            categoria='Conhecimentos Gerais',
+            nome='Fundamentos do Scrum',
+            descricao='Este questionário aborda os conceitos básicos do framework Scrum.',
+            categoria=categoria,
             created_by=user
         )
 
+        # Lista de questões sobre fundamentos do Scrum
         questoes = [
             {
-                'enunciado': 'Qual é a capital da França?',
+                'enunciado': 'Qual é o principal objetivo de uma Sprint no Scrum?',
                 'alternativas': [
-                    {'texto': 'Paris', 'correta': True},
-                    {'texto': 'Londres', 'correta': False},
-                    {'texto': 'Berlim', 'correta': False},
-                    {'texto': 'Madri', 'correta': False}
+                    {'texto': 'Entregar um incremento de software funcional.',
+                        'correta': True},
+                    {'texto': 'Documentar todos os requisitos do produto.',
+                        'correta': False},
+                    {'texto': 'Garantir a aprovação do cliente final.', 'correta': False},
+                    {'texto': 'Testar todo o sistema desenvolvido.', 'correta': False}
                 ]
             },
             {
-                'enunciado': 'Quem pintou a Mona Lisa?',
+                'enunciado': 'Quem é responsável por priorizar o Product Backlog no Scrum?',
                 'alternativas': [
-                    {'texto': 'Leonardo da Vinci', 'correta': True},
-                    {'texto': 'Pablo Picasso', 'correta': False},
-                    {'texto': 'Vincent van Gogh', 'correta': False},
-                    {'texto': 'Claude Monet', 'correta': False}
+                    {'texto': 'Product Owner.', 'correta': True},
+                    {'texto': 'Scrum Master.', 'correta': False},
+                    {'texto': 'Desenvolvedores.', 'correta': False},
+                    {'texto': 'Cliente.', 'correta': False}
                 ]
             },
             {
-                'enunciado': 'Qual é o maior planeta do nosso sistema solar?',
+                'enunciado': 'Qual é a principal responsabilidade do Scrum Master?',
                 'alternativas': [
-                    {'texto': 'Júpiter', 'correta': True},
-                    {'texto': 'Saturno', 'correta': False},
-                    {'texto': 'Terra', 'correta': False},
-                    {'texto': 'Marte', 'correta': False}
+                    {'texto': 'Garantir que a equipe siga os princípios e práticas do Scrum.', 'correta': True},
+                    {'texto': 'Desenvolver o software e corrigir bugs.',
+                        'correta': False},
+                    {'texto': 'Gerenciar o cronograma e alocar recursos.',
+                        'correta': False},
+                    {'texto': 'Definir os objetivos de negócio do projeto.',
+                        'correta': False}
                 ]
             },
             {
-                'enunciado': 'Em que ano a Segunda Guerra Mundial terminou?',
+                'enunciado': 'O que acontece na Daily Scrum?',
                 'alternativas': [
-                    {'texto': '1945', 'correta': True},
-                    {'texto': '1939', 'correta': False},
-                    {'texto': '1941', 'correta': False},
-                    {'texto': '1950', 'correta': False}
+                    {'texto': 'A equipe compartilha o progresso e planeja o trabalho diário.', 'correta': True},
+                    {'texto': 'O Product Owner apresenta novos requisitos.',
+                        'correta': False},
+                    {'texto': 'São realizadas demonstrações do software para stakeholders.',
+                        'correta': False},
+                    {'texto': 'São revisados todos os testes do produto.',
+                        'correta': False}
                 ]
             },
             {
-                'enunciado': 'Quem escreveu "Dom Quixote"?',
+                'enunciado': 'Qual é a duração recomendada para uma Sprint?',
                 'alternativas': [
-                    {'texto': 'Miguel de Cervantes', 'correta': True},
-                    {'texto': 'William Shakespeare', 'correta': False},
-                    {'texto': 'Dante Alighieri', 'correta': False},
-                    {'texto': 'Gabriel Garcia Marquez', 'correta': False}
+                    {'texto': 'De 1 a 4 semanas.', 'correta': True},
+                    {'texto': 'Exatamente 2 semanas.', 'correta': False},
+                    {'texto': 'De 4 a 6 semanas.', 'correta': False},
+                    {'texto': 'Depende da decisão do Scrum Master.', 'correta': False}
                 ]
             },
             {
-                'enunciado': 'Qual é o elemento químico representado pelo símbolo "O"?',
+                'enunciado': 'O que é um Incremento no contexto do Scrum?',
                 'alternativas': [
-                    {'texto': 'Oxigênio', 'correta': True},
-                    {'texto': 'Ouro', 'correta': False},
-                    {'texto': 'Osmio', 'correta': False},
-                    {'texto': 'Oganesson', 'correta': False}
+                    {'texto': 'O resultado de todas as Sprints concluídas, entregando valor ao cliente.', 'correta': True},
+                    {'texto': 'Uma lista de pendências para a próxima Sprint.',
+                        'correta': False},
+                    {'texto': 'Um conjunto de testes automatizados.', 'correta': False},
+                    {'texto': 'A documentação detalhada do produto.', 'correta': False}
                 ]
             },
             {
-                'enunciado': 'Quem foi o primeiro homem a pisar na lua?',
+                'enunciado': 'Qual evento no Scrum é dedicado a inspecionar e adaptar o trabalho da equipe?',
                 'alternativas': [
-                    {'texto': 'Neil Armstrong', 'correta': True},
-                    {'texto': 'Buzz Aldrin', 'correta': False},
-                    {'texto': 'Yuri Gagarin', 'correta': False},
-                    {'texto': 'Michael Collins', 'correta': False}
+                    {'texto': 'Sprint Retrospective.', 'correta': True},
+                    {'texto': 'Sprint Planning.', 'correta': False},
+                    {'texto': 'Sprint Review.', 'correta': False},
+                    {'texto': 'Daily Scrum.', 'correta': False}
                 ]
             },
             {
-                'enunciado': 'Qual é a língua oficial do Brasil?',
+                'enunciado': 'Quem é responsável por garantir que a equipe Scrum funcione de maneira eficaz?',
                 'alternativas': [
-                    {'texto': 'Português', 'correta': True},
-                    {'texto': 'Espanhol', 'correta': False},
-                    {'texto': 'Inglês', 'correta': False},
-                    {'texto': 'Francês', 'correta': False}
+                    {'texto': 'Scrum Master.', 'correta': True},
+                    {'texto': 'Product Owner.', 'correta': False},
+                    {'texto': 'Cliente.', 'correta': False},
+                    {'texto': 'Equipe de Desenvolvimento.', 'correta': False}
                 ]
             },
             {
-                'enunciado': 'Qual é o oceano que banha a costa leste do Brasil?',
+                'enunciado': 'O que ocorre durante a Sprint Planning?',
                 'alternativas': [
-                    {'texto': 'Atlântico', 'correta': True},
-                    {'texto': 'Pacífico', 'correta': False},
-                    {'texto': 'Índico', 'correta': False},
-                    {'texto': 'Ártico', 'correta': False}
+                    {'texto': 'A equipe define o que será feito na Sprint e como será feito.', 'correta': True},
+                    {'texto': 'São realizadas melhorias no Product Backlog.',
+                        'correta': False},
+                    {'texto': 'Os stakeholders aprovam o incremento.', 'correta': False},
+                    {'texto': 'A equipe revisa as lições aprendidas na Sprint anterior.',
+                        'correta': False}
                 ]
             },
             {
-                'enunciado': 'Quem é conhecido como o pai da computação?',
+                'enunciado': 'O que o time Scrum entrega ao final de uma Sprint?',
                 'alternativas': [
-                    {'texto': 'Alan Turing', 'correta': True},
-                    {'texto': 'Albert Einstein', 'correta': False},
-                    {'texto': 'Isaac Newton', 'correta': False},
-                    {'texto': 'Nikola Tesla', 'correta': False}
+                    {'texto': 'Um incremento de produto potencialmente utilizável.',
+                        'correta': True},
+                    {'texto': 'Uma lista de melhorias sugeridas.', 'correta': False},
+                    {'texto': 'Um relatório detalhado das atividades concluídas.',
+                        'correta': False},
+                    {'texto': 'Os requisitos completos para o próximo ciclo.',
+                        'correta': False}
                 ]
             }
         ]
 
+        # Criação das questões e alternativas
         for q in questoes:
             questao = Questao.objects.create(
                 enunciado=q['enunciado'],
@@ -135,4 +161,4 @@ class Command(BaseCommand):
                 )
 
         self.stdout.write(self.style.SUCCESS(
-            'Banco de dados populado com sucesso!'))
+            'Banco de dados populado com questões de fundamentos do Scrum com sucesso!'))

@@ -1,10 +1,12 @@
-version: "3.9"
+volumes:
+  desafia_postgres_local: {}
+
 services:
   api:
     container_name: desafia-api
     build:
       context: .
-    command: sh -c "python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"
+    command: sh -c "python3 manage.py runserver 0.0.0.0:8000"
     ports:
       - "8000:8000"
     depends_on:
@@ -24,9 +26,6 @@ services:
       POSTGRES_PASSWORD: desafia-password
       POSTGRES_DB: desafiadb
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - desafia_postgres_local:/var/lib/postgresql/data
     ports:
       - "5432:5432"
-
-volumes:
-  postgres-data:
