@@ -1,6 +1,8 @@
 import datetime
 from ninja import ModelSchema, Schema
 from typing import List
+
+from api.schemas.categoria import CategoriaOut
 from .questao import QuestaoOut
 from .helpers import IdSchema
 from api.models import Questionario
@@ -10,7 +12,7 @@ class QuestionarioOut(ModelSchema):
     id: int
     nome: str
     descricao: str
-    categoria: str
+    categoria: CategoriaOut
     questoes: List[QuestaoOut]
 
     class Config:
@@ -22,5 +24,5 @@ class QuestionarioOut(ModelSchema):
 class QuestionarioIn(Schema):
     nome: str
     descricao: str
-    categoria: str
+    categoria: IdSchema
     questoes_id: List[int]

@@ -47,7 +47,7 @@ function MeusQuestionarios(): JSX.Element {
                                 <tr key={questionario.id} className="hover">
                                     <td>{questionario.nome}</td>
                                     <td>{questionario.questoes.length}</td>
-                                    <td>{questionario.categoria}</td>
+                                    <td>{questionario.categoria.nome}</td>
                                     <td>
                                         <div className="grid grid-cols-1">
                                             <button className="btn btn-sm">

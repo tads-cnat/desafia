@@ -7,7 +7,7 @@ from ninja_jwt.authentication import JWTAuth
 from ninja_extra.schemas import NinjaPaginationResponseSchema
 
 from api.models import Categoria
-from api.schemas import CategoriaIn, QuestaoOut, IdSchema, OkSchema, ErrorSchema
+from api.schemas import CategoriaIn, CategoriaOut, IdSchema, OkSchema, ErrorSchema
 
 from .base import ModelController
 
@@ -21,7 +21,7 @@ from .base import ModelController
 class CategoriaController(ModelController):
     model = Categoria
     SchemaIn = CategoriaIn
-    SchemaOut = QuestaoOut
+    SchemaOut = CategoriaOut
 
     @route.get(
         "/",

@@ -13,6 +13,7 @@ api = NinjaExtraAPI(
 api.register_controllers(QuestaoController)
 api.register_controllers(QuestionarioController)
 api.register_controllers(AlternativaController)
+api.register_controllers(CategoriaController)
 
 
 api.register_controllers(MyTokenObtainPairController)
