@@ -52,17 +52,33 @@ function EscolhaQuestoesQuestionario(): JSX.Element {
         setValue("questoes_id", selectedQuestions);
     }, [selectedQuestions]);
 
+    function openNovaQuestaoModal() {
+        const modal = document.getElementById("nova_questao_modal");
+        if (modal) {
+            (modal as HTMLDialogElement).showModal();
+        }
+    }
+
     return (
         <>
-            <label className="input flex items-center gap-2">
-                <i className="fa-solid fa-magnifying-glass" />
-                <input
-                    type="text"
-                    className="grow"
-                    placeholder="Pesquise pelas suas questões"
-                    onChange={(e) => setQuery(e.target.value)}
-                />
-            </label>
+            <div className="flex gap-2 justify-between">
+                <label className="input flex items-center w-full gap-2">
+                    <i className="fa-solid fa-magnifying-glass" />
+                    <input
+                        type="text"
+                        className="grow"
+                        placeholder="Pesquise pelas suas questões"
+                        onChange={(e) => setQuery(e.target.value)}
+                    />
+                </label>
+                <button
+                    className="btn"
+                    type="button"
+                    onClick={openNovaQuestaoModal}
+                >
+                    Nova questão
+                </button>
+            </div>
             <div className="flex flex-col items-center gap-2">
                 <table className="table">
                     <thead>

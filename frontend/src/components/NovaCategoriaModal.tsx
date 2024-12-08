@@ -5,11 +5,13 @@ import CategoriaService from "../services/CategoriaService";
 import { toast } from "sonner";
 import { CategoriaAPI } from "../types/models/Categoria";
 import { useReload } from "../hooks/useReload";
+import { useModal } from "../hooks/useModal";
 
 function NovaCategoriaModal(): JSX.Element {
     const { register, control, handleSubmit } = useForm();
     const [loading, setLoading] = useState<boolean>(false);
     const { forceReload } = useReload();
+    const { close } = useModal();
 
     function cadastrarCategoria(data: FieldValues) {
         setLoading(true);
@@ -17,7 +19,7 @@ function NovaCategoriaModal(): JSX.Element {
             .then((res) => {
                 console.log(res);
                 toast.success("Categoria cadastrada com sucesso!");
-                closeModal();
+                close("nova_categoria_modal");
             })
             .catch((err) => {
                 console.error(err);
@@ -27,13 +29,6 @@ function NovaCategoriaModal(): JSX.Element {
                 setLoading(false);
                 forceReload();
             });
-    }
-
-    function closeModal() {
-        const modal = document.getElementById("nova_categoria_modal");
-        if (modal) {
-            (modal as HTMLDialogElement).close();
-        }
     }
 
     return (

@@ -7,13 +7,20 @@ import { toast } from "sonner";
 import { useNavigate, useParams } from "react-router-dom";
 import LoadingPage from "./LoadingPage";
 
-function QuestaoForm(): JSX.Element {
-    const { register, control, handleSubmit, setValue } = useForm<FieldValues>({
-        defaultValues: {
-            enunciado: "",
-            alternativas: [{ texto: "" }, { texto: "" }],
-        },
-    });
+interface QuestaoFormProps {
+    redirect?: boolean;
+    onSubmit?: () => void;
+}
+
+function QuestaoForm(props: QuestaoFormProps): JSX.Element {
+    const { redirect = true, onSubmit: externalOnSubmit = () => {} } = props;
+    const { register, control, handleSubmit, setValue, reset } =
+        useForm<FieldValues>({
+            defaultValues: {
+                enunciado: "",
+                alternativas: [{ texto: "" }, { texto: "" }],
+            },
+        });
     const { fields, append, remove } = useFieldArray({
         control,
         name: "alternativas",
@@ -63,7 +70,9 @@ function QuestaoForm(): JSX.Element {
         saveQuestao
             .then(() => {
                 toast.success("Questão salva com sucesso");
-                navigate("/minhas-questoes");
+                redirect && navigate(-1);
+                externalOnSubmit();
+                reset();
             })
             .catch((err) => {
                 console.error(err);

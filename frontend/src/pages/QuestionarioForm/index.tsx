@@ -7,11 +7,14 @@ import QuestionarioService from "../../services/QuestionarioService";
 import { useNavigate } from "react-router-dom";
 import { QuestionarioAPI } from "../../types/models/Questionario";
 import NovaCategoriaModal from "../../components/NovaCategoriaModal";
+import QuestaoForm from "../QuestaoForm";
+import { useModal } from "../../hooks/useModal";
 
 function QuestionarioForm(): JSX.Element {
     const methods = useForm();
     const [step, setStep] = useState<number>(1);
     const navigate = useNavigate();
+    const { close } = useModal();
 
     function submitForm(data: FieldValues): void {
         QuestionarioService.post(data as QuestionarioAPI)
@@ -75,6 +78,22 @@ function QuestionarioForm(): JSX.Element {
             </form>
             <dialog id="nova_categoria_modal" className="modal">
                 <NovaCategoriaModal />
+            </dialog>
+            <dialog id="nova_questao_modal" className="modal">
+                <div className="modal-box">
+                    <form method="dialog">
+                        <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+                            ✕
+                        </button>
+                    </form>
+
+                    <QuestaoForm
+                        redirect={false}
+                        onSubmit={() => {
+                            close("nova_questao_modal");
+                        }}
+                    />
+                </div>
             </dialog>
         </>
     );
