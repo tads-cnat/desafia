@@ -25,6 +25,15 @@ function Drawer(props: DrawerProps): JSX.Element {
                 />
                 <ul className="menu menu-lg bg-base-200 text-base-content min-h-full w-80 p-4 flex flex-col justify-between">
                     <div>
+                        <div className="flex justify-center items-center gap-4 w-full">
+                            <div className="avatar placeholder">
+                                <div className="bg-neutral text-neutral-content w-24 rounded-full">
+                                    <span className="text-3xl">D</span>
+                                </div>
+                            </div>
+                            <p>Nome do usuário</p>
+                        </div>
+                        <div className="divider mx-auto" />
                         <li>
                             <Link to="/">Início</Link>
                         </li>
