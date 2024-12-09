@@ -11,6 +11,7 @@ import Toast from "./components/Toast";
 import Configuracoes from "./pages/Configuracoes";
 import QuestionarioForm from "./pages/QuestionarioForm";
 import { ReloadProvider } from "./contexts/ReloadContext";
+import IniciarQuestionario from "./pages/IniciarQuestionario";
 
 function App() {
     return (
@@ -40,6 +41,10 @@ function App() {
                                 <Route
                                     path="/novo-questionario"
                                     element={<QuestionarioForm />}
+                                />
+                                <Route
+                                    path="/questionario/:id"
+                                    element={<IniciarQuestionario />}
                                 />
                                 <Route
                                     path="/nova-questao"

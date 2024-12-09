@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import QuestionariosService from "../services/QuestionarioService";
 import { Questionario } from "../types/models/Questionario";
 import SkeletonLoading from "../components/SkeletonLoading";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function MeusQuestionarios(): JSX.Element {
     const [questionarios, setQuestionarios] = useState<Questionario[]>();
     const [loading, setLoading] = useState<boolean>(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         setLoading(true);
@@ -50,7 +51,14 @@ function MeusQuestionarios(): JSX.Element {
                                     <td>{questionario.categoria.nome}</td>
                                     <td>
                                         <div className="grid grid-cols-1">
-                                            <button className="btn btn-sm">
+                                            <button
+                                                className="btn btn-sm"
+                                                onClick={() => {
+                                                    navigate(
+                                                        `/questionario/${questionario.id}`,
+                                                    );
+                                                }}
+                                            >
                                                 <i className="fa-solid fa-play" />
                                             </button>
                                         </div>
