@@ -2,10 +2,10 @@
 
 ## Histórico de Revisões
 
-| Data       | Versão | Descrição      | Autores                        |
-| ---------- | ------ | -------------- | ------------------------------ |
-| 09/05/2024 | 1.0    | Versão inicial | Maure Andrade e Marília Freire |
-| 26/11/2024 | 1.0    | Versão inicial | Maure Andrade                  |
+| Data       | Versão | Descrição                                                                | Autores                        |
+| ---------- | ------ | ------------------------------------------------------------------------ | ------------------------------ |
+| 09/05/2024 | 1.0    | Versão inicial                                                           | Maure Andrade e Marília Freire |
+| 26/11/2024 | 1.1    | Revisão do escopo e definição das prioridades dos requisitos funcionais  | Maure Andrade                  |
 
 ## 1. Introdução
 
