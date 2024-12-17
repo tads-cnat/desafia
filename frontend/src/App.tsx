@@ -1,17 +1,19 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Login from "./pages/Login";
+import Login from "./features/Auth/Login";
 import RequireAuth from "./hoc/RequireAuth";
-import { Dashboard } from "./pages";
 import Layout from "./hoc/Layout";
-import MeusQuestionarios from "./pages/MeusQuestionarios";
-import MinhasQuestoes from "./pages/MinhasQuestoes";
-import QuestaoForm from "./pages/QuestaoForm";
+import MeusQuestionarios from "./features/ProfessorDashboard/MeusQuestionarios";
+import MinhasQuestoes from "./features/ProfessorDashboard/MinhasQuestoes";
+import QuestaoForm from "./features/ProfessorDashboard/QuestaoForm";
 import "react-loading-skeleton/dist/skeleton.css";
 import Toast from "./components/Toast";
-import Configuracoes from "./pages/Configuracoes";
-import QuestionarioForm from "./pages/QuestionarioForm";
+import Configuracoes from "./features/ProfessorDashboard/Configuracoes";
+import QuestionarioForm from "./features/ProfessorDashboard/QuestionarioForm";
 import { ReloadProvider } from "./contexts/ReloadContext";
-import IniciarQuestionario from "./pages/IniciarQuestionario";
+import IniciarQuestionario from "./features/ProfessorDashboard/IniciarQuestionario";
+import Jogo from "./features/Jogo";
+import JuntarSe from "./features/Jogo/JuntarSe";
+import Dashboard from "./features/ProfessorDashboard/Dashboard";
 
 function App() {
     return (
@@ -56,6 +58,9 @@ function App() {
                                 />
                             </Route>
                         </Route>
+
+                        <Route path="/jogar" element={<Jogo />} />
+                        <Route path="/jogar" element={<JuntarSe />} />
                     </Routes>
                 </BrowserRouter>
             </ReloadProvider>

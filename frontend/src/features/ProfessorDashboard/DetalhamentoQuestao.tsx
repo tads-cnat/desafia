@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import QuestaoService from "../services/QuestaoService";
+import QuestaoService from "../../services/QuestaoService";
 import { toast } from "sonner";
-import { Questao } from "../types/models/Questao";
-import SkeletonLoading from "../components/SkeletonLoading";
-import Input from "../components/Input";
+import { Questao } from "../../types/models/Questao";
+import SkeletonLoading from "../../components/SkeletonLoading";
+import Input from "../../components/Input";
 
 function DetalhamentoQuestao(): JSX.Element {
     const { id } = useParams();

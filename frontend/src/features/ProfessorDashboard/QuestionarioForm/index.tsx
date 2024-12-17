@@ -3,12 +3,12 @@ import { useState } from "react";
 import InformacoesBasicasQuestionario from "./InformacoesBasicasQuestionario";
 import EscolhaQuestoesQuestionario from "./EscolhaQuestoesQuestionario";
 import { toast } from "sonner";
-import QuestionarioService from "../../services/QuestionarioService";
+import QuestionarioService from "../../../services/QuestionarioService";
 import { useNavigate } from "react-router-dom";
-import { QuestionarioAPI } from "../../types/models/Questionario";
-import NovaCategoriaModal from "../../components/NovaCategoriaModal";
+import { QuestionarioAPI } from "../../../types/models/Questionario";
+import NovaCategoriaModal from "../../../components/NovaCategoriaModal";
 import QuestaoForm from "../QuestaoForm";
-import { useModal } from "../../hooks/useModal";
+import { useModal } from "../../../hooks/useModal";
 
 function QuestionarioForm(): JSX.Element {
     const methods = useForm();

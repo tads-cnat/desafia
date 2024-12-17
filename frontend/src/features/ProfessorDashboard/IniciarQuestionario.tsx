@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import QuestionarioService from "../services/QuestionarioService";
-import { Questionario } from "../types/models/Questionario";
-import { formatarData } from "../utils/dateUtils";
+import QuestionarioService from "../../services/QuestionarioService";
+import { Questionario } from "../../types/models/Questionario";
+import { formatarData } from "../../utils/dateUtils";
 
 function IniciarQuestionario(): JSX.Element {
     const { id } = useParams<{ id: string }>();

@@ -1,4 +1,4 @@
-import ThemeChanger from "../components/ThemeChanger";
+import ThemeChanger from "../../components/ThemeChanger";
 
 function Configuracoes() {
     return (

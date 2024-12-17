@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import QuestionariosService from "../services/QuestionarioService";
-import { Questionario } from "../types/models/Questionario";
-import SkeletonLoading from "../components/SkeletonLoading";
+import QuestionariosService from "../../services/QuestionarioService";
+import { Questionario } from "../../types/models/Questionario";
+import SkeletonLoading from "../../components/SkeletonLoading";
 import { Link, useNavigate } from "react-router-dom";
 
 function MeusQuestionarios(): JSX.Element {
