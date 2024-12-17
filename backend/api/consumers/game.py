@@ -1,6 +1,8 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
-from asgiref.sync import async_to_sync
+
+from api.consumers.consumer_handlers import NicknameHandler
+from api.consumers.dispatcher import ActionDispatcher
 
 
 class GameConsumer(AsyncWebsocketConsumer):
@@ -15,6 +17,9 @@ class GameConsumer(AsyncWebsocketConsumer):
 
         await self.accept()
 
+        self.dispatcher = ActionDispatcher()
+        self.dispatcher.register_handler("set_nickname", NicknameHandler())
+
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(
             self.room_group_name,
@@ -22,23 +27,17 @@ class GameConsumer(AsyncWebsocketConsumer):
         )
 
     async def receive(self, text_data):
-        text_data_json = json.loads(text_data)
-        body = text_data_json.get('nickname', 'Mensagem vazia')
-
-        print(f"Mensagem recebida: {body}")
-
-        await self.channel_layer.group_send(
-            self.room_group_name,
-            {
-                'type': 'chat.message',
-                'message': body,
-            }
-        )
+        try:
+            data = json.loads(text_data)
+            await self.dispatcher.dispatch(self, data)
+        except json.JSONDecodeError:
+            await self.send(text_data=json.dumps({
+                "error": "Invalid data, expected JSON."
+            }))
 
     async def chat_message(self, event):
         message = event['message']
 
-        # Envia a mensagem de volta para o cliente WebSocket
         await self.send(text_data=json.dumps({
             'message': message
         }))
