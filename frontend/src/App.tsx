@@ -12,8 +12,9 @@ import QuestionarioForm from "./features/ProfessorDashboard/QuestionarioForm";
 import { ReloadProvider } from "./contexts/ReloadContext";
 import IniciarQuestionario from "./features/ProfessorDashboard/IniciarQuestionario";
 import Jogo from "./features/Jogo";
-import JuntarSe from "./features/Jogo/JuntarSe";
+import ConectarSe from "./features/Jogo/ConectarSe";
 import Dashboard from "./features/ProfessorDashboard/Dashboard";
+import PedirApelido from "./features/Jogo/PedirApelido";
 
 function App() {
     return (
@@ -27,7 +28,10 @@ function App() {
 
                         <Route element={<RequireAuth />}>
                             <Route element={<Layout />}>
-                                <Route path="/" element={<Dashboard />} />
+                                <Route
+                                    path="/dashboard"
+                                    element={<Dashboard />}
+                                />
                                 <Route
                                     path="/meus-questionarios"
                                     element={<MeusQuestionarios />}
@@ -59,8 +63,8 @@ function App() {
                             </Route>
                         </Route>
 
-                        <Route path="/jogar" element={<Jogo />} />
-                        <Route path="/jogar" element={<JuntarSe />} />
+                        <Route path="/" element={<ConectarSe />} />
+                        <Route path="/jogar" element={<PedirApelido />} />
                     </Routes>
                 </BrowserRouter>
             </ReloadProvider>

@@ -1,1 +1,1 @@
-from .game_consumer import GameConsumer
+from .game import GameConsumer
