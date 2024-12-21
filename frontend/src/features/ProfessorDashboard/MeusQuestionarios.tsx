@@ -5,7 +5,7 @@ import SkeletonLoading from "../../components/SkeletonLoading";
 import { Link, useNavigate } from "react-router-dom";
 
 function MeusQuestionarios(): JSX.Element {
-    const [questionarios, setQuestionarios] = useState<Questionario[]>();
+    const [questionarios, setQuestionarios] = useState<Questionario[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const navigate = useNavigate();
 
@@ -13,9 +13,8 @@ function MeusQuestionarios(): JSX.Element {
         setLoading(true);
         QuestionariosService.getAll()
             .then((response) => {
-                const { count, items } = response;
-                console.log(count, items);
-                setQuestionarios(items);
+                const { items } = response;
+                setQuestionarios(items as Questionario[]);
             })
             .finally(() => {
                 setLoading(false);

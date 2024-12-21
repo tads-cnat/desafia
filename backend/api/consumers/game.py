@@ -1,8 +1,9 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 
-from api.consumers.consumer_handlers import NicknameHandler
+from api.consumers.consumer_handlers import AnswerHandler, NicknameHandler
 from api.consumers.dispatcher import ActionDispatcher
+from api.models.participante import Participante
 
 
 class GameConsumer(AsyncWebsocketConsumer):
@@ -17,8 +18,11 @@ class GameConsumer(AsyncWebsocketConsumer):
 
         await self.accept()
 
+        print("Usuário logado: ", self.scope['user'])
+
         self.dispatcher = ActionDispatcher()
         self.dispatcher.register_handler("set_nickname", NicknameHandler())
+        self.dispatcher.register_handler("set_answer", AnswerHandler())
 
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(

@@ -1,21 +1,29 @@
 import { FieldValues, useForm } from "react-hook-form";
 import Input from "../../components/Input";
 import { useGameStore } from "../../store/GameStore";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
+import useAuth from "../../store/AuthStore";
 
 function PedirApelido(): JSX.Element {
     const { handleSubmit, register, control } = useForm();
-    const { setNickname, gameId } = useGameStore();
+    const { nickname, setNickname, gameId } = useGameStore();
+    const { auth } = useAuth();
     const [socketUrl, setSocketUrl] = useState<string>(
         `ws://localhost:8000/ws/game/${gameId}/`,
     );
-    const { sendJsonMessage, lastJsonMessage, readyState } =
-        useWebSocket(socketUrl);
+    const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
+        socketUrl,
+        {
+            queryParams: {
+                token: auth?.access as string,
+            },
+        },
+    );
 
     function handleApelidoSubmission(values: FieldValues) {
         setNickname(values.nickname);
-        sendJsonMessage({ nickname: values.nickname });
+        sendJsonMessage({ action: "set_nickname", nickname: values.nickname });
     }
 
     useEffect(() => {
@@ -55,6 +63,20 @@ function PedirApelido(): JSX.Element {
                         </button>
                     </div>
                 </form>
+                <div className="flex justify-end mt-2">
+                    <button
+                        className="btn btn-secondary self-end"
+                        onClick={() => {
+                            sendJsonMessage({
+                                action: "set_answer",
+                                resposta_id: 5,
+                                questao_id: 2,
+                            });
+                        }}
+                    >
+                        Enviar resposta
+                    </button>
+                </div>
             </div>
         </>
     );

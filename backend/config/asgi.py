@@ -1,21 +1,18 @@
-import config.routing
 import os
-
-from channels.auth import AuthMiddlewareStack
-from channels.routing import ProtocolTypeRouter, URLRouter
-from channels.security.websocket import AllowedHostsOriginValidator
 from django.core.asgi import get_asgi_application
+from channels.routing import ProtocolTypeRouter, URLRouter
+from channels.auth import AuthMiddlewareStack
+from django.urls import path
+from api.consumers import GameConsumer
+from api.middlewares.jwt_auth import JWTAuthMiddlewareStack
 
-from config.routing import websocket_urlpatterns
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 
-
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
-
-application = ProtocolTypeRouter(
-    {
-        "http": get_asgi_application(),
-        "websocket": AllowedHostsOriginValidator(
-            AuthMiddlewareStack(URLRouter(websocket_urlpatterns))
-        ),
-    }
-)
+application = ProtocolTypeRouter({
+    "http": get_asgi_application(),
+    "websocket": JWTAuthMiddlewareStack(
+        URLRouter([
+            path("ws/game/<str:game_id>/", GameConsumer.as_asgi()),
+        ])
+    ),
+})
