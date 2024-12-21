@@ -3,4 +3,4 @@ export interface Categoria {
     nome: string;
 }
 
-export interface CategoriaAPI extends Categoria {}
+export interface CategoriaResponse extends Categoria {}

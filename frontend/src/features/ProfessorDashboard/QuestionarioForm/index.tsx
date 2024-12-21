@@ -5,7 +5,7 @@ import EscolhaQuestoesQuestionario from "./EscolhaQuestoesQuestionario";
 import { toast } from "sonner";
 import QuestionarioService from "../../../services/QuestionarioService";
 import { useNavigate } from "react-router-dom";
-import { QuestionarioAPI } from "../../../types/models/Questionario";
+import { QuestionarioResponse } from "../../../types/models/Questionario";
 import NovaCategoriaModal from "../../../components/NovaCategoriaModal";
 import QuestaoForm from "../QuestaoForm";
 import { useModal } from "../../../hooks/useModal";
@@ -17,7 +17,7 @@ function QuestionarioForm(): JSX.Element {
     const { close } = useModal();
 
     function submitForm(data: FieldValues): void {
-        QuestionarioService.post(data as QuestionarioAPI)
+        QuestionarioService.post(data as QuestionarioResponse)
             .then((res) => {
                 console.log(res);
                 toast.success("Questionário criado com sucesso!");

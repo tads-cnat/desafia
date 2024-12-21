@@ -1,6 +1,6 @@
-import { Categoria, CategoriaAPI } from "../types/models/Categoria";
+import { Categoria, CategoriaResponse } from "../types/models/Categoria";
 import GenericService from "./GenericService";
 
-class CategoriaService extends GenericService<Categoria | CategoriaAPI> {}
+class CategoriaService extends GenericService<Categoria | CategoriaResponse> {}
 
 export default new CategoriaService("categoria");
