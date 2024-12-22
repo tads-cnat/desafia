@@ -1,16 +1,30 @@
 import { FieldValues, useForm } from "react-hook-form";
 import Input from "../../components/Input";
-import { useGameStore } from "../../store/GameStore";
 import { useNavigate } from "react-router-dom";
+import PartidaService from "../../services/PartidaService";
+import { toast } from "sonner";
+import { useGameStore } from "../../store/GameStore";
 
 function ConectarSe(): JSX.Element {
     const { handleSubmit, register, control } = useForm();
-    const { setGameId } = useGameStore();
     const navigate = useNavigate();
+    const { setGameId } = useGameStore();
 
     function handleGameIdSubmission(values: FieldValues) {
-        setGameId(values.gameId);
-        navigate("/jogar");
+        PartidaService.entrar(values.codigoAcesso)
+            .then((res) => {
+                setGameId(res.data.id);
+                navigate(`/partida`);
+            })
+            .catch((err) => {
+                setGameId("");
+                if (err.status === 400) {
+                    toast.error("Partida não encontrada.");
+                } else {
+                    toast.error("Houve um erro ao conectar a partida.");
+                }
+            })
+            .finally(() => {});
     }
 
     return (
@@ -21,7 +35,7 @@ function ConectarSe(): JSX.Element {
                     onSubmit={handleSubmit(handleGameIdSubmission)}
                 >
                     <Input
-                        {...register("gameId", { required: true })}
+                        {...register("codigoAcesso", { required: true })}
                         type="text"
                         label="Código da sala"
                         placeholder="Insira o código da sala"

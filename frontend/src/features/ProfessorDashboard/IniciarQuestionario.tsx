@@ -18,6 +18,7 @@ function IniciarQuestionario(): JSX.Element {
                     setQuestionario(response as Questionario);
                 })
                 .catch((error) => {
+                    console.error(error);
                     toast.error("Não foi possível iniciar a partida.");
                 });
         }
@@ -26,7 +27,11 @@ function IniciarQuestionario(): JSX.Element {
     function handleIniciarJogo() {
         PartidaService.post({ questionario_id: Number(id) })
             .then((res) => {
-                console.log(res);
+                navigate("/gerenciar-partida", {
+                    state: {
+                        partida: res,
+                    },
+                });
             })
             .catch((err) => {
                 console.error(err);

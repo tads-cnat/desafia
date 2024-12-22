@@ -1,46 +1,32 @@
 import { FieldValues, useForm } from "react-hook-form";
 import Input from "../../components/Input";
 import { useGameStore } from "../../store/GameStore";
-import { useEffect, useState } from "react";
-import useWebSocket, { ReadyState } from "react-use-websocket";
-import useAuth from "../../store/AuthStore";
+import { createSearchParams, useNavigate } from "react-router-dom";
+import PartidaService from "../../services/PartidaService";
+import { toast } from "sonner";
 
 function PedirApelido(): JSX.Element {
     const { handleSubmit, register, control } = useForm();
-    const { nickname, setNickname, gameId } = useGameStore();
-    const { auth } = useAuth();
-    const [socketUrl, setSocketUrl] = useState<string>(
-        `ws://localhost:8000/ws/game/${gameId}/`,
-    );
-    const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
-        socketUrl,
-        {
-            queryParams: {
-                token: auth?.access as string,
-            },
-        },
-    );
+    const { setNickname, gameId } = useGameStore();
+    const navigate = useNavigate();
 
     function handleApelidoSubmission(values: FieldValues) {
-        setNickname(values.nickname);
-        sendJsonMessage({ action: "set_nickname", nickname: values.nickname });
+        PartidaService.reservarNome(gameId as string, values.nome)
+            .then((res) => {
+                console.log(res);
+                navigate({
+                    pathname: "jogar",
+                    search: createSearchParams({
+                        ...values,
+                        gameId: gameId as string,
+                    }).toString(),
+                });
+            })
+            .catch((err) => {
+                console.error(err);
+                toast.error("Houve um erro ao reservar o nome.");
+            });
     }
-
-    useEffect(() => {
-        console.log(lastJsonMessage);
-    }, [lastJsonMessage]);
-
-    const connectionStatus = {
-        [ReadyState.CONNECTING]: "Connecting",
-        [ReadyState.OPEN]: "Open",
-        [ReadyState.CLOSING]: "Closing",
-        [ReadyState.CLOSED]: "Closed",
-        [ReadyState.UNINSTANTIATED]: "Uninstantiated",
-    }[readyState];
-
-    useEffect(() => {
-        console.log(connectionStatus);
-    }, [readyState]);
 
     return (
         <>
@@ -50,7 +36,7 @@ function PedirApelido(): JSX.Element {
                     onSubmit={handleSubmit(handleApelidoSubmission)}
                 >
                     <Input
-                        {...register("nickname", { required: true })}
+                        {...register("nome", { required: true })}
                         type="text"
                         label="Apelido"
                         placeholder="Insira seu apelido"

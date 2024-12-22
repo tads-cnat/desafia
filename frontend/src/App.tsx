@@ -11,10 +11,11 @@ import Configuracoes from "./features/ProfessorDashboard/Configuracoes";
 import QuestionarioForm from "./features/ProfessorDashboard/QuestionarioForm";
 import { ReloadProvider } from "./contexts/ReloadContext";
 import IniciarQuestionario from "./features/ProfessorDashboard/IniciarQuestionario";
-import Jogo from "./features/Jogo";
 import ConectarSe from "./features/Jogo/ConectarSe";
 import Dashboard from "./features/ProfessorDashboard/Dashboard";
 import PedirApelido from "./features/Jogo/PedirApelido";
+import GerenciarPartida from "./features/ProfessorDashboard/GerenciarPartida";
+import Jogar from "./features/Jogo/Jogar";
 
 function App() {
     return (
@@ -60,11 +61,16 @@ function App() {
                                     path="/configuracoes"
                                     element={<Configuracoes />}
                                 />
+                                <Route
+                                    path="/gerenciar-partida"
+                                    element={<GerenciarPartida />}
+                                />
                             </Route>
                         </Route>
 
                         <Route path="/" element={<ConectarSe />} />
-                        <Route path="/jogar" element={<PedirApelido />} />
+                        <Route path="/partida" element={<PedirApelido />} />
+                        <Route path="/partida/jogar" element={<Jogar />} />
                     </Routes>
                 </BrowserRouter>
             </ReloadProvider>
