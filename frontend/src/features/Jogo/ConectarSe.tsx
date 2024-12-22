@@ -13,7 +13,7 @@ function ConectarSe(): JSX.Element {
         PartidaService.entrar(values.codigoAcesso)
             .then((res) => {
                 setGameId(res.data.id);
-                navigate(`/partida`);
+                navigate(`/partida/pedir-apelido/`);
             })
             .catch((err) => {
                 setGameId("");

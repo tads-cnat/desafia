@@ -22,7 +22,7 @@ function PedirApelido(): JSX.Element {
                 setPlayerId(res.data.id as number);
                 setName(values.nome);
                 setGameId(gameId as string);
-                navigate(`jogar`);
+                navigate(`/partida/jogar`);
             })
             .catch((err) => {
                 console.error(err);

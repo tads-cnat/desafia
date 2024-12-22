@@ -37,7 +37,7 @@ class AnswerHandler(BaseHandler):
             await consumer.send(text_data=json.dumps({"error": "Resposta id is required"}))
             return
 
-        participante = consumer.scope['participante']
+        participante = consumer.participante
         escolha = await sync_to_async(Alternativa.objects.get)(id=resposta_id)
         questao = await sync_to_async(Questao.objects.get)(id=questao_id)
 
@@ -52,3 +52,23 @@ class AnswerHandler(BaseHandler):
             "message": "Answer successfully set! Wait for the results!",
             "resposta_id": resposta_id
         }))
+
+
+class ChangeStateHandler(BaseHandler):
+    async def handle(self, consumer, data):
+        state = data.get("state")
+
+        if not state:
+            await consumer.send(text_data=json.dumps({"error": "New State is required"}))
+            return
+
+        user_id = consumer.scope['user'].id
+        created_by_id = consumer.partida.created_by_id
+
+        if user_id == created_by_id:
+            await consumer.channel_layer.group_send(consumer.room_group_name, {
+                "action": {"state": state, "type": "change_state"},
+                "type": "command"
+            })
+        else:
+            await consumer.send(text_data=json.dumps({"error": "Only the creator can change the state"}))

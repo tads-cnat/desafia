@@ -69,7 +69,10 @@ function App() {
                         </Route>
 
                         <Route path="/" element={<ConectarSe />} />
-                        <Route path="/partida" element={<PedirApelido />} />
+                        <Route
+                            path="/partida/pedir-apelido"
+                            element={<PedirApelido />}
+                        />
                         <Route path="/partida/jogar" element={<Jogar />} />
                     </Routes>
                 </BrowserRouter>

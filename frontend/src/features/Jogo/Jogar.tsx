@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import { useGameStore } from "../../store/GameStore";
+import useAuth from "../../store/AuthStore";
+import { Action } from "../../types/application/Action";
 
 function Jogar(): JSX.Element {
-    const [searchParams] = useSearchParams();
+    const [state, setState] = useState<string>("waiting");
+
     const { gameId, name, playerId } = useGameStore();
+    const { auth } = useAuth();
     const [wsURL, setWsURL] = useState<string>(
         `ws://localhost:8000/ws/game/${gameId}/`,
     );
@@ -14,23 +17,16 @@ function Jogar(): JSX.Element {
         queryParams: {
             nome: name as string,
             player_id: playerId as number,
+            token: auth?.access as string,
         },
     });
 
-    const connectionStatus = {
-        [ReadyState.CONNECTING]: "Connecting",
-        [ReadyState.OPEN]: "Open",
-        [ReadyState.CLOSING]: "Closing",
-        [ReadyState.CLOSED]: "Closed",
-        [ReadyState.UNINSTANTIATED]: "Uninstantiated",
-    }[readyState];
-
     useEffect(() => {
-        console.log(connectionStatus);
-    }, [readyState]);
+        if (lastMessage) {
+            const message = JSON.parse(lastMessage?.data);
 
-    useEffect(() => {
-        console.log("lastMessage", lastMessage);
+            takeAction(message);
+        }
     }, [lastMessage]);
 
     function handleEnviarResposta() {
@@ -41,6 +37,22 @@ function Jogar(): JSX.Element {
         });
     }
 
+    function handleMudarEstadoJogo() {
+        sendJsonMessage({
+            action: "change_state",
+            state: "playing",
+        });
+    }
+
+    function takeAction(message: Action) {
+        const { type } = message;
+
+        switch (type) {
+            case "change_state":
+                setState(message.state as string);
+        }
+    }
+
     return (
         <>
             <button
@@ -49,6 +61,13 @@ function Jogar(): JSX.Element {
                 onClick={handleEnviarResposta}
             >
                 Enviar resposta mockada
+            </button>
+            <button
+                className="btn btn-primary"
+                type="button"
+                onClick={handleMudarEstadoJogo}
+            >
+                handleMudarEstadoJogo
             </button>
         </>
     );
