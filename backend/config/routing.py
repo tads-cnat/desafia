@@ -1,7 +1,7 @@
 
 
 from django.urls import path
-from api.consumers.game import GameConsumer
+from api.consumers.game_consumer import GameConsumer
 
 
 websocket_urlpatterns = [

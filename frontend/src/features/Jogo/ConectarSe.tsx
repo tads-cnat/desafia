@@ -3,12 +3,11 @@ import Input from "../../components/Input";
 import { useNavigate } from "react-router-dom";
 import PartidaService from "../../services/PartidaService";
 import { toast } from "sonner";
-import { useGameStore } from "../../store/GameStore";
+import { setGameId } from "../../store/GameStore";
 
 function ConectarSe(): JSX.Element {
     const { handleSubmit, register, control } = useForm();
     const navigate = useNavigate();
-    const { setGameId } = useGameStore();
 
     function handleGameIdSubmission(values: FieldValues) {
         PartidaService.entrar(values.codigoAcesso)
@@ -18,7 +17,7 @@ function ConectarSe(): JSX.Element {
             })
             .catch((err) => {
                 setGameId("");
-                if (err.status === 400) {
+                if (err.status === 404) {
                     toast.error("Partida não encontrada.");
                 } else {
                     toast.error("Houve um erro ao conectar a partida.");

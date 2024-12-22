@@ -1,11 +1,10 @@
 from abc import ABC, abstractmethod
 import json
 
-from api.models import participante
-from api.models import resposta
 from api.models.alternativa import Alternativa
 from api.models.questao import Questao
 from api.models.resposta import Resposta
+from asgiref.sync import sync_to_async
 
 
 class BaseHandler(ABC):
@@ -39,17 +38,15 @@ class AnswerHandler(BaseHandler):
             return
 
         participante = consumer.scope['participante']
-        escolha = Alternativa.objects.get(id=resposta_id)
-        questao = Questao.objects.get(id=questao_id)
+        escolha = await sync_to_async(Alternativa.objects.get)(id=resposta_id)
+        questao = await sync_to_async(Questao.objects.get)(id=questao_id)
 
-        resposta = Resposta.objects.create(
+        resposta = await sync_to_async(Resposta.objects.create)(
             participante=participante,
             escolha=escolha,
             questao=questao,
             pontuacao=0
         )
-
-        print(resposta)
 
         await consumer.send(text_data=json.dumps({
             "message": "Answer successfully set! Wait for the results!",

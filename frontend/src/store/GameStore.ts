@@ -2,19 +2,38 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 export interface GameStore {
-    nickname?: string;
-    setNickname: (username: string) => void;
+    name?: string;
     gameId?: string;
-    setGameId: (username: string) => void;
+    playerId?: number;
 }
 
-export const useGameStore = create<GameStore>()((set) => ({
-    nickname: undefined,
-    setNickname: (nickname: string) => {
-        set({ nickname });
-    },
-    gameId: undefined,
-    setGameId: (gameId: string) => {
-        set({ gameId });
-    },
-}));
+export const useGameStore = create<GameStore>()(
+    persist<GameStore>(
+        () => ({
+            name: undefined,
+            gameId: undefined,
+            playerId: undefined,
+        }),
+        {
+            name: "game-infos",
+        },
+    ),
+);
+
+export const setName = (name: string) => {
+    useGameStore.setState((prev) => {
+        return { ...prev, name };
+    });
+};
+
+export const setGameId = (gameId: string) => {
+    useGameStore.setState((prev) => {
+        return { ...prev, gameId };
+    });
+};
+
+export const setPlayerId = (playerId: number) => {
+    useGameStore.setState((prev) => {
+        return { ...prev, playerId };
+    });
+};

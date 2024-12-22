@@ -1,26 +1,28 @@
 import { FieldValues, useForm } from "react-hook-form";
 import Input from "../../components/Input";
-import { useGameStore } from "../../store/GameStore";
-import { createSearchParams, useNavigate } from "react-router-dom";
+import {
+    setGameId,
+    setName,
+    setPlayerId,
+    useGameStore,
+} from "../../store/GameStore";
+import { useNavigate } from "react-router-dom";
 import PartidaService from "../../services/PartidaService";
 import { toast } from "sonner";
 
 function PedirApelido(): JSX.Element {
     const { handleSubmit, register, control } = useForm();
-    const { setNickname, gameId } = useGameStore();
+    const { gameId } = useGameStore();
     const navigate = useNavigate();
 
     function handleApelidoSubmission(values: FieldValues) {
         PartidaService.reservarNome(gameId as string, values.nome)
             .then((res) => {
                 console.log(res);
-                navigate({
-                    pathname: "jogar",
-                    search: createSearchParams({
-                        ...values,
-                        gameId: gameId as string,
-                    }).toString(),
-                });
+                setPlayerId(res.data.id as number);
+                setName(values.nome);
+                setGameId(gameId as string);
+                navigate(`jogar`);
             })
             .catch((err) => {
                 console.error(err);
@@ -49,20 +51,6 @@ function PedirApelido(): JSX.Element {
                         </button>
                     </div>
                 </form>
-                <div className="flex justify-end mt-2">
-                    <button
-                        className="btn btn-secondary self-end"
-                        onClick={() => {
-                            sendJsonMessage({
-                                action: "set_answer",
-                                resposta_id: 5,
-                                questao_id: 2,
-                            });
-                        }}
-                    >
-                        Enviar resposta
-                    </button>
-                </div>
             </div>
         </>
     );
