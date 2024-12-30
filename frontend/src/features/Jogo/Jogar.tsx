@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
-import useWebSocket, { ReadyState } from "react-use-websocket";
+import useWebSocket from "react-use-websocket";
 import { useGameStore } from "../../store/GameStore";
 import useAuth from "../../store/AuthStore";
 import { Action } from "../../types/application/Action";
+import { connectionStatus } from "../../utils/connectionStatus";
+import LoadingPage from "../Others/LoadingPage";
+import { WebsocketMessage } from "../../types/application/WebsocketMessage";
 
 function Jogar(): JSX.Element {
     const [state, setState] = useState<string>("waiting");
@@ -13,21 +16,22 @@ function Jogar(): JSX.Element {
         `ws://localhost:8000/ws/game/${gameId}/`,
     );
 
-    const { sendJsonMessage, lastMessage, readyState } = useWebSocket(wsURL, {
-        queryParams: {
-            nome: name as string,
-            player_id: playerId as number,
-            token: auth?.access as string,
+    const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
+        wsURL,
+        {
+            queryParams: {
+                nome: name as string,
+                player_id: playerId as number,
+                token: auth?.access as string,
+            },
         },
-    });
+    );
 
     useEffect(() => {
-        if (lastMessage) {
-            const message = JSON.parse(lastMessage?.data);
-
-            takeAction(message);
+        if (lastJsonMessage) {
+            takeAction(lastJsonMessage as WebsocketMessage);
         }
-    }, [lastMessage]);
+    }, [lastJsonMessage]);
 
     function handleEnviarResposta() {
         sendJsonMessage({
@@ -44,15 +48,27 @@ function Jogar(): JSX.Element {
         });
     }
 
-    function takeAction(message: Action) {
-        const { type } = message;
+    function takeAction(socketMessage: WebsocketMessage) {
+        const {
+            message: { event },
+        } = socketMessage;
 
-        switch (type) {
-            case "change_state":
-                setState(message.state as string);
+        switch (event) {
+            case "game_start":
+                console.log("O JOGO TA ROLANDO AGORA!!!!");
+                break;
         }
     }
 
+    const status = connectionStatus[readyState];
+
+    if (status === "Closed") {
+        return <>Houve um erro ao conectar com o servidor</>;
+    }
+
+    if (status !== "Open") {
+        return <LoadingPage />;
+    }
     return (
         <>
             <button

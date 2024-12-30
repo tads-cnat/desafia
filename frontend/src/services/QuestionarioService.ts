@@ -1,11 +1,12 @@
 import {
     Questionario,
-    QuestionarioResponse,
+    QuestionarioPayload,
 } from "../types/models/Questionario";
 import GenericService from "./GenericService";
 
 class QuestionarioService extends GenericService<
-    Questionario | QuestionarioResponse
+    Questionario,
+    QuestionarioPayload
 > {}
 
 export default new QuestionarioService("questionario");

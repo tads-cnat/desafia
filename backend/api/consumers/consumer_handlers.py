@@ -67,8 +67,8 @@ class ChangeStateHandler(BaseHandler):
 
         if user_id == created_by_id:
             await consumer.channel_layer.group_send(consumer.room_group_name, {
-                "action": {"state": state, "type": "change_state"},
-                "type": "command"
+                "type": "broadcast_message",
+                "message": {"event": state, "player": None}
             })
         else:
             await consumer.send(text_data=json.dumps({"error": "Only the creator can change the state"}))

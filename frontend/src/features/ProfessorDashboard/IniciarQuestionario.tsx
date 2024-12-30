@@ -5,6 +5,7 @@ import { Questionario } from "../../types/models/Questionario";
 import { formatarData } from "../../utils/dateUtils";
 import PartidaService from "../../services/PartidaService";
 import { toast } from "sonner";
+import { setAccessCode, setGameId } from "../../store/GameStore";
 
 function IniciarQuestionario(): JSX.Element {
     const { id } = useParams<{ id: string }>();
@@ -15,7 +16,7 @@ function IniciarQuestionario(): JSX.Element {
         if (id) {
             QuestionarioService.get(Number(id))
                 .then((response) => {
-                    setQuestionario(response as Questionario);
+                    setQuestionario(response);
                 })
                 .catch((error) => {
                     console.error(error);
@@ -27,11 +28,10 @@ function IniciarQuestionario(): JSX.Element {
     function handleIniciarJogo() {
         PartidaService.post({ questionario_id: Number(id) })
             .then((res) => {
-                navigate("/gerenciar-partida", {
-                    state: {
-                        partida: res,
-                    },
-                });
+                const { id, codigo_acesso } = res;
+                setGameId(id);
+                setAccessCode(codigo_acesso);
+                navigate("/gerenciar-partida");
             })
             .catch((err) => {
                 console.error(err);

@@ -5,6 +5,7 @@ export interface GameStore {
     name?: string;
     gameId?: string;
     playerId?: number;
+    accessCode?: string;
 }
 
 export const useGameStore = create<GameStore>()(
@@ -13,6 +14,7 @@ export const useGameStore = create<GameStore>()(
             name: undefined,
             gameId: undefined,
             playerId: undefined,
+            accessCode: undefined,
         }),
         {
             name: "game-infos",
@@ -35,5 +37,11 @@ export const setGameId = (gameId: string) => {
 export const setPlayerId = (playerId: number) => {
     useGameStore.setState((prev) => {
         return { ...prev, playerId };
+    });
+};
+
+export const setAccessCode = (accessCode: string) => {
+    useGameStore.setState((prev) => {
+        return { ...prev, accessCode };
     });
 };

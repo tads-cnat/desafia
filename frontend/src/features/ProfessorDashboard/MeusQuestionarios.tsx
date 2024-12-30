@@ -14,7 +14,7 @@ function MeusQuestionarios(): JSX.Element {
         QuestionariosService.getAll()
             .then((response) => {
                 const { items } = response;
-                setQuestionarios(items as Questionario[]);
+                setQuestionarios(items);
             })
             .finally(() => {
                 setLoading(false);

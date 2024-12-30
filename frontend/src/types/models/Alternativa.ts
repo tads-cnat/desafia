@@ -4,4 +4,4 @@ export interface Alternativa {
     correta: boolean;
 }
 
-export interface AlternativaResponse extends Alternativa {}
+export interface AlternativaPayload extends Alternativa {}

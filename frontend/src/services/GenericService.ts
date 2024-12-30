@@ -1,7 +1,7 @@
 import { axiosPrivate } from "../api/axios";
 import { PaginationResponse } from "../types/application/PaginationResponse";
 
-class GenericService<T> {
+class GenericService<T, P> {
     serviceUrl: string = "";
 
     constructor(serviceUrl: string) {
@@ -23,7 +23,7 @@ class GenericService<T> {
         return response.data;
     }
 
-    async post(data: T): Promise<T> {
+    async post(data: P): Promise<T> {
         const response = await axiosPrivate.post<T>(
             `${this.serviceUrl}/`,
             data,
@@ -31,7 +31,7 @@ class GenericService<T> {
         return response.data;
     }
 
-    async put(id: number, data: T): Promise<T> {
+    async put(id: number, data: P): Promise<T> {
         const response = await axiosPrivate.put<T>(
             `${this.serviceUrl}/${id}/`,
             data,
@@ -39,7 +39,7 @@ class GenericService<T> {
         return response.data;
     }
 
-    async patch(id: number, data: Partial<T>): Promise<T> {
+    async patch(id: number, data: Partial<P>): Promise<T> {
         const response = await axiosPrivate.patch<T>(
             `${this.serviceUrl}/${id}/`,
             data,

@@ -11,7 +11,7 @@ export interface Questionario {
     updated_at?: Date;
 }
 
-export interface QuestionarioResponse {
+export interface QuestionarioPayload {
     id?: number;
     nome: string;
     descricao: string;

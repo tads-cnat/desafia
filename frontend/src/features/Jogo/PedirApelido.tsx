@@ -18,10 +18,8 @@ function PedirApelido(): JSX.Element {
     function handleApelidoSubmission(values: FieldValues) {
         PartidaService.reservarNome(gameId as string, values.nome)
             .then((res) => {
-                console.log(res);
                 setPlayerId(res.data.id as number);
                 setName(values.nome);
-                setGameId(gameId as string);
                 navigate(`/partida/jogar`);
             })
             .catch((err) => {

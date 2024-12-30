@@ -1,12 +1,14 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
+from django.forms import model_to_dict
 from django.shortcuts import get_object_or_404
 
 from api.consumers.consumer_handlers import AnswerHandler, ChangeStateHandler, NicknameHandler
 from api.consumers.dispatcher import ActionDispatcher
 from api.models.participante import Participante
 from urllib.parse import parse_qs
-from asgiref.sync import sync_to_async
+from asgiref.sync import sync_to_async, async_to_sync
+from channels.layers import get_channel_layer
 
 from api.models.partida import Partida
 
@@ -23,25 +25,34 @@ class GameConsumer(AsyncWebsocketConsumer):
         )
 
         # Get the player_id from the query string
-        query_params = parse_qs(self.scope.get(
-            'query_string', b'').decode('utf-8'))
+        query_params = parse_qs(
+            self.scope.get('query_string', b'').decode('utf-8')
+        )
         self.player_id = query_params.get('player_id', [None])[0]
 
-        # Get the player object from the database
-        participante = await sync_to_async(
-            Participante.objects.get)(id=self.player_id)
-        self.participante = participante
+        if self.player_id:
+            participante = await sync_to_async(
+                Participante.objects.get)(id=self.player_id)
+            self.participante = participante
 
         # Check if the player is the creator of the game
-        if self.partida.criador.id == self.player_id:
-            self.is_creator = True
-        else:
-            self.is_creator = False
+        self.is_creator = self.partida.created_by_id == self.scope['user'].id
+
+        print(self.scope['user'])
 
         await self.accept()
 
-        if self.is_creator:
-            await self.notify_creator(f"Player {self.participante} connected!")
+        if not self.is_creator:
+
+            player = {
+                "id": self.participante.id,
+                "nome": self.participante.nome,
+            }
+
+            await self.channel_layer.group_send(self.room_group_name, {
+                "type": "broadcast_message",
+                "message": {"event": "player_joined", "player": player}
+            })
 
         self.dispatcher = ActionDispatcher()
         self.dispatcher.register_handler("set_nickname", NicknameHandler())
@@ -65,14 +76,14 @@ class GameConsumer(AsyncWebsocketConsumer):
 
     async def broadcast_message(self, event):
         message = event['message']
-
         await self.send(text_data=json.dumps({
             'message': message
         }))
 
-    async def command(self, event):
-        action = event['action']
-
-        await self.send(text_data=json.dumps({
-            'action': action
-        }))
+    async def send_message_creator(self, event):
+        message = event['message']
+        if self.is_creator:
+            print("AQUI TB", message)
+            await self.send(text_data=json.dumps({
+                'message': message
+            }))

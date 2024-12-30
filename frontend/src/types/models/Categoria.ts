@@ -3,4 +3,4 @@ export interface Categoria {
     nome: string;
 }
 
-export interface CategoriaResponse extends Categoria {}
+export interface CategoriaPayload extends Categoria {}
