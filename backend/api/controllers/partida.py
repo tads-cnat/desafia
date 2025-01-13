@@ -1,13 +1,12 @@
 
 from typing import List
 import uuid
-from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
-from ninja_extra import api_controller, route
+from ninja_extra import api_controller, paginate, route, throttle
 from api.controllers.base import ModelController
 from ninja_jwt.authentication import JWTAuth
 from ninja_extra.permissions import IsAuthenticated, AllowAny
-from ninja.errors import HttpError
+from ninja_extra.schemas import NinjaPaginationResponseSchema
 
 from api.models import partida
 from api.models.participante import Participante
@@ -29,6 +28,16 @@ class PartidaController(ModelController):
     model = Partida
     SchemaOut = PartidaOut
     SchemaIn = PartidaIn
+
+    @route.get(
+        "/",
+        response=NinjaPaginationResponseSchema[SchemaOut],
+        url_name="categoria-list",
+    )
+    @paginate()
+    @throttle
+    def get_questoes(self):
+        return self.model.objects.filter(created_by=self.context.request.user)
 
     @route.post("/{id}/participante/", response={200: ParticipanteOut, 400: ErrorSchema}, url_name="participacao-create", auth=None, permissions=[AllowAny])
     def create_participante(self, id: uuid.UUID, payload: ParticipanteIn):

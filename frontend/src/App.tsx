@@ -16,6 +16,7 @@ import Dashboard from "./features/ProfessorDashboard/Dashboard";
 import PedirApelido from "./features/Jogo/PedirApelido";
 import GerenciarPartida from "./features/ProfessorDashboard/GerenciarPartida";
 import Jogar from "./features/Jogo/Jogar";
+import MinhasPartidas from "./features/ProfessorDashboard/MinhasPartidas";
 
 function App() {
     return (
@@ -64,6 +65,10 @@ function App() {
                                 <Route
                                     path="/gerenciar-partida"
                                     element={<GerenciarPartida />}
+                                />
+                                <Route
+                                    path="/minhas-partidas"
+                                    element={<MinhasPartidas />}
                                 />
                             </Route>
                         </Route>

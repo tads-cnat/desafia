@@ -55,7 +55,22 @@ function Jogar(): JSX.Element {
 
         switch (event) {
             case "game_start":
-                console.log("O JOGO TA ROLANDO AGORA!!!!");
+                console.log("Start game event received");
+                break;
+            case "next_question":
+                console.log("Next question event received");
+                break;
+            case "times_up":
+                console.log("Times up event received");
+                break;
+            case "show_result":
+                console.log("Show result event received");
+                break;
+            case "end_game":
+                console.log("End game event received");
+                break;
+            case "force_disconnect":
+                console.log("Force disconnect event received");
                 break;
         }
     }
