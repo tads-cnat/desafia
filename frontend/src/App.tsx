@@ -14,7 +14,7 @@ import IniciarQuestionario from "./features/ProfessorDashboard/IniciarQuestionar
 import ConectarSe from "./features/Jogo/ConectarSe";
 import Dashboard from "./features/ProfessorDashboard/Dashboard";
 import PedirApelido from "./features/Jogo/PedirApelido";
-import GerenciarPartida from "./features/ProfessorDashboard/GerenciarPartida";
+import IniciarPartida from "./features/ProfessorDashboard/Jogo/IniciarPartida";
 import Jogar from "./features/Jogo/Jogar";
 import MinhasPartidas from "./features/ProfessorDashboard/MinhasPartidas";
 
@@ -64,10 +64,14 @@ function App() {
                                 />
                                 <Route
                                     path="/gerenciar-partida"
-                                    element={<GerenciarPartida />}
+                                    element={<IniciarPartida />}
                                 />
                                 <Route
                                     path="/minhas-partidas"
+                                    element={<MinhasPartidas />}
+                                />
+                                <Route
+                                    path="/exibir-partida"
                                     element={<MinhasPartidas />}
                                 />
                             </Route>

@@ -53,6 +53,14 @@ class PartidaController(ModelController):
 
         return participante
 
+    @route.get("/{id}/", response={200: SchemaOut, 400: ErrorSchema}, url_name="participacao-detail")
+    def detail_partida(self, id: uuid.UUID):
+
+        partida = get_object_or_404(
+            self.model, id=id, ativa=True)
+
+        return partida
+
     @route.get("/{id}/participantes/", response={200: List[ParticipanteOut], 400: ErrorSchema}, url_name="participantes-partida-list", auth=None, permissions=[AllowAny])
     def list_partida_participantes(self, id: uuid.UUID):
 

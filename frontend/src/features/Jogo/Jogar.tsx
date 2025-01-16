@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import useWebSocket from "react-use-websocket";
 import { useGameStore } from "../../store/GameStore";
 import useAuth from "../../store/AuthStore";
-import { Action } from "../../types/application/Action";
 import { connectionStatus } from "../../utils/connectionStatus";
 import LoadingPage from "../Others/LoadingPage";
 import { WebsocketMessage } from "../../types/application/WebsocketMessage";
+import { GameState } from "../../types/models/GameState";
 
 function Jogar(): JSX.Element {
-    const [state, setState] = useState<string>("waiting");
+    const [state, setState] = useState<GameState>(GameState.WAITING);
 
     const { gameId, name, playerId } = useGameStore();
     const { auth } = useAuth();
@@ -33,20 +33,9 @@ function Jogar(): JSX.Element {
         }
     }, [lastJsonMessage]);
 
-    function handleEnviarResposta() {
-        sendJsonMessage({
-            action: "set_answer",
-            resposta_id: 1,
-            questao_id: 2,
-        });
-    }
-
-    function handleMudarEstadoJogo() {
-        sendJsonMessage({
-            action: "change_state",
-            state: "playing",
-        });
-    }
+    useEffect(() => {
+        console.log("Status", state);
+    }, [state]);
 
     function takeAction(socketMessage: WebsocketMessage) {
         const {
@@ -55,22 +44,22 @@ function Jogar(): JSX.Element {
 
         switch (event) {
             case "game_start":
-                console.log("Start game event received");
+                setState(GameState.GAME_STARTING);
                 break;
             case "next_question":
-                console.log("Next question event received");
+                setState(GameState.QUESTION_ANSWER);
                 break;
             case "times_up":
-                console.log("Times up event received");
+                setState(GameState.TIMES_UP);
                 break;
             case "show_result":
-                console.log("Show result event received");
+                setState(GameState.RESULTS_SHOWING);
                 break;
             case "end_game":
-                console.log("End game event received");
+                setState(GameState.GAME_ENDED);
                 break;
             case "force_disconnect":
-                console.log("Force disconnect event received");
+                setState(GameState.DISCONNECTED);
                 break;
         }
     }
@@ -84,24 +73,64 @@ function Jogar(): JSX.Element {
     if (status !== "Open") {
         return <LoadingPage />;
     }
-    return (
-        <>
-            <button
-                className="btn btn-primary"
-                type="button"
-                onClick={handleEnviarResposta}
-            >
-                Enviar resposta mockada
-            </button>
-            <button
-                className="btn btn-primary"
-                type="button"
-                onClick={handleMudarEstadoJogo}
-            >
-                handleMudarEstadoJogo
-            </button>
-        </>
-    );
+
+    if (state === GameState.WAITING) {
+        return (
+            <div>
+                <h1>Esperando</h1>
+            </div>
+        );
+    }
+
+    if (state === GameState.GAME_STARTING) {
+        return (
+            <div>
+                <h1>O jogo está começando!</h1>
+            </div>
+        );
+    }
+
+    if (state === GameState.QUESTION_ANSWER) {
+        return (
+            <div>
+                <h1>Responda a pergunta!</h1>
+            </div>
+        );
+    }
+
+    if (state === GameState.TIMES_UP) {
+        return (
+            <div>
+                <h1>O tempo acabou!</h1>
+            </div>
+        );
+    }
+
+    if (state === GameState.RESULTS_SHOWING) {
+        return (
+            <div>
+                <h1>Mostrando resultados!</h1>
+            </div>
+        );
+    }
+
+    if (state === GameState.GAME_ENDED) {
+        return (
+            <div>
+                <h1>O jogo terminou!</h1>
+            </div>
+        );
+    }
+
+    if (state === GameState.DISCONNECTED) {
+        return (
+            <div>
+                <h1>Você foi desconectado!</h1>
+            </div>
+        );
+    }
+
+    return <></>;
 }
 
 export default Jogar;

@@ -18,7 +18,7 @@ class GenericService<T, P> {
         return response.data;
     }
 
-    async get(id: number): Promise<T> {
+    async get(id: number | string): Promise<T> {
         const response = await axiosPrivate.get<T>(`${this.serviceUrl}/${id}/`);
         return response.data;
     }

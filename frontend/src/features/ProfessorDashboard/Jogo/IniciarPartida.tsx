@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import useWebSocket from "react-use-websocket";
-import useAuth from "../../store/AuthStore";
-import { useGameStore } from "../../store/GameStore";
-import { Participante } from "../../types/models/Participante";
-import PartidaService from "../../services/PartidaService";
-import { WebsocketMessage } from "../../types/application/WebsocketMessage";
-import { connectionStatus } from "../../utils/connectionStatus";
-import LoadingPage from "../Others/LoadingPage";
+import useAuth from "../../../store/AuthStore";
+import { useGameStore } from "../../../store/GameStore";
+import { Participante } from "../../../types/models/Participante";
+import PartidaService from "../../../services/PartidaService";
+import { WebsocketMessage } from "../../../types/application/WebsocketMessage";
+import { connectionStatus } from "../../../utils/connectionStatus";
+import LoadingPage from "../../Others/LoadingPage";
 
 function GerenciarPartida(): JSX.Element {
     const { auth } = useAuth();
@@ -15,12 +15,14 @@ function GerenciarPartida(): JSX.Element {
     const [socketUrl] = useState<string>(
         `ws://localhost:8000/ws/game/${gameId}/`,
     );
+
     const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
         socketUrl,
         {
             queryParams: {
                 token: auth?.access as string,
             },
+            share: true,
         },
     );
 
@@ -40,6 +42,14 @@ function GerenciarPartida(): JSX.Element {
         PartidaService.participantes(gameId)
             .then(({ data }) => {
                 setParticipantes(data);
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+
+        PartidaService.get(gameId)
+            .then((res) => {
+                console.log(res);
             })
             .catch((err) => {
                 console.error(err);

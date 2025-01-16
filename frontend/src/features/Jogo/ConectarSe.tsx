@@ -1,6 +1,6 @@
 import { FieldValues, useForm } from "react-hook-form";
 import Input from "../../components/Input";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PartidaService from "../../services/PartidaService";
 import { toast } from "sonner";
 import { setGameId } from "../../store/GameStore";
@@ -28,7 +28,7 @@ function ConectarSe(): JSX.Element {
 
     return (
         <>
-            <div className="w-screen h-screen flex flex-col m-auto justify-center items-center">
+            <div className="w-screen h-screen flex flex-col justify-center items-center relative">
                 <form
                     className="min-w-sm"
                     onSubmit={handleSubmit(handleGameIdSubmission)}
@@ -47,6 +47,12 @@ function ConectarSe(): JSX.Element {
                         </button>
                     </div>
                 </form>
+                <Link
+                    to="/login"
+                    className="absolute bottom-4 text-sm text-blue-600 hover:underline"
+                >
+                    Fazer login
+                </Link>
             </div>
         </>
     );
