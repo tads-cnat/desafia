@@ -17,6 +17,7 @@ import PedirApelido from "./features/Jogo/PedirApelido";
 import IniciarPartida from "./features/ProfessorDashboard/Jogo/IniciarPartida";
 import Jogar from "./features/Jogo/Jogar";
 import MinhasPartidas from "./features/ProfessorDashboard/MinhasPartidas";
+import { AppRoutes } from "./utils/appRoutes";
 
 function App() {
     return (
@@ -26,63 +27,63 @@ function App() {
                 <BrowserRouter>
                     <Routes>
                         {/* Rotas abertas para todos */}
-                        <Route path="/login" element={<Login />} />
+                        <Route path={AppRoutes.LOGIN} element={<Login />} />
 
                         <Route element={<RequireAuth />}>
                             <Route element={<Layout />}>
                                 <Route
-                                    path="/dashboard"
+                                    path={AppRoutes.DASHBOARD}
                                     element={<Dashboard />}
                                 />
                                 <Route
-                                    path="/meus-questionarios"
+                                    path={AppRoutes.MEUS_QUESTIONARIOS}
                                     element={<MeusQuestionarios />}
                                 />
                                 <Route
-                                    path="/minhas-questoes"
+                                    path={AppRoutes.MINHAS_QUESTIONARIOS}
                                     element={<MinhasQuestoes />}
                                 />
                                 <Route
-                                    path="/questao/:id/"
+                                    path={AppRoutes.DETALHAR_QUESTAO}
                                     element={<QuestaoForm />}
                                 />
                                 <Route
-                                    path="/novo-questionario"
+                                    path={AppRoutes.NOVO_QUESTIONARIO}
                                     element={<QuestionarioForm />}
                                 />
                                 <Route
-                                    path="/questionario/:id"
+                                    path={AppRoutes.DETALHAR_QUSETIONARIO}
                                     element={<IniciarQuestionario />}
                                 />
                                 <Route
-                                    path="/nova-questao"
+                                    path={AppRoutes.NOVA_QUESTAO}
                                     element={<QuestaoForm />}
                                 />
                                 <Route
-                                    path="/configuracoes"
+                                    path={AppRoutes.CONFIGURACOES}
                                     element={<Configuracoes />}
                                 />
                                 <Route
-                                    path="/gerenciar-partida"
+                                    path={AppRoutes.GERENCIAR_PARTIDA}
                                     element={<IniciarPartida />}
                                 />
                                 <Route
-                                    path="/minhas-partidas"
+                                    path={AppRoutes.MINHAS_PARTIDAS}
                                     element={<MinhasPartidas />}
                                 />
                                 <Route
-                                    path="/exibir-partida"
+                                    path={AppRoutes.EXIBIR_PARTIDA}
                                     element={<MinhasPartidas />}
                                 />
                             </Route>
                         </Route>
 
-                        <Route path="/" element={<ConectarSe />} />
+                        <Route path={AppRoutes.HOME} element={<ConectarSe />} />
                         <Route
-                            path="/partida/pedir-apelido"
+                            path={AppRoutes.PEDIR_APELIDO}
                             element={<PedirApelido />}
                         />
-                        <Route path="/partida/jogar" element={<Jogar />} />
+                        <Route path={AppRoutes.JOGAR} element={<Jogar />} />
                     </Routes>
                 </BrowserRouter>
             </ReloadProvider>
