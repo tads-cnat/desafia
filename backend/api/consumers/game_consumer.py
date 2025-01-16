@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404
 
 from api.consumers.consumer_handlers import AnswerHandler, ChangeStateHandler, NicknameHandler
 from api.consumers.dispatcher import ActionDispatcher
+from api.enums import GameState
 from api.models.participante import Participante
 from urllib.parse import parse_qs
 from asgiref.sync import sync_to_async, async_to_sync
@@ -51,7 +52,7 @@ class GameConsumer(AsyncWebsocketConsumer):
 
             await self.channel_layer.group_send(self.room_group_name, {
                 "type": "broadcast_message",
-                "message": {"event": "player_joined", "player": player}
+                "message": {"event": GameState.PLAYER_JOINED, "player": player}
             })
 
         self.dispatcher = ActionDispatcher()

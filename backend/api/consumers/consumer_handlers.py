@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 import json
 
+from api.enums import is_valid_game_state
 from api.models.alternativa import Alternativa
 from api.models.questao import Questao
 from api.models.resposta import Resposta
@@ -60,6 +61,10 @@ class ChangeStateHandler(BaseHandler):
 
         if not state:
             await consumer.send(text_data=json.dumps({"error": "New State is required"}))
+            return
+
+        if not is_valid_game_state(state):
+            await consumer.send(text_data=json.dumps({"error": f'"{state}" is not a valid state'}))
             return
 
         user_id = consumer.scope['user'].id
