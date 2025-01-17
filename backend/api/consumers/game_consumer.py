@@ -52,7 +52,7 @@ class GameConsumer(AsyncWebsocketConsumer):
 
             await self.channel_layer.group_send(self.room_group_name, {
                 "type": "broadcast_message",
-                "message": {"event": GameState.PLAYER_JOINED, "player": player}
+                "message": {"event": GameState.PLAYER_JOINED.value, "player": player}
             })
 
         self.dispatcher = ActionDispatcher()

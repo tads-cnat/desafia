@@ -8,7 +8,7 @@ import { WebsocketMessage } from "../../types/application/WebsocketMessage";
 import { GameState } from "../../types/models/GameState";
 
 function Jogar(): JSX.Element {
-    const [state, setState] = useState<GameState>(GameState.WAITING);
+    const [gameState, setGameState] = useState<GameState>(GameState.WAITING);
 
     const { gameId, name, playerId } = useGameStore();
     const { auth } = useAuth();
@@ -34,8 +34,8 @@ function Jogar(): JSX.Element {
     }, [lastJsonMessage]);
 
     useEffect(() => {
-        console.log("Status", state);
-    }, [state]);
+        console.log("Status", gameState);
+    }, [gameState]);
 
     function takeAction(socketMessage: WebsocketMessage) {
         const {
@@ -43,23 +43,8 @@ function Jogar(): JSX.Element {
         } = socketMessage;
 
         switch (event) {
-            case "game_start":
-                setState(GameState.GAME_STARTING);
-                break;
-            case "next_question":
-                setState(GameState.QUESTION_ANSWER);
-                break;
-            case "times_up":
-                setState(GameState.TIMES_UP);
-                break;
-            case "show_result":
-                setState(GameState.RESULTS_SHOWING);
-                break;
-            case "end_game":
-                setState(GameState.GAME_ENDED);
-                break;
-            case "force_disconnect":
-                setState(GameState.DISCONNECTED);
+            default:
+                setGameState(event);
                 break;
         }
     }
@@ -74,7 +59,7 @@ function Jogar(): JSX.Element {
         return <LoadingPage />;
     }
 
-    if (state === GameState.WAITING) {
+    if (gameState === GameState.WAITING) {
         return (
             <div>
                 <h1>Esperando</h1>
@@ -82,7 +67,7 @@ function Jogar(): JSX.Element {
         );
     }
 
-    if (state === GameState.GAME_STARTING) {
+    if (gameState === GameState.GAME_STARTING) {
         return (
             <div>
                 <h1>O jogo está começando!</h1>
@@ -90,7 +75,7 @@ function Jogar(): JSX.Element {
         );
     }
 
-    if (state === GameState.QUESTION_ANSWER) {
+    if (gameState === GameState.QUESTION_ANSWER) {
         return (
             <div>
                 <h1>Responda a pergunta!</h1>
@@ -98,7 +83,7 @@ function Jogar(): JSX.Element {
         );
     }
 
-    if (state === GameState.TIMES_UP) {
+    if (gameState === GameState.TIMES_UP) {
         return (
             <div>
                 <h1>O tempo acabou!</h1>
@@ -106,7 +91,7 @@ function Jogar(): JSX.Element {
         );
     }
 
-    if (state === GameState.RESULTS_SHOWING) {
+    if (gameState === GameState.RESULTS_SHOWING) {
         return (
             <div>
                 <h1>Mostrando resultados!</h1>
@@ -114,7 +99,7 @@ function Jogar(): JSX.Element {
         );
     }
 
-    if (state === GameState.GAME_ENDED) {
+    if (gameState === GameState.GAME_ENDED) {
         return (
             <div>
                 <h1>O jogo terminou!</h1>
@@ -122,7 +107,7 @@ function Jogar(): JSX.Element {
         );
     }
 
-    if (state === GameState.DISCONNECTED) {
+    if (gameState === GameState.DISCONNECTED) {
         return (
             <div>
                 <h1>Você foi desconectado!</h1>

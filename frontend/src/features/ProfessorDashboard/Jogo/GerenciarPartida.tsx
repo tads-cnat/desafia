@@ -13,6 +13,7 @@ import Countdown from "./Countdown";
 import { toast } from "sonner";
 import ExibirQuestao from "./ExibirQuestao";
 import { Questionario } from "../../../types/models/Questionario";
+import MostrarResultados from "./MostrarResultados";
 
 function GerenciarPartida(): JSX.Element {
     const { auth } = useAuth();
@@ -121,7 +122,21 @@ function GerenciarPartida(): JSX.Element {
                 onZero={() => {
                     sendAction(GameState.TIMES_UP);
                 }}
+                onNextQuestion={() => {
+                    setQuestaoAtual((prev) => prev + 1);
+                    sendAction(GameState.RESULTS_SHOWING);
+                }}
                 state={gameState}
+            />
+        );
+    }
+
+    if (gameState === GameState.RESULTS_SHOWING) {
+        return (
+            <MostrarResultados
+                onNextQuestion={() => {
+                    sendAction(GameState.NEXT_QUESTION);
+                }}
             />
         );
     }
