@@ -11,8 +11,8 @@ function Countdown({ counter, onZero }: CountdownProps): JSX.Element {
 
     useEffect(() => {
         if (triggered) return;
-
-        if (currentCounter > 0) {
+        
+        if (currentCounter > -1) {
             const interval = setInterval(() => {
                 setCurrentCounter((prev) => prev - 1);
             }, 1000);
