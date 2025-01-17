@@ -3,12 +3,12 @@ import { useState } from "react";
 import InformacoesBasicasQuestionario from "./InformacoesBasicasQuestionario";
 import EscolhaQuestoesQuestionario from "./EscolhaQuestoesQuestionario";
 import { toast } from "sonner";
-import QuestionarioService from "../../services/QuestionarioService";
+import QuestionarioService from "../../../services/QuestionarioService";
 import { useNavigate } from "react-router-dom";
-import { QuestionarioAPI } from "../../types/models/Questionario";
-import NovaCategoriaModal from "../../components/NovaCategoriaModal";
+import { QuestionarioPayload } from "../../../types/models/Questionario";
+import NovaCategoriaModal from "../../../components/NovaCategoriaModal";
 import QuestaoForm from "../QuestaoForm";
-import { useModal } from "../../hooks/useModal";
+import { useModal } from "../../../hooks/useModal";
 
 function QuestionarioForm(): JSX.Element {
     const methods = useForm();
@@ -17,7 +17,7 @@ function QuestionarioForm(): JSX.Element {
     const { close } = useModal();
 
     function submitForm(data: FieldValues): void {
-        QuestionarioService.post(data as QuestionarioAPI)
+        QuestionarioService.post(data as QuestionarioPayload)
             .then((res) => {
                 console.log(res);
                 toast.success("Questionário criado com sucesso!");

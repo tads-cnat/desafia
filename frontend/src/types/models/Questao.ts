@@ -8,7 +8,7 @@ export interface Questao {
     updated_at?: Date;
 }
 
-export interface QuestaoAPI {
+export interface QuestaoPayload {
     id?: number;
     enunciado: string;
     alternativas_ids?: number[];

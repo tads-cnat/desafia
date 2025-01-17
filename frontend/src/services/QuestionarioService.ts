@@ -1,8 +1,12 @@
-import { Questionario, QuestionarioAPI } from "../types/models/Questionario";
+import {
+    Questionario,
+    QuestionarioPayload,
+} from "../types/models/Questionario";
 import GenericService from "./GenericService";
 
 class QuestionarioService extends GenericService<
-    Questionario | QuestionarioAPI
+    Questionario,
+    QuestionarioPayload
 > {}
 
 export default new QuestionarioService("questionario");

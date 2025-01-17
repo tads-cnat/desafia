@@ -1,10 +1,10 @@
 import { useFormContext } from "react-hook-form";
-import Input from "../../components/Input";
+import Input from "../../../components/Input";
 import { useEffect, useState } from "react";
-import CategoriaService from "../../services/CategoriaService";
-import { Categoria } from "../../types/models/Categoria";
+import CategoriaService from "../../../services/CategoriaService";
+import { Categoria } from "../../../types/models/Categoria";
 import { toast } from "sonner";
-import { useReload } from "../../hooks/useReload";
+import { useReload } from "../../../hooks/useReload";
 
 function InformacoesBasicasQuestionario(): JSX.Element {
     const { register, control } = useFormContext();

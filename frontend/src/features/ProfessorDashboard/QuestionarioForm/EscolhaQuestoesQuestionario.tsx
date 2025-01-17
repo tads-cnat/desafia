@@ -1,9 +1,9 @@
 import { useFormContext } from "react-hook-form";
 import { useEffect, useState } from "react";
-import { Questao } from "../../types/models/Questao";
-import QuestaoService from "../../services/QuestaoService";
-import Pagination from "../../components/Pagination";
-import { PaginationParams } from "../../types/application/Pagination";
+import { Questao } from "../../../types/models/Questao";
+import QuestaoService from "../../../services/QuestaoService";
+import Pagination from "../../../components/Pagination";
+import { PaginationParams } from "../../../types/application/Pagination";
 
 function EscolhaQuestoesQuestionario(): JSX.Element {
     const { register, control, setValue } = useFormContext();

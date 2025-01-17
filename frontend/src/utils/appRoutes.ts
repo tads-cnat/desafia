@@ -1,0 +1,17 @@
+export enum AppRoutes {
+    HOME = "/",
+    LOGIN = "/login",
+    DASHBOARD = "/dashboard",
+    MEUS_QUESTIONARIOS = "/meus-questionarios",
+    MINHAS_QUESTIONARIOS = "/minhas-questoes",
+    DETALHAR_QUESTAO = "/questao/:id/",
+    NOVO_QUESTIONARIO = "/novo-questionario",
+    DETALHAR_QUSETIONARIO = "/questionario/:id",
+    NOVA_QUESTAO = "/nova-questao",
+    CONFIGURACOES = "/configuracoes",
+    GERENCIAR_PARTIDA = "/gerenciar-partida",
+    MINHAS_PARTIDAS = "/minhas-partidas",
+    EXIBIR_PARTIDA = "/exibir-partida",
+    PEDIR_APELIDO = "/partida/pedir-apelido",
+    JOGAR = "/partida/jogar",
+}

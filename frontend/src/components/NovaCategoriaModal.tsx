@@ -3,7 +3,7 @@ import Input from "./Input";
 import { useState } from "react";
 import CategoriaService from "../services/CategoriaService";
 import { toast } from "sonner";
-import { CategoriaAPI } from "../types/models/Categoria";
+import { CategoriaPayload } from "../types/models/Categoria";
 import { useReload } from "../hooks/useReload";
 import { useModal } from "../hooks/useModal";
 
@@ -15,7 +15,7 @@ function NovaCategoriaModal(): JSX.Element {
 
     function cadastrarCategoria(data: FieldValues) {
         setLoading(true);
-        CategoriaService.post(data as CategoriaAPI)
+        CategoriaService.post(data as CategoriaPayload)
             .then((res) => {
                 console.log(res);
                 toast.success("Categoria cadastrada com sucesso!");

@@ -1,11 +1,11 @@
 import { FieldValues, useFieldArray, useForm } from "react-hook-form";
-import Input from "../components/Input";
-import { Questao } from "../types/models/Questao";
+import Input from "../../components/Input";
+import { Questao } from "../../types/models/Questao";
 import { useEffect, useState } from "react";
-import QuestaoService from "../services/QuestaoService";
+import QuestaoService from "../../services/QuestaoService";
 import { toast } from "sonner";
 import { useNavigate, useParams } from "react-router-dom";
-import LoadingPage from "./LoadingPage";
+import LoadingPage from "../Others/LoadingPage";
 
 interface QuestaoFormProps {
     redirect?: boolean;

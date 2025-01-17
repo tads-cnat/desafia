@@ -9,5 +9,3 @@ class Participante(Common):
     pontuacao_total = models.IntegerField(null=True, blank=True)
     partida = models.ForeignKey(
         Partida, on_delete=models.SET_NULL, null=True, blank=True)
-    user = models.ForeignKey(
-        Usuario, blank=True, null=True, on_delete=models.SET_NULL, related_name="jogador")

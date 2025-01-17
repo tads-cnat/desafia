@@ -1,10 +1,11 @@
 import { FieldValues, useForm } from "react-hook-form";
-import Input from "../components/Input";
-import AuthService from "../services/AuthService";
-import useAuth from "../store/AuthStore";
+import Input from "../../components/Input";
+import AuthService from "../../services/AuthService";
+import useAuth from "../../store/AuthStore";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
 import { toast } from "sonner";
+import { useState } from "react";
 
 interface LoginForm {
     username?: string;
@@ -14,12 +15,14 @@ interface LoginForm {
 function Login(): JSX.Element {
     const { login } = useAuth();
     const { register, handleSubmit, control } = useForm<LoginForm>();
+    const [loading, setLoading] = useState<boolean>(false);
 
     const navigate = useNavigate();
     const location = useLocation();
-    const from = location.state?.from?.pathname || "/";
+    const from = location.state?.from?.pathname || "/dashboard";
 
     async function handleLoginSubmission(data: FieldValues) {
+        setLoading(true);
         const { username, password } = data;
 
         try {
@@ -30,6 +33,8 @@ function Login(): JSX.Element {
         } catch (err) {
             handleError(err as AxiosError);
             console.error(err);
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -62,7 +67,13 @@ function Login(): JSX.Element {
                 />
 
                 <div className="flex justify-end mt-2">
-                    <button className="btn btn-primary self-end">Entrar</button>
+                    <button className="btn btn-primary self-end">
+                        {loading ? (
+                            <span className="loading loading-spinner loading-xs" />
+                        ) : (
+                            <>Entrar</>
+                        )}
+                    </button>
                 </div>
             </form>
         </div>

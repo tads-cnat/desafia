@@ -46,6 +46,11 @@ function Drawer(props: DrawerProps): JSX.Element {
                             </Link>
                         </li>
                         <li>
+                            <Link to="/minhas-partidas">
+                                [DEBUG] Minhas Partidas
+                            </Link>
+                        </li>
+                        <li>
                             <Link to="/configuracoes">Configurações</Link>
                         </li>
                     </div>

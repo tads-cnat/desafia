@@ -12,6 +12,5 @@ class Resposta(Common):
     participante = models.ForeignKey(
         Participante, on_delete=models.SET_NULL, null=True, blank=True)
     questao = models.ForeignKey(
-        Questao, on_delete=models.SET_NULL, null=True, blank=True)
-
-    # escolha = models.ForeignKey(Alternativa)
+        Questao, on_delete=models.CASCADE, null=True, blank=True)
+    escolha = models.ForeignKey(Alternativa, on_delete=models.CASCADE)

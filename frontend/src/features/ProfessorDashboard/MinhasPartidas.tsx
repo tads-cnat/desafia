@@ -1,21 +1,23 @@
 import { useEffect, useState } from "react";
-import QuestionariosService from "../services/QuestionarioService";
-import { Questionario } from "../types/models/Questionario";
-import SkeletonLoading from "../components/SkeletonLoading";
+import { Questionario } from "../../types/models/Questionario";
+import SkeletonLoading from "../../components/SkeletonLoading";
 import { Link, useNavigate } from "react-router-dom";
+import { Partida } from "../../types/models/Partida";
+import PartidaService from "../../services/PartidaService";
+import { setAccessCode, setGameId } from "../../store/GameStore";
 
-function MeusQuestionarios(): JSX.Element {
-    const [questionarios, setQuestionarios] = useState<Questionario[]>();
+function MinhasPartidas(): JSX.Element {
     const [loading, setLoading] = useState<boolean>(false);
     const navigate = useNavigate();
+    const [partidas, setPartidas] = useState<Partida[]>();
 
     useEffect(() => {
         setLoading(true);
-        QuestionariosService.getAll()
+        PartidaService.getAll()
             .then((response) => {
-                const { count, items } = response;
-                console.log(count, items);
-                setQuestionarios(items);
+                const { items } = response;
+                console.log(items);
+                setPartidas(items);
             })
             .finally(() => {
                 setLoading(false);
@@ -24,38 +26,39 @@ function MeusQuestionarios(): JSX.Element {
 
     return (
         <>
-            <div className="flex justify-between">
-                <h1 className="text-2xl ml-4">Meus questionários</h1>
-                <Link to="/novo-questionario" className="btn">
-                    <i className="fa-solid fa-plus" /> Novo Questionário
-                </Link>
-            </div>
+            <h1 className="text-2xl ml-4">Minhas Partidas</h1>
             {loading ? (
                 <SkeletonLoading count={5} />
             ) : (
                 <table className="table">
                     <thead>
                         <tr>
-                            <th>Título do questionario</th>
-                            <th>Número de questões</th>
-                            <th>Categoria</th>
+                            <th>Identificador</th>
+                            <th>Ativa</th>
+                            <th>Código de Acesso</th>
                             <th />
                         </tr>
                     </thead>
                     <tbody>
-                        {questionarios?.map((questionario) => {
+                        {partidas?.map((partida) => {
                             return (
-                                <tr key={questionario.id} className="hover">
-                                    <td>{questionario.nome}</td>
-                                    <td>{questionario.questoes.length}</td>
-                                    <td>{questionario.categoria.nome}</td>
+                                <tr key={partida.id} className="hover">
+                                    <td>{partida.id}</td>
+                                    <td>
+                                        {partida.ativa ? "Ativa" : "Finalizada"}
+                                    </td>
+                                    <td>{partida.codigo_acesso}</td>
                                     <td>
                                         <div className="grid grid-cols-1">
                                             <button
                                                 className="btn btn-sm"
                                                 onClick={() => {
+                                                    setGameId(partida.id);
+                                                    setAccessCode(
+                                                        partida.codigo_acesso,
+                                                    );
                                                     navigate(
-                                                        `/questionario/${questionario.id}`,
+                                                        "/gerenciar-partida",
                                                     );
                                                 }}
                                             >
@@ -73,4 +76,4 @@ function MeusQuestionarios(): JSX.Element {
     );
 }
 
-export default MeusQuestionarios;
+export default MinhasPartidas;

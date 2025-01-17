@@ -1,4 +1,4 @@
-import useAuth from "../store/AuthStore";
+import useAuth from "../../store/AuthStore";
 
 function Dashboard() {
     const { logout } = useAuth();
