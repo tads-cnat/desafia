@@ -1,31 +1,26 @@
-volumes:
-  desafia_postgres_local: {}
+version: "3.9"
 
 services:
-  api:
-    container_name: desafia-api
-    build:
-      context: .
-    command: sh -c "python3 manage.py runserver 0.0.0.0:8000"
-    ports:
-      - "8000:8000"
-    depends_on:
-      - postgres
-    environment:
-      POSTGRES_USER: desafia
-      POSTGRES_PASSWORD: desafia-password
-      POSTGRES_DB: desafiadb
-      POSTGRES_HOST: desafia-db
-      POSTGRES_PORT: 5432
-
   postgres:
-    container_name: desafia-db
-    image: postgres:16
+    image: postgres
+    container_name: desafia_postgres
     environment:
       POSTGRES_USER: desafia
       POSTGRES_PASSWORD: desafia-password
       POSTGRES_DB: desafiadb
-    volumes:
-      - desafia_postgres_local:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    networks:
+      - desafia_network
+
+  redis:
+    image: redis
+    container_name: desafia_redis
+    ports:
+      - "6379:6379"
+    networks:
+      - desafia_network
+
+networks:
+  desafia_network:
+    driver: bridge
