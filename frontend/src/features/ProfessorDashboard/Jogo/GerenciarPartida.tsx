@@ -7,14 +7,23 @@ import PartidaService from "../../../services/PartidaService";
 import { WebsocketMessage } from "../../../types/application/WebsocketMessage";
 import { connectionStatus } from "../../../utils/connectionStatus";
 import LoadingPage from "../../Others/LoadingPage";
+import { GameState } from "../../../types/models/GameState";
+import { GameAction } from "../../../types/application/GameAction";
+import Countdown from "./Countdown";
+import { toast } from "sonner";
+import ExibirQuestao from "./ExibirQuestao";
+import { Questionario } from "../../../types/models/Questionario";
 
 function GerenciarPartida(): JSX.Element {
     const { auth } = useAuth();
     const { gameId, accessCode } = useGameStore();
     const [participantes, setParticipantes] = useState<Participante[]>([]);
+    const [questionario, setQuestionario] = useState<Questionario>();
+    const [questaoAtual, setQuestaoAtual] = useState<number>(0);
     const [socketUrl] = useState<string>(
         `ws://localhost:8000/ws/game/${gameId}/`,
     );
+    const [gameState, setGameState] = useState<GameState>(GameState.WAITING);
 
     const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
         socketUrl,
@@ -34,10 +43,6 @@ function GerenciarPartida(): JSX.Element {
     }, [lastJsonMessage]);
 
     useEffect(() => {
-        console.log("Status", status);
-    }, [status]);
-
-    useEffect(() => {
         if (!gameId) return;
         PartidaService.participantes(gameId)
             .then(({ data }) => {
@@ -49,6 +54,8 @@ function GerenciarPartida(): JSX.Element {
 
         PartidaService.get(gameId)
             .then((res) => {
+                const { questionario } = res;
+                setQuestionario(questionario);
                 console.log(res);
             })
             .catch((err) => {
@@ -57,28 +64,34 @@ function GerenciarPartida(): JSX.Element {
     }, []);
 
     function takeAction(response: WebsocketMessage) {
+        if (response.error) {
+            toast.error(response.error);
+            return;
+        }
         const {
             message: { event, player },
         } = response;
 
         switch (event) {
-            case "player_joined":
+            case GameState.PLAYER_JOINED:
                 setParticipantes((prev) => {
                     const alreadyExists = prev.some(
                         (item) => item.id === player.id,
                     );
                     if (alreadyExists) return prev;
-
                     return [...prev, player];
                 });
+                break;
+            default:
+                setGameState(event);
                 break;
         }
     }
 
-    function handleIniciarJogo() {
+    function sendAction(state: GameState) {
         sendJsonMessage({
-            action: "change_state",
-            state: "game_start",
+            action: GameAction.CHANGE_STATE,
+            state,
         });
     }
 
@@ -90,13 +103,41 @@ function GerenciarPartida(): JSX.Element {
         return <LoadingPage />;
     }
 
+    if (gameState === GameState.GAME_STARTING) {
+        return (
+            <div className="flex justify-center items-center h-screen">
+                <Countdown
+                    counter={5}
+                    onZero={() => sendAction(GameState.NEXT_QUESTION)}
+                />
+            </div>
+        );
+    }
+
+    if ([GameState.NEXT_QUESTION, GameState.TIMES_UP].includes(gameState)) {
+        return (
+            <ExibirQuestao
+                questao={questionario?.questoes[questaoAtual]}
+                onZero={() => {
+                    sendAction(GameState.TIMES_UP);
+                }}
+                state={gameState}
+            />
+        );
+    }
+
     return (
         <div className="my-5 mx-4 grid grid-cols-2 gap-5">
             <div className="flex justify-between col-span-2">
                 <h1 className="text-5xl text-center col-span-2 font-bold">
                     {accessCode}
                 </h1>
-                <button className="btn btn-primary" onClick={handleIniciarJogo}>
+                <button
+                    className="btn btn-primary"
+                    onClick={() => {
+                        sendAction(GameState.GAME_STARTING);
+                    }}
+                >
                     <i className="fa-solid fa-play" />
                     Iniciar Jogo
                 </button>

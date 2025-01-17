@@ -14,10 +14,10 @@ import IniciarQuestionario from "./features/ProfessorDashboard/IniciarQuestionar
 import ConectarSe from "./features/Jogo/ConectarSe";
 import Dashboard from "./features/ProfessorDashboard/Dashboard";
 import PedirApelido from "./features/Jogo/PedirApelido";
-import IniciarPartida from "./features/ProfessorDashboard/Jogo/IniciarPartida";
 import Jogar from "./features/Jogo/Jogar";
 import MinhasPartidas from "./features/ProfessorDashboard/MinhasPartidas";
 import { AppRoutes } from "./utils/appRoutes";
+import GerenciarPartida from "./features/ProfessorDashboard/Jogo/GerenciarPartida";
 
 function App() {
     return (
@@ -63,10 +63,7 @@ function App() {
                                     path={AppRoutes.CONFIGURACOES}
                                     element={<Configuracoes />}
                                 />
-                                <Route
-                                    path={AppRoutes.GERENCIAR_PARTIDA}
-                                    element={<IniciarPartida />}
-                                />
+
                                 <Route
                                     path={AppRoutes.MINHAS_PARTIDAS}
                                     element={<MinhasPartidas />}
@@ -76,6 +73,10 @@ function App() {
                                     element={<MinhasPartidas />}
                                 />
                             </Route>
+                            <Route
+                                path={AppRoutes.GERENCIAR_PARTIDA}
+                                element={<GerenciarPartida />}
+                            />
                         </Route>
 
                         <Route path={AppRoutes.HOME} element={<ConectarSe />} />

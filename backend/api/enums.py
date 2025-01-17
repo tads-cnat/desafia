@@ -10,6 +10,7 @@ class GameState(Enum):
     GAME_ENDED = "game_ended"
     DISCONNECTED = "disconnected"
     PLAYER_JOINED = "player_joined"
+    NEXT_QUESTION = "next_question"
 
 
 def is_valid_game_state(value):

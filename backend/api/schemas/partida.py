@@ -10,6 +10,6 @@ class PartidaIn(Schema):
 
 class PartidaOut(Schema):
     id: uuid.UUID
-    # questionario: QuestionarioOut
+    questionario: QuestionarioOut
     codigo_acesso: str
     ativa: bool

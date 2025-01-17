@@ -1,29 +1,66 @@
-import { useState } from "react";
-import { useGameStore } from "../../../store/GameStore";
-import useWebSocket from "react-use-websocket";
-import useAuth from "../../../store/AuthStore";
+import { GameState } from "../../../types/models/GameState";
+import { Questao } from "../../../types/models/Questao";
+import Countdown from "./Countdown";
 
-function ExibirQuestao(): JSX.Element {
-    const { gameId, name, playerId } = useGameStore();
-    const { auth } = useAuth();
+interface ExibirQuestaoProps {
+    questao?: Questao;
+    onZero: () => void;
+    state: GameState;
+}
 
-    const [wsURL] = useState<string>(`ws://localhost:8000/ws/game/${gameId}/`);
+function ExibirQuestao({
+    questao,
+    onZero,
+    state,
+}: ExibirQuestaoProps): JSX.Element {
+    const alternativaColor: Record<number, string> = {
+        0: "bg-success",
+        1: "bg-warning",
+        2: "bg-error",
+        3: "bg-info",
+    };
 
-    const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
-        wsURL,
-        {
-            queryParams: {
-                nome: name as string,
-                player_id: playerId as number,
-                token: auth?.access as string,
-            },
-        },
-    );
+    const { alternativas } = questao || {};
+
+    const alternativasArray = alternativas?.map((alternativa, index) => {
+        return { ...alternativa, color: alternativaColor[index] };
+    });
+
+    console.log(state);
 
     return (
-        <div>
-            <h1>Exibir Questão</h1>
-        </div>
+        <>
+            <div className="flex flex-col justify-around min-h-screen items-center">
+                <div className="dark:bg-neutral-900/80 p-8 w-full">
+                    <h1 className="text-6xl text-center font-bold dark:text-neutral-50 text-neutral-900">
+                        {questao?.enunciado}
+                        {"   "}
+                        <Countdown counter={10} onZero={onZero} />
+                    </h1>
+                </div>
+                <div className="hidden .bg-warning/20 .bg-info/20 .bg-success/20 .bg-error/20" />
+
+                <div className="grid">
+                    <div className="grid grid-cols-2 gap-2 ">
+                        {alternativasArray?.map((alternativa, index) => (
+                            <div
+                                key={index}
+                                className={
+                                    alternativa.color +
+                                    " p-10 text-4xl font-semibold rounded-xl dark:text-neutral-50 " +
+                                    (state === GameState.TIMES_UP &&
+                                    alternativa.correta
+                                        ? ""
+                                        : `${alternativa.color}/20 `)
+                                }
+                            >
+                                {alternativa.texto}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </>
     );
 }
 
