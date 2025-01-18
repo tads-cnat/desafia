@@ -62,9 +62,7 @@ class GameConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         try:
             data = json.loads(text_data)
-            if data.get("state") == GameState.QUESTION_ANSWER.value:
-                self.question_answer_timestamp = datetime.now()
-
+            print(text_data)
             await self.dispatcher.dispatch(self, data)
         except json.JSONDecodeError:
             await self.send(text_data=json.dumps({

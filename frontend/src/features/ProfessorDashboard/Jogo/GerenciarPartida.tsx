@@ -14,6 +14,8 @@ import { toast } from "sonner";
 import ExibirQuestao from "./ExibirQuestao";
 import { Questionario } from "../../../types/models/Questionario";
 import MostrarResultados from "./MostrarResultados";
+import { Questao } from "../../../types/models/Questao";
+import { Alternativa } from "../../../types/models/Alternativa";
 
 function GerenciarPartida(): JSX.Element {
     const { auth } = useAuth();
@@ -57,7 +59,6 @@ function GerenciarPartida(): JSX.Element {
             .then((res) => {
                 const { questionario } = res;
                 setQuestionario(questionario);
-                console.log(res);
             })
             .catch((err) => {
                 console.error(err);
@@ -91,12 +92,32 @@ function GerenciarPartida(): JSX.Element {
         }
     }
 
-    function sendAction(state: GameState) {
+    function broadcastAction(state: GameState) {
         sendJsonMessage({
             action: GameAction.CHANGE_STATE,
             target: "all",
             state,
         });
+    }
+
+    function sendActionToPlayers(state: GameState, data?: unknown) {
+        sendJsonMessage({
+            action: GameAction.CHANGE_STATE,
+            target: "players",
+            data,
+            state,
+        });
+    }
+
+    function sendQuestionToPlayers(questao?: Questao) {
+        const modifiedQuestao = {
+            id: questao?.id,
+            alternativas: questao?.alternativas?.map((a: Alternativa) => ({
+                id: a.id,
+            })),
+        };
+
+        sendActionToPlayers(GameState.QUESTION_ANSWER, modifiedQuestao);
     }
 
     if (status === "Closed") {
@@ -112,7 +133,12 @@ function GerenciarPartida(): JSX.Element {
             <div className="flex justify-center items-center h-screen">
                 <Countdown
                     counter={5}
-                    onZero={() => sendAction(GameState.NEXT_QUESTION)}
+                    onZero={() => {
+                        broadcastAction(GameState.NEXT_QUESTION);
+                        sendQuestionToPlayers(
+                            questionario?.questoes[questaoAtual],
+                        );
+                    }}
                 />
             </div>
         );
@@ -123,18 +149,18 @@ function GerenciarPartida(): JSX.Element {
             gameState === GameState.NEXT_QUESTION &&
             questaoAtual === questionario?.questoes.length
         ) {
-            sendAction(GameState.GAME_ENDED);
+            broadcastAction(GameState.GAME_ENDED);
         }
 
         return (
             <ExibirQuestao
                 questao={questionario?.questoes[questaoAtual]}
                 onZero={() => {
-                    sendAction(GameState.TIMES_UP);
+                    broadcastAction(GameState.TIMES_UP);
                 }}
                 onNextQuestion={() => {
                     setQuestaoAtual((prev) => prev + 1);
-                    sendAction(GameState.RESULTS_SHOWING);
+                    broadcastAction(GameState.RESULTS_SHOWING);
                 }}
                 state={gameState}
             />
@@ -145,7 +171,8 @@ function GerenciarPartida(): JSX.Element {
         return (
             <MostrarResultados
                 onNextQuestion={() => {
-                    sendAction(GameState.NEXT_QUESTION);
+                    broadcastAction(GameState.NEXT_QUESTION);
+                    sendQuestionToPlayers(questionario?.questoes[questaoAtual]);
                 }}
             />
         );
@@ -164,7 +191,7 @@ function GerenciarPartida(): JSX.Element {
                 <button
                     className="btn btn-primary"
                     onClick={() => {
-                        sendAction(GameState.GAME_STARTING);
+                        broadcastAction(GameState.GAME_STARTING);
                     }}
                 >
                     <i className="fa-solid fa-play" />

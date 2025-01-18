@@ -16,6 +16,7 @@ class Partida(Common):
     ativa = models.BooleanField(default=True)
     questao_atual = models.ForeignKey(
         Questao, on_delete=models.SET_NULL, null=True, blank=True)
+    questao_atual_timestamp = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return str(self.id)

@@ -6,6 +6,9 @@ export interface WebsocketMessage {
         event: GameState;
         player: Participante;
         target: string;
+        data?: unknown;
+        pontuacao?: number;
+        correta?: boolean;
     };
     error?: string;
 }

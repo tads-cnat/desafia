@@ -7,10 +7,20 @@ import LoadingPage from "../Others/LoadingPage";
 import { WebsocketMessage } from "../../types/application/WebsocketMessage";
 import { GameState } from "../../types/models/GameState";
 import Alternativas from "./Alternativas";
+import { GameAction } from "../../types/application/GameAction";
+import { Questao } from "../../types/models/Questao";
+import { set } from "date-fns";
 
 function Jogar(): JSX.Element {
     const [gameState, setGameState] = useState<GameState>(GameState.WAITING);
-
+    const [waitingMessage, setWaitingMessage] = useState<string>(
+        "Aguardando resultados!",
+    );
+    const [answer, setAnswer] = useState<{
+        pontuacao: number;
+        correta: boolean;
+    }>({ pontuacao: 0, correta: false });
+    const [questaoAtual, setQuestaoAtual] = useState<Questao>();
     const { gameId, name, playerId } = useGameStore();
     const { auth } = useAuth();
     const [wsURL, setWsURL] = useState<string>(
@@ -40,14 +50,36 @@ function Jogar(): JSX.Element {
 
     function takeAction(socketMessage: WebsocketMessage) {
         const {
-            message: { event, player, target },
+            message: { event, target, data },
         } = socketMessage;
 
-        if (event) {
-            if (target === "players") {
-                setGameState(event);
+        if (event && ["players", "all"].includes(target)) {
+            if (event === GameState.QUESTION_ANSWER) {
+                setQuestaoAtual(data as Questao);
             }
+
+            console.log("Event", event);
+
+            if (event === GameState.RESULTS_SHOWING) {
+                const {
+                    message: { pontuacao = 0, correta = false },
+                } = socketMessage;
+
+                setAnswer({ pontuacao, correta });
+                console.log({ pontuacao, correta });
+            }
+
+            setGameState(event);
         }
+    }
+
+    function sendAnswer(respostaId?: number) {
+        setGameState(GameState.WAITING);
+        sendJsonMessage({
+            action: GameAction.SET_ANSWER,
+            resposta_id: respostaId,
+            questao_id: questaoAtual?.id,
+        });
     }
 
     const status = connectionStatus[readyState];
@@ -60,19 +92,13 @@ function Jogar(): JSX.Element {
         return <LoadingPage />;
     }
 
-    if (gameState === GameState.WAITING) {
+    if ([GameState.WAITING, GameState.GAME_STARTING].includes(gameState)) {
         return (
             <div>
-                <h1>Esperando</h1>
-            </div>
-        );
-    }
-
-    if (gameState === GameState.GAME_STARTING) {
-        return (
-            <div className="flex flex-col justify-center items-center h-screen">
-                <span className="loading loading-spinner loading-lg" />
-                <p className="text-xl">Leia a questão antes de responder!</p>
+                <div className="flex flex-col justify-center items-center h-screen">
+                    <span className="loading loading-spinner loading-lg" />
+                    <p className="text-xl">{waitingMessage}</p>
+                </div>
             </div>
         );
     }
@@ -80,7 +106,7 @@ function Jogar(): JSX.Element {
     if (gameState === GameState.QUESTION_ANSWER) {
         return (
             <div>
-                <Alternativas />
+                <Alternativas questao={questaoAtual} onClick={sendAnswer} />
             </div>
         );
     }

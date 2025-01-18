@@ -1,12 +1,12 @@
 from abc import ABC, abstractmethod
 import json
 
+from django.utils.timezone import now
 from api.enums import is_valid_game_state
 from api.models.alternativa import Alternativa
 from api.models.questao import Questao
 from api.models.resposta import Resposta
 from asgiref.sync import sync_to_async
-from datetime import datetime
 from api.enums import GameState
 
 
@@ -37,18 +37,19 @@ class AnswerHandler(BaseHandler):
         resposta_id = data.get("resposta_id")
         questao_id = data.get("questao_id")
 
+        print("questao_id", questao_id)
+        print("resposta_id", resposta_id)
+
         if not resposta_id or not questao_id:
             await consumer.send(text_data=json.dumps({"error": "Resposta id e Questão id são obrigatórios"}))
             return
 
         participante = consumer.participante
 
-        # Obter a alternativa e a questão
         escolha = await sync_to_async(Alternativa.objects.get)(id=resposta_id)
         questao = await sync_to_async(Questao.objects.get)(id=questao_id)
 
-        # Verificar o timestamp armazenado em memória
-        question_answer_timestamp = consumer.question_answer_timestamp
+        question_answer_timestamp = consumer.partida.questao_atual_timestamp
         if not question_answer_timestamp:
             await consumer.send(text_data=json.dumps({
                 "error": "Tempo inicial para a questão não está definido."
@@ -56,18 +57,16 @@ class AnswerHandler(BaseHandler):
             return
 
         tempo_decorrido = (
-            datetime.now() - question_answer_timestamp).total_seconds()
+            now() - question_answer_timestamp).total_seconds()
 
         pontuacao_base = 1000
 
         if escolha.correta:
             penalidade = min(tempo_decorrido * 10, pontuacao_base)
             pontuacao = pontuacao_base - penalidade
-
         else:
             pontuacao = 0
 
-        # Criar a resposta
         resposta = await sync_to_async(Resposta.objects.create)(
             participante=participante,
             escolha=escolha,
@@ -75,11 +74,10 @@ class AnswerHandler(BaseHandler):
             pontuacao=pontuacao
         )
 
-        # Enviar mensagem de sucesso
         await consumer.send(text_data=json.dumps({
             "type": "broadcast_message",
             "message": {
-                "event": GameState.RESULTS_SHOWING,
+                "event": GameState.RESULTS_SHOWING.value,
                 "target": "player",
                 "resposta_id": resposta_id,
                 "pontuacao": pontuacao,
@@ -92,6 +90,7 @@ class ChangeStateHandler(BaseHandler):
     async def handle(self, consumer, data):
         state = data.get("state")
         target = data.get("target")
+        payload = data.get("data")
 
         if not state:
             await consumer.send(text_data=json.dumps({"error": "New State is required"}))
@@ -101,17 +100,26 @@ class ChangeStateHandler(BaseHandler):
             await consumer.send(text_data=json.dumps({"error": f'"{state}" is not a valid state'}))
             return
 
-        if state == GameState.QUESTION_ANSWER.value:
-
-            pass
+        print(f"Changing state to {state}")
+        if data.get("state") == GameState.QUESTION_ANSWER.value:
+            print(f"Setting question_answer_timestamp")
+            partida = consumer.partida
+            partida.questao_atual_timestamp = now()
+            await sync_to_async(partida.save)()
 
         user_id = consumer.scope['user'].id
         created_by_id = consumer.partida.created_by_id
 
         if user_id == created_by_id:
+            message = {"event": state}
+            if target is not None:
+                message["target"] = target
+            if payload is not None:
+                message["data"] = payload
+
             await consumer.channel_layer.group_send(consumer.room_group_name, {
                 "type": "broadcast_message",
-                "message": {"event": state, "player": None, "target": target}
+                "message": message,
             })
         else:
             await consumer.send(text_data=json.dumps({"error": "Only the creator can change the state"}))

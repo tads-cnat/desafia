@@ -1,4 +1,11 @@
-function Alternativas(): JSX.Element {
+import { Questao } from "../../types/models/Questao";
+
+interface AlaternativasProps {
+    questao?: Questao;
+    onClick: (id?: number) => void;
+}
+
+function Alternativas({ questao, onClick }: AlaternativasProps): JSX.Element {
     const alternativaColor: Record<number, string> = {
         0: "bg-success",
         1: "bg-warning",
@@ -9,13 +16,16 @@ function Alternativas(): JSX.Element {
     return (
         <div className="grid">
             <div className="grid grid-cols-2 gap-2 ">
-                {[0, 1, 2, 3]?.map((_, index) => (
+                {questao?.alternativas?.map((a, index) => (
                     <div
                         key={index}
                         className={
                             alternativaColor[index] +
                             " p-10 text-4xl font-semibold rounded-xl dark:text-neutral-50 "
                         }
+                        onClick={() => {
+                            onClick(a.id);
+                        }}
                     />
                 ))}
             </div>
