@@ -6,6 +6,7 @@ import { connectionStatus } from "../../utils/connectionStatus";
 import LoadingPage from "../Others/LoadingPage";
 import { WebsocketMessage } from "../../types/application/WebsocketMessage";
 import { GameState } from "../../types/models/GameState";
+import Alternativas from "./Alternativas";
 
 function Jogar(): JSX.Element {
     const [gameState, setGameState] = useState<GameState>(GameState.WAITING);
@@ -13,7 +14,7 @@ function Jogar(): JSX.Element {
     const { gameId, name, playerId } = useGameStore();
     const { auth } = useAuth();
     const [wsURL, setWsURL] = useState<string>(
-        `ws://localhost:8000/ws/game/${gameId}/`,
+        `ws://${import.meta.env.VITE_HOST}/ws/game/${gameId}/`,
     );
 
     const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
@@ -39,13 +40,13 @@ function Jogar(): JSX.Element {
 
     function takeAction(socketMessage: WebsocketMessage) {
         const {
-            message: { event },
+            message: { event, player, target },
         } = socketMessage;
 
-        switch (event) {
-            default:
+        if (event) {
+            if (target === "players") {
                 setGameState(event);
-                break;
+            }
         }
     }
 
@@ -69,8 +70,9 @@ function Jogar(): JSX.Element {
 
     if (gameState === GameState.GAME_STARTING) {
         return (
-            <div>
-                <h1>O jogo está começando!</h1>
+            <div className="flex flex-col justify-center items-center h-screen">
+                <span className="loading loading-spinner loading-lg" />
+                <p className="text-xl">Leia a questão antes de responder!</p>
             </div>
         );
     }
@@ -78,7 +80,7 @@ function Jogar(): JSX.Element {
     if (gameState === GameState.QUESTION_ANSWER) {
         return (
             <div>
-                <h1>Responda a pergunta!</h1>
+                <Alternativas />
             </div>
         );
     }

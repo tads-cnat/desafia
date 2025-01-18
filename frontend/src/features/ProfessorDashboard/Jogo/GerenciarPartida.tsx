@@ -22,7 +22,7 @@ function GerenciarPartida(): JSX.Element {
     const [questionario, setQuestionario] = useState<Questionario>();
     const [questaoAtual, setQuestaoAtual] = useState<number>(0);
     const [socketUrl] = useState<string>(
-        `ws://localhost:8000/ws/game/${gameId}/`,
+        `ws://${import.meta.env.VITE_HOST}/ws/game/${gameId}/`,
     );
     const [gameState, setGameState] = useState<GameState>(GameState.WAITING);
 
@@ -70,7 +70,7 @@ function GerenciarPartida(): JSX.Element {
             return;
         }
         const {
-            message: { event, player },
+            message: { event, player, target },
         } = response;
 
         switch (event) {
@@ -84,7 +84,9 @@ function GerenciarPartida(): JSX.Element {
                 });
                 break;
             default:
-                setGameState(event);
+                if (["all", "admin"].includes(target)) {
+                    setGameState(event);
+                }
                 break;
         }
     }
@@ -92,6 +94,7 @@ function GerenciarPartida(): JSX.Element {
     function sendAction(state: GameState) {
         sendJsonMessage({
             action: GameAction.CHANGE_STATE,
+            target: "all",
             state,
         });
     }
@@ -116,6 +119,13 @@ function GerenciarPartida(): JSX.Element {
     }
 
     if ([GameState.NEXT_QUESTION, GameState.TIMES_UP].includes(gameState)) {
+        if (
+            gameState === GameState.NEXT_QUESTION &&
+            questaoAtual === questionario?.questoes.length
+        ) {
+            sendAction(GameState.GAME_ENDED);
+        }
+
         return (
             <ExibirQuestao
                 questao={questionario?.questoes[questaoAtual]}
@@ -139,6 +149,10 @@ function GerenciarPartida(): JSX.Element {
                 }}
             />
         );
+    }
+
+    if (gameState === GameState.GAME_ENDED) {
+        return <>O jogo finalizou. Pódio final:</>;
     }
 
     return (

@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import PartidaService from "../../services/PartidaService";
 import { toast } from "sonner";
 import { setGameId } from "../../store/GameStore";
+import { AppRoutes } from "../../utils/appRoutes";
 
 function ConectarSe(): JSX.Element {
     const { handleSubmit, register, control } = useForm();
@@ -13,7 +14,7 @@ function ConectarSe(): JSX.Element {
         PartidaService.entrar(values.codigoAcesso)
             .then((res) => {
                 setGameId(res.data.id);
-                navigate(`/partida/pedir-apelido/`);
+                navigate(AppRoutes.PEDIR_APELIDO);
             })
             .catch((err) => {
                 setGameId("");

@@ -5,6 +5,7 @@ export interface WebsocketMessage {
     message: {
         event: GameState;
         player: Participante;
+        target: string;
     };
     error?: string;
 }
