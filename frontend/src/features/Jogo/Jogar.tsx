@@ -23,7 +23,7 @@ function Jogar(): JSX.Element {
     const [questaoAtual, setQuestaoAtual] = useState<Questao>();
     const { gameId, name, playerId } = useGameStore();
     const { auth } = useAuth();
-    const [wsURL, setWsURL] = useState<string>(
+    const [wsURL] = useState<string>(
         `ws://${import.meta.env.VITE_HOST}/ws/game/${gameId}/`,
     );
 
@@ -63,13 +63,14 @@ function Jogar(): JSX.Element {
                     message: { pontuacao, correta },
                 } = socketMessage;
 
-                console.log("Pontuação", pontuacao);
-                console.log("Correta", correta);
-
                 setAnswer({
                     pontuacao: pontuacao ?? 0,
                     correta: correta ?? false,
                 });
+            }
+
+            if (event === GameState.NEXT_QUESTION) {
+                setAnswer({ pontuacao: 0, correta: false });
             }
 
             setGameState(event);

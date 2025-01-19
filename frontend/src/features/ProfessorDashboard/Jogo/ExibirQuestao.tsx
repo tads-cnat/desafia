@@ -30,38 +30,43 @@ function ExibirQuestao({
 
     return (
         <>
-            <div className="flex flex-col justify-around min-h-screen items-center">
-                <button
-                    className="btn btn-primary self-end me-4"
-                    onClick={onNextQuestion}
-                >
-                    Próxima Questão
-                </button>
-                <div className="dark:bg-neutral-900/80 p-8 w-full">
-                    <h1 className="text-6xl text-center font-bold dark:text-neutral-50 text-neutral-900">
-                        {questao?.enunciado}
-                        {"   "}
-                        <Countdown counter={10} onZero={onZero} />
-                    </h1>
+            <div className="flex flex-col min-h-screen items-center">
+                <div className="flex-none navbar bg-base-300 ">
+                    <div className="navbar-start" />
+                    <div className="navbar-center">Resultados da rodada</div>
+                    <div className="navbar-end self-end">
+                        <a className="btn" onClick={onNextQuestion}>
+                            Próxima questão
+                        </a>
+                    </div>
                 </div>
+                <div className="flex-1 flex flex-col justify-around">
+                    <div className="dark:bg-neutral-900/80 p-8 ">
+                        <h1 className="text-6xl text-center font-bold dark:text-neutral-50 text-neutral-900">
+                            {questao?.enunciado}
+                            {"   "}
+                            <Countdown counter={10} onZero={onZero} />
+                        </h1>
+                    </div>
 
-                <div className="grid">
-                    <div className="grid grid-cols-2 gap-2 ">
-                        {alternativasArray?.map((alternativa, index) => (
-                            <div
-                                key={index}
-                                className={
-                                    alternativa.color +
-                                    " p-10 text-4xl font-semibold rounded-xl dark:text-neutral-50 " +
-                                    (state === GameState.TIMES_UP &&
-                                    !alternativa.correta
-                                        ? "opacity-20"
-                                        : "")
-                                }
-                            >
-                                {alternativa.texto}
-                            </div>
-                        ))}
+                    <div className="grid">
+                        <div className="grid grid-cols-2 gap-2 ">
+                            {alternativasArray?.map((alternativa, index) => (
+                                <div
+                                    key={index}
+                                    className={
+                                        alternativa.color +
+                                        " p-10 text-4xl font-semibold rounded-xl dark:text-neutral-50 " +
+                                        (state === GameState.TIMES_UP &&
+                                        !alternativa.correta
+                                            ? "opacity-20"
+                                            : "")
+                                    }
+                                >
+                                    {alternativa.texto}
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>

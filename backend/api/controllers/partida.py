@@ -71,6 +71,16 @@ class PartidaController(ModelController):
 
         return participantes
 
+    @route.get("/{id}/podio/", response={200: List[ParticipanteOut], 400: ErrorSchema}, url_name="podio-partida-list", auth=None, permissions=[AllowAny])
+    def list_partida_podio(self, id: uuid.UUID):
+
+        partida = get_object_or_404(
+            self.model, id=id, ativa=True)
+
+        participantes = partida.participante_set.all().order_by('-pontuacao_total')
+
+        return participantes
+
     @route.get("entrar/{codigo_acesso}/", response={200: UuidSchema, 400: ErrorSchema}, url_name="partida-join", auth=None, permissions=[AllowAny])
     def join_partida(self, codigo_acesso: str):
         partida = get_object_or_404(

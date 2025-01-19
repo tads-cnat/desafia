@@ -98,6 +98,9 @@ class AnswerHandler(BaseHandler):
             pontuacao=pontuacao
         )
 
+        participante.pontuacao_total += pontuacao
+        await sync_to_async(participante.save)()
+
         await consumer.send(text_data=json.dumps({
             "type": "broadcast_message",
             "message": {
@@ -114,6 +117,9 @@ class AnswerHandler(BaseHandler):
             questao=questao,
             participante__partida=consumer.partida
         ).count)()
+
+        print("Total de respostas", total_respostas)
+        print("Total de participantes", total_participantes)
 
         if total_respostas >= total_participantes:
             await consumer.channel_layer.group_send(consumer.room_group_name, {

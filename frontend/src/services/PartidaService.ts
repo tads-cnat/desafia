@@ -19,6 +19,11 @@ class PartidaService extends GenericService<Partida, PartidaPayload> {
         const res = await axios.get(`partida/${partidaId}/participantes/`);
         return res;
     }
+    
+    async podio(partidaId: string) {
+        const res = await axios.get(`partida/${partidaId}/podio/`);
+        return res;
+    }
 }
 
 export default new PartidaService("partida");

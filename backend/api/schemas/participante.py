@@ -12,4 +12,5 @@ class ParticipanteIn(Schema):
 class ParticipanteOut(Schema):
     id: int
     nome: str | None
+    pontuacao_total: int | None
     partida: PartidaOut

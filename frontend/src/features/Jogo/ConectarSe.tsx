@@ -36,7 +36,7 @@ function ConectarSe(): JSX.Element {
                 >
                     <Input
                         {...register("codigoAcesso", { required: true })}
-                        type="text"
+                        type="number"
                         label="Código da sala"
                         placeholder="Insira o código da sala"
                         control={control}
