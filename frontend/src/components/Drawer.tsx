@@ -41,7 +41,7 @@ function Drawer(props: DrawerProps): JSX.Element {
                         </div>
                         <div className="divider mx-auto" />
                         <li>
-                            <Link to="/">Início</Link>
+                            <Link to="/dashboard">Início</Link>
                         </li>
                         <li>
                             <Link to="/minhas-questoes">Minhas questões</Link>

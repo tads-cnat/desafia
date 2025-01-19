@@ -10,6 +10,7 @@ class GameState(Enum):
     GAME_ENDED = "game_ended"
     DISCONNECTED = "disconnected"
     PLAYER_JOINED = "player_joined"
+    PLAYER_LEFT = "player_left"
     NEXT_QUESTION = "next_question"
 
 

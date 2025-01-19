@@ -16,6 +16,7 @@ import { Questionario } from "../../../types/models/Questionario";
 import MostrarResultados from "./MostrarResultados";
 import { Questao } from "../../../types/models/Questao";
 import { Alternativa } from "../../../types/models/Alternativa";
+import { useNavigate } from "react-router-dom";
 
 function GerenciarPartida(): JSX.Element {
     const { auth } = useAuth();
@@ -27,6 +28,7 @@ function GerenciarPartida(): JSX.Element {
         `ws://${import.meta.env.VITE_HOST}/ws/game/${gameId}/`,
     );
     const [gameState, setGameState] = useState<GameState>(GameState.WAITING);
+    const navigate = useNavigate();
 
     const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
         socketUrl,
@@ -62,6 +64,10 @@ function GerenciarPartida(): JSX.Element {
             })
             .catch((err) => {
                 console.error(err);
+                if (err.status === 404) {
+                    toast.error("Partida não encontrada");
+                    navigate(-1);
+                }
             });
     }, []);
 
@@ -82,6 +88,11 @@ function GerenciarPartida(): JSX.Element {
                     );
                     if (alreadyExists) return prev;
                     return [...prev, player];
+                });
+                break;
+            case GameState.PLAYER_LEFT:
+                setParticipantes((prev) => {
+                    return prev.filter((item) => item.id !== player.id);
                 });
                 break;
             default:
@@ -171,11 +182,12 @@ function GerenciarPartida(): JSX.Element {
                     broadcastAction(GameState.RESULTS_SHOWING);
                 }}
                 state={gameState}
+                showCounter={gameState !== GameState.TIMES_UP}
             />
         );
     }
 
-    if (gameState === GameState.RESULTS_SHOWING) {
+    if ([GameState.RESULTS_SHOWING, GameState.GAME_ENDED].includes(gameState)) {
         return (
             <MostrarResultados
                 onNextQuestion={() => {
@@ -184,10 +196,6 @@ function GerenciarPartida(): JSX.Element {
                 }}
             />
         );
-    }
-
-    if (gameState === GameState.GAME_ENDED) {
-        return <>O jogo finalizou. Pódio final:</>;
     }
 
     return (

@@ -7,6 +7,7 @@ interface ExibirQuestaoProps {
     onZero: () => void;
     onNextQuestion: () => void;
     state: GameState;
+    showCounter?: boolean;
 }
 
 function ExibirQuestao({
@@ -14,6 +15,7 @@ function ExibirQuestao({
     onZero,
     onNextQuestion,
     state,
+    showCounter = true,
 }: ExibirQuestaoProps): JSX.Element {
     const alternativaColor: Record<number, string> = {
         0: "bg-success",
@@ -45,7 +47,9 @@ function ExibirQuestao({
                         <h1 className="text-6xl text-center font-bold dark:text-neutral-50 text-neutral-900">
                             {questao?.enunciado}
                             {"   "}
-                            <Countdown counter={10} onZero={onZero} />
+                            {showCounter && (
+                                <Countdown counter={10} onZero={onZero} />
+                            )}
                         </h1>
                     </div>
 

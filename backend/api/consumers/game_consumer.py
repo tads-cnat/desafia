@@ -36,6 +36,9 @@ class GameConsumer(AsyncWebsocketConsumer):
 
         self.is_creator = self.partida.created_by_id == self.scope['user'].id
 
+        print(self.is_creator, self.partida.created_by_id,
+              self.scope['user'].id)
+
         await self.accept()
 
         if not self.is_creator:
@@ -46,7 +49,7 @@ class GameConsumer(AsyncWebsocketConsumer):
 
             await self.channel_layer.group_send(self.room_group_name, {
                 "type": "broadcast_message",
-                "message": {"event": GameState.PLAYER_JOINED.value, "player": player}
+                "message": {"event": GameState.PLAYER_JOINED.value, "target": Target.ADMIN.value, "player": player}
             })
 
         self.dispatcher = ActionDispatcher()
@@ -71,7 +74,9 @@ class GameConsumer(AsyncWebsocketConsumer):
 
     async def disconnect(self, close_code):
         partida = self.partida
-        if self.is_creator:
+        print(self.partida.__dict__, self.scope['user'].__dict__)
+        if self.partida.created_by_id == self.scope['user'].id:
+            print("A partida foi apagada!")
             partida.ativa = False
             await sync_to_async(partida.save)()
 
@@ -80,14 +85,17 @@ class GameConsumer(AsyncWebsocketConsumer):
                 "message": {"event": GameState.DISCONNECTED.value, "target": Target.ALL.value}
             })
         else:
-            player = {
-                "id": self.participante.id,
-                "nome": self.participante.nome,
-            }
-        # Eu preciso remover o participante da partida
-        # após isso preciso enviar um evento para todos o admin que eu desonectei
+            if self.player_id:
+                participante = await sync_to_async(Participante.objects.get)(id=self.player_id)
+                participante.jogando = False
+                await sync_to_async(participante.save)()
 
-        await self.channel_layer.group_discard(
-            self.room_group_name,
-            self.channel_name
-        )
+                player = {
+                    "id": self.participante.id,
+                    "nome": self.participante.nome,
+                }
+
+                await self.channel_layer.group_send(self.room_group_name, {
+                    "type": "broadcast_message",
+                    "message": {"event": GameState.PLAYER_LEFT.value, "target": Target.ADMIN.value, "player": player}
+                })

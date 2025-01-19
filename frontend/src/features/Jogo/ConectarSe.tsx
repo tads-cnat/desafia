@@ -49,7 +49,7 @@ function ConectarSe(): JSX.Element {
                     </div>
                 </form>
                 <Link
-                    to="/login"
+                    to={AppRoutes.DASHBOARD}
                     className="absolute bottom-4 text-sm text-blue-600 hover:underline"
                 >
                     Fazer login

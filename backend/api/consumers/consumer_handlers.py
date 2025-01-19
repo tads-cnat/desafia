@@ -87,7 +87,7 @@ class AnswerHandler(BaseHandler):
         if escolha.correta:  # Escolher uma forma melhor de gerar a pontuação?
             penalidade = 1 - tempo_decorrido / \
                 (questao.tempo_para_resposta * 1000)
-            pontuacao = pontuacao_base*penalidade
+            pontuacao = int(pontuacao_base*penalidade)
         else:
             pontuacao = 0
 
