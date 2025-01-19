@@ -9,12 +9,12 @@ import { GameState } from "../../types/models/GameState";
 import Alternativas from "./Alternativas";
 import { GameAction } from "../../types/application/GameAction";
 import { Questao } from "../../types/models/Questao";
-import { set } from "date-fns";
+import MostrarResposta from "./MostrarResposta";
 
 function Jogar(): JSX.Element {
     const [gameState, setGameState] = useState<GameState>(GameState.WAITING);
     const [waitingMessage, setWaitingMessage] = useState<string>(
-        "Aguardando resultados!",
+        "Aguardando o jogo começar!",
     );
     const [answer, setAnswer] = useState<{
         pontuacao: number;
@@ -58,28 +58,33 @@ function Jogar(): JSX.Element {
                 setQuestaoAtual(data as Questao);
             }
 
-            console.log("Event", event);
-
-            if (event === GameState.RESULTS_SHOWING) {
+            if (event === GameState.WAITING) {
                 const {
-                    message: { pontuacao = 0, correta = false },
+                    message: { pontuacao, correta },
                 } = socketMessage;
 
-                setAnswer({ pontuacao, correta });
-                console.log({ pontuacao, correta });
+                console.log("Pontuação", pontuacao);
+                console.log("Correta", correta);
+
+                setAnswer({
+                    pontuacao: pontuacao ?? 0,
+                    correta: correta ?? false,
+                });
             }
 
             setGameState(event);
         }
     }
 
-    function sendAnswer(respostaId?: number) {
+    function sendAnswer(respostaId?: number, elapsedTime?: number) {
         setGameState(GameState.WAITING);
         sendJsonMessage({
             action: GameAction.SET_ANSWER,
             resposta_id: respostaId,
             questao_id: questaoAtual?.id,
+            elapsed_time: elapsedTime,
         });
+        setWaitingMessage("Aguardando o resultado!  ");
     }
 
     const status = connectionStatus[readyState];
@@ -96,7 +101,7 @@ function Jogar(): JSX.Element {
         return (
             <div>
                 <div className="flex flex-col justify-center items-center h-screen">
-                    <span className="loading loading-spinner loading-lg" />
+                    <span className="loading loading-dots loading-lg" />
                     <p className="text-xl">{waitingMessage}</p>
                 </div>
             </div>
@@ -111,18 +116,13 @@ function Jogar(): JSX.Element {
         );
     }
 
-    if (gameState === GameState.TIMES_UP) {
+    if ([GameState.TIMES_UP, GameState.RESULTS_SHOWING].includes(gameState)) {
         return (
-            <div>
-                <h1>O tempo acabou!</h1>
-            </div>
-        );
-    }
-
-    if (gameState === GameState.RESULTS_SHOWING) {
-        return (
-            <div>
-                <h1>Mostrando resultados!</h1>
+            <div className="flex flex-col justify-center items-center h-screen">
+                <MostrarResposta
+                    correta={answer.correta}
+                    pontos={answer.pontuacao}
+                />
             </div>
         );
     }

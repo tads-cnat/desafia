@@ -100,6 +100,14 @@ function GerenciarPartida(): JSX.Element {
         });
     }
 
+    function disconnectPlayer(id_participante: number) {
+        sendJsonMessage({
+            action: GameAction.FORCE_DISCONNECT,
+            target: "system",
+            id_participante,
+        });
+    }
+
     function sendActionToPlayers(state: GameState, data?: unknown) {
         sendJsonMessage({
             action: GameAction.CHANGE_STATE,
@@ -209,7 +217,12 @@ function GerenciarPartida(): JSX.Element {
                     >
                         <div className="flex justify-between items-center px-3">
                             <h2 className="text-2xl ">{participante.nome}</h2>
-                            <button className="btn btn-ghost">
+                            <button
+                                className="btn btn-ghost"
+                                onClick={() => {
+                                    disconnectPlayer(participante.id ?? 0);
+                                }}
+                            >
                                 <i className="fa-solid fa-times" />
                             </button>
                         </div>

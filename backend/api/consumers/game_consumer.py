@@ -3,7 +3,7 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 from django.forms import model_to_dict
 from django.shortcuts import get_object_or_404
 
-from api.consumers.consumer_handlers import AnswerHandler, ChangeStateHandler, NicknameHandler
+from api.consumers.consumer_handlers import AnswerHandler, ChangeStateHandler, NicknameHandler, DisconnectHandler
 from api.consumers.dispatcher import ActionDispatcher
 from api.enums import GameState
 from api.models.participante import Participante
@@ -22,7 +22,6 @@ class GameConsumer(AsyncWebsocketConsumer):
         self.game_id = self.scope['url_route']['kwargs']['game_id']
         self.room_group_name = f"game_{self.game_id}"
         self.partida = await sync_to_async(get_object_or_404)(Partida, id=self.game_id)
-        self.question_answer_timestamp = None  # Inicialize o timestamp como None
 
         await self.channel_layer.group_add(
             self.room_group_name,
@@ -56,13 +55,13 @@ class GameConsumer(AsyncWebsocketConsumer):
 
         self.dispatcher = ActionDispatcher()
         self.dispatcher.register_handler("set_nickname", NicknameHandler())
+        # self.dispatcher.register_handler("force_disconnect", DisconnectHandler())
         self.dispatcher.register_handler("set_answer", AnswerHandler())
         self.dispatcher.register_handler("change_state", ChangeStateHandler())
 
     async def receive(self, text_data):
         try:
             data = json.loads(text_data)
-            print(text_data)
             await self.dispatcher.dispatch(self, data)
         except json.JSONDecodeError:
             await self.send(text_data=json.dumps({

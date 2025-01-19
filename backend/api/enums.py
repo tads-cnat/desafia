@@ -19,3 +19,10 @@ def is_valid_game_state(value):
         return True
     except ValueError:
         return False
+
+
+class Target(Enum):
+    PLAYERS = "players"
+    ADMIN = "admin"
+    SYSTEM = "system"
+    ALL = "all"
