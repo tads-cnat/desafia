@@ -118,9 +118,6 @@ class AnswerHandler(BaseHandler):
             participante__partida=consumer.partida
         ).count)()
 
-        print("Total de respostas", total_respostas)
-        print("Total de participantes", total_participantes)
-
         if total_respostas >= total_participantes:
             await consumer.channel_layer.group_send(consumer.room_group_name, {
                 "type": "broadcast_message",

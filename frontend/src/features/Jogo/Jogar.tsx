@@ -10,6 +10,9 @@ import Alternativas from "./Alternativas";
 import { GameAction } from "../../types/application/GameAction";
 import { Questao } from "../../types/models/Questao";
 import MostrarResposta from "./MostrarResposta";
+import { useNavigate } from "react-router-dom";
+import { AppRoutes } from "../../utils/appRoutes";
+import { toast } from "sonner";
 
 function Jogar(): JSX.Element {
     const [gameState, setGameState] = useState<GameState>(GameState.WAITING);
@@ -26,6 +29,7 @@ function Jogar(): JSX.Element {
     const [wsURL] = useState<string>(
         `ws://${import.meta.env.VITE_HOST}/ws/game/${gameId}/`,
     );
+    const navigate = useNavigate();
 
     const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
         wsURL,
@@ -54,6 +58,12 @@ function Jogar(): JSX.Element {
         } = socketMessage;
 
         if (event && ["players", "all"].includes(target)) {
+            if (event === GameState.DISCONNECTED) {
+                setGameState(GameState.DISCONNECTED);
+                toast.error("Você foi desconectado do jogo!");
+                navigate(AppRoutes.HOME);
+            }
+
             if (event === GameState.QUESTION_ANSWER) {
                 setQuestaoAtual(data as Questao);
             }
@@ -132,14 +142,6 @@ function Jogar(): JSX.Element {
         return (
             <div>
                 <h1>O jogo terminou!</h1>
-            </div>
-        );
-    }
-
-    if (gameState === GameState.DISCONNECTED) {
-        return (
-            <div>
-                <h1>Você foi desconectado!</h1>
             </div>
         );
     }

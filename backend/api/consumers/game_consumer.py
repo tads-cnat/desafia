@@ -5,16 +5,12 @@ from django.shortcuts import get_object_or_404
 
 from api.consumers.consumer_handlers import AnswerHandler, ChangeStateHandler, NicknameHandler, DisconnectHandler
 from api.consumers.dispatcher import ActionDispatcher
-from api.enums import GameState
+from api.enums import GameState, Target
 from api.models.participante import Participante
 from urllib.parse import parse_qs
 from asgiref.sync import sync_to_async, async_to_sync
 from channels.layers import get_channel_layer
-
 from api.models.partida import Partida
-
-
-from datetime import datetime
 
 
 class GameConsumer(AsyncWebsocketConsumer):
@@ -55,7 +51,6 @@ class GameConsumer(AsyncWebsocketConsumer):
 
         self.dispatcher = ActionDispatcher()
         self.dispatcher.register_handler("set_nickname", NicknameHandler())
-        # self.dispatcher.register_handler("force_disconnect", DisconnectHandler())
         self.dispatcher.register_handler("set_answer", AnswerHandler())
         self.dispatcher.register_handler("change_state", ChangeStateHandler())
 
@@ -73,3 +68,26 @@ class GameConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({
             'message': message
         }))
+
+    async def disconnect(self, close_code):
+        partida = self.partida
+        if self.is_creator:
+            partida.ativa = False
+            await sync_to_async(partida.save)()
+
+            await self.channel_layer.group_send(self.room_group_name, {
+                "type": "broadcast_message",
+                "message": {"event": GameState.DISCONNECTED.value, "target": Target.ALL.value}
+            })
+        else:
+            player = {
+                "id": self.participante.id,
+                "nome": self.participante.nome,
+            }
+        # Eu preciso remover o participante da partida
+        # após isso preciso enviar um evento para todos o admin que eu desonectei
+
+        await self.channel_layer.group_discard(
+            self.room_group_name,
+            self.channel_name
+        )

@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import useAuth from "../store/AuthStore";
+import avatar from "../assets/imgs/avatar.png";
 
 interface DrawerProps {
     children: React.ReactNode;
@@ -7,7 +8,7 @@ interface DrawerProps {
 
 function Drawer(props: DrawerProps): JSX.Element {
     const { children } = props;
-    const { logout } = useAuth();
+    const { auth, logout } = useAuth();
 
     return (
         <div className="drawer lg:drawer-open">
@@ -25,13 +26,18 @@ function Drawer(props: DrawerProps): JSX.Element {
                 />
                 <ul className="menu menu-lg bg-base-200 text-base-content min-h-full w-80 p-4 flex flex-col justify-between">
                     <div>
-                        <div className="flex justify-center items-center gap-4 w-full">
-                            <div className="avatar placeholder">
-                                <div className="bg-neutral text-neutral-content w-24 rounded-full">
-                                    <span className="text-3xl">D</span>
-                                </div>
-                            </div>
-                            <p>Nome do usuário</p>
+                        <div className="flex flex-col items-center sticky top-0 overflow-y-auto space-y-4 w-72 py-6 px-4 bg-base-200">
+                            <a className="btn btn-ghost text-lg">Desafia</a>
+
+                            <img
+                                alt="Profile"
+                                src={avatar}
+                                className="w-32 rounded-full"
+                            />
+
+                            <h2 className="font-bold text-lg">
+                                {auth?.user?.nome}
+                            </h2>
                         </div>
                         <div className="divider mx-auto" />
                         <li>
@@ -45,11 +51,7 @@ function Drawer(props: DrawerProps): JSX.Element {
                                 Meus questionários
                             </Link>
                         </li>
-                        <li>
-                            <Link to="/minhas-partidas">
-                                [DEBUG] Minhas Partidas
-                            </Link>
-                        </li>
+
                         <li>
                             <Link to="/configuracoes">Configurações</Link>
                         </li>
