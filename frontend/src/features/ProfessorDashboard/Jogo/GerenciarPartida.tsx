@@ -184,6 +184,7 @@ function GerenciarPartida(): JSX.Element {
                 questaoAtual={questaoAtual + 1}
                 totalQuestoes={questionario?.questoes.length}
                 state={gameState}
+                time={questionario?.questoes[questaoAtual].tempo_para_resposta}
                 showCounter={gameState !== GameState.TIMES_UP}
             />
         );

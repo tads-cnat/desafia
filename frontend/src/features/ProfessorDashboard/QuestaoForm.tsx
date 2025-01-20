@@ -19,6 +19,7 @@ function QuestaoForm(props: QuestaoFormProps): JSX.Element {
             defaultValues: {
                 enunciado: "",
                 alternativas: [{ texto: "" }, { texto: "" }],
+                tempo_para_resposta: 10,
             },
         });
     const { fields, append, remove } = useFieldArray({
@@ -41,9 +42,11 @@ function QuestaoForm(props: QuestaoFormProps): JSX.Element {
             setLoading(true);
             QuestaoService.get(Number(id))
                 .then((questao) => {
-                    const { enunciado, alternativas } = questao;
+                    const { enunciado, alternativas, tempo_para_resposta } =
+                        questao;
                     setValue("enunciado", enunciado);
                     setValue("alternativas", alternativas);
+                    setValue("tempo_para_resposta", tempo_para_resposta);
                 })
                 .catch(() => {
                     toast.error("Erro ao carregar a questão");
@@ -56,7 +59,8 @@ function QuestaoForm(props: QuestaoFormProps): JSX.Element {
     }, [id]);
 
     function onSubmit(data: FieldValues) {
-        const { enunciado, alternativas } = data as Questao;
+        const { enunciado, alternativas, tempo_para_resposta } =
+            data as Questao;
 
         const atLeastOneCorrect = alternativas?.some((a) => a.correta);
         if (!atLeastOneCorrect) {
@@ -64,8 +68,16 @@ function QuestaoForm(props: QuestaoFormProps): JSX.Element {
             return;
         }
         const saveQuestao = id
-            ? QuestaoService.put(Number(id), { enunciado, alternativas })
-            : QuestaoService.post({ enunciado, alternativas });
+            ? QuestaoService.put(Number(id), {
+                  enunciado,
+                  tempo_para_resposta,
+                  alternativas,
+              })
+            : QuestaoService.post({
+                  enunciado,
+                  tempo_para_resposta,
+                  alternativas,
+              });
 
         saveQuestao
             .then(() => {
@@ -149,6 +161,15 @@ function QuestaoForm(props: QuestaoFormProps): JSX.Element {
                     >
                         <i className="fa-solid fa-plus" /> Adicionar alternativa
                     </button>
+                    <div className="divider" />
+                    <Input
+                        {...register("tempo_para_resposta")}
+                        type="number"
+                        className="w-20"
+                        placeholder="10s"
+                        label="Tempo para responder (em segundos)"
+                        control={control}
+                    />
                     <div className="divider" />
                     {id && (
                         <button

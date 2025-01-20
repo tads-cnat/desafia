@@ -85,10 +85,10 @@ ASGI_APPLICATION = 'config.asgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'desafiadb',
-        'USER': 'desafia',
-        'PASSWORD': 'desafia-password',
-        'HOST': os.getenv('POSTGRES_HOST', 'postgres'),
+        'NAME': os.getenv('POSTGRES_DB', 'desafiadb'),
+        'USER': os.getenv('POSTGRES_USER', 'desafia'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'desafia-password'),
+        'HOST': os.getenv('POSTGRES_HOST', 'localhost'),
         'PORT': os.getenv('POSTGRES_PORT', '5432'),
     }
 }
@@ -139,7 +139,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = "api.Usuario"
 
 
-REDIS_URL = os.getenv('REDIS_URL', 'redis://redis:6379')
+REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379')
 
 CHANNEL_LAYERS = {
     'default': {
