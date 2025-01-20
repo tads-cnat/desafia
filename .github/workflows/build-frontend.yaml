@@ -6,8 +6,11 @@ jobs:
     name: Build and Publish image to Docker Hub
     runs-on: ubuntu-latest
     steps:
-      - name: Check working directory
-        run: ls -a
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v2
 
       - name: Docker Compose Build and Up
         working-directory: /home/runner/work/desafia
