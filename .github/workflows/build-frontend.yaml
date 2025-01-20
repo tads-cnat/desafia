@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check working directory
-        run: pwd
+        run: ls -a
 
       - name: Docker Compose Build and Up
         working-directory: /home/runner/work/desafia
