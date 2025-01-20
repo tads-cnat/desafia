@@ -1,3 +1,4 @@
 POSTGRES_USER=desafia
 POSTGRES_PASSWORD=desafia-password
 POSTGRES_DB=desafiadb
+POSTGRES_HOST=postgres

@@ -3,22 +3,22 @@ name: desafia-backend
 services: 
 
   django:
-      container_name: desafia_backend
-      image: maaaure/desafia-backend
-      build:
-          context: ./
-          dockerfile: compose/Dockerfile
-      env_file:
-      - ./.envs/.postgres
-      - ./.envs/.django
-      ports:
-          - "8000:8000"
-      networks:
-          - desafia_network
-      depends_on:
-          - postgres
-          - redis
-          
+    container_name: desafia_backend
+    image: maaaure/desafia-backend
+    build:
+        context: ./
+        dockerfile: compose/Dockerfile
+    env_file:
+    - ./.envs/.postgres
+    - ./.envs/.django
+    ports:
+        - "8000:8000"
+    networks:
+        - desafia_network
+    depends_on:
+        - postgres
+        - redis
+
   postgres:
     image: postgres
     container_name: desafia_postgres
