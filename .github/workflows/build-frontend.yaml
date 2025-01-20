@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Docker Compose Build and Up
-        run: sudo docker compose -f frontend/docker-compose.yml --env-file frontend/.envs/.node up --build;
+        run: sudo docker compose -f frontend/docker-compose.yml
 
       - name: Docker login
         run: sudo docker login -u maaaure -p ${{ secrets.DOCKER_HUB_TOKEN }}
