@@ -11,7 +11,7 @@ services:
         ports:
             - "80:80"
         env_file:
-            - .envs/.node
+            - .envs/.azure
         networks:
             - desafia_network
 
