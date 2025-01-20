@@ -9,8 +9,8 @@ services:
         context: ./
         dockerfile: compose/Dockerfile
     env_file:
-    - ./.envs/.postgres
-    - ./.envs/.django
+        - ./.envs/.postgres
+        - ./.envs/.django
     ports:
         - "8000:8000"
     networks:
