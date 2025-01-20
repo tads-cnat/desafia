@@ -8,6 +8,8 @@ interface ExibirQuestaoProps {
     onNextQuestion: () => void;
     state: GameState;
     showCounter?: boolean;
+    totalQuestoes?: number;
+    questaoAtual?: number;
 }
 
 function ExibirQuestao({
@@ -16,6 +18,8 @@ function ExibirQuestao({
     onNextQuestion,
     state,
     showCounter = true,
+    totalQuestoes,
+    questaoAtual,
 }: ExibirQuestaoProps): JSX.Element {
     const alternativaColor: Record<number, string> = {
         0: "bg-success",
@@ -35,10 +39,10 @@ function ExibirQuestao({
             <div className="flex flex-col min-h-screen items-center">
                 <div className="flex-none navbar bg-base-300 ">
                     <div className="navbar-start" />
-                    <div className="navbar-center">Resultados da rodada</div>
+                    <div className="navbar-center text-lg">{`${questaoAtual}/${totalQuestoes}`}</div>
                     <div className="navbar-end self-end">
                         <a className="btn" onClick={onNextQuestion}>
-                            Próxima questão
+                            Mostrar resultados
                         </a>
                     </div>
                 </div>

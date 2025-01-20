@@ -181,6 +181,8 @@ function GerenciarPartida(): JSX.Element {
                     setQuestaoAtual((prev) => prev + 1);
                     broadcastAction(GameState.RESULTS_SHOWING);
                 }}
+                questaoAtual={questaoAtual + 1}
+                totalQuestoes={questionario?.questoes.length}
                 state={gameState}
                 showCounter={gameState !== GameState.TIMES_UP}
             />
@@ -194,6 +196,8 @@ function GerenciarPartida(): JSX.Element {
                     broadcastAction(GameState.NEXT_QUESTION);
                     sendQuestionToPlayers(questionario?.questoes[questaoAtual]);
                 }}
+                questaoAtual={questaoAtual + 1}
+                totalQuestoes={questionario?.questoes.length}
             />
         );
     }
