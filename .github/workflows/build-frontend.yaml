@@ -1,20 +1,16 @@
 name: Build and Publish image to Docker Hub
-on:
-  [workflow_dispatch]
+on: [workflow_dispatch]
 
 jobs:
-  steps:
-      - name: Git Pull
-        working-directory: /opt/desafia/desafia-frontend
-        run: sudo sh -c 'git fetch; git reset --hard origin/main'
-      
-
+  deploy:
+    name: Build and Publish image to Docker Hub
+    runs-on: ubuntu-latest
+    steps:
       - name: Docker Compose Build and Up
-        working-directory: /opt/desafia/desafia-frontend
         run: sudo docker compose -f docker-compose.homolog.yml --env-file .envs/.homolog/.node up --build;
 
       - name: Docker login
-        run: sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_HUB_TOKEN }}
-      
+        run: sudo docker login -u maaaure -p ${{ secrets.DOCKER_HUB_TOKEN }}
+
       - name: Push image to registry
         run: sudo docker compose push maaaure/desafia-frontend:latest
