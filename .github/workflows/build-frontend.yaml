@@ -6,8 +6,12 @@ jobs:
     name: Build and Publish image to Docker Hub
     runs-on: ubuntu-latest
     steps:
+      - name: Check working directory
+        run: pwd
+
       - name: Docker Compose Build and Up
-        run: sudo docker compose -f frontend/docker-compose.yml
+        working-directory: frontend
+        run: sudo docker compose -f docker-compose.yml up -d --build
 
       - name: Docker login
         run: sudo docker login -u maaaure -p ${{ secrets.DOCKER_HUB_TOKEN }}
