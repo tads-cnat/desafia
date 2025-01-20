@@ -1,0 +1,20 @@
+version: "3"
+services:
+    node:
+        container_name: desafia_frontend
+        image: maaaure/desafia-frontend
+        build:
+            context: ./
+            dockerfile: compose/Dockerfile
+            args:
+                VITE_HOST: ${VITE_HOST}
+        ports:
+            - "80:80"
+        env_file:
+            - ./.envs/.node
+        networks:
+            - desafia_network
+
+networks:
+    desafia_network:
+        driver: bridge
