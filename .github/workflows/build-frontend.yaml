@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Docker Compose Build and Up
-        run: sudo docker compose -f docker-compose.homolog.yml --env-file .envs/.homolog/.node up --build;
+        run: sudo docker compose -f docker-compose.yml --env-file frontend/.envs/.node up --build;
 
       - name: Docker login
         run: sudo docker login -u maaaure -p ${{ secrets.DOCKER_HUB_TOKEN }}
