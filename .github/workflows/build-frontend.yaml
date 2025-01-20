@@ -11,7 +11,7 @@ jobs:
 
       - name: Docker Compose Build and Up
         working-directory: /home/runner/work/desafia
-        run: sudo docker compose -f docker-compose.yml up -d --build
+        run: sudo docker compose -f ./frontend/docker-compose.yml up -d --build
 
       - name: Docker login
         run: sudo docker login -u maaaure -p ${{ secrets.DOCKER_HUB_TOKEN }}
