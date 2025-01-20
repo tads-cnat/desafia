@@ -15,7 +15,7 @@ SECRET_KEY = 'django-insecure-7intt$s4s5g^-10is*wy=kh_#5_a8b-@r+fatfau3!f*=01g!8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.151']
+ALLOWED_HOSTS = ['localhost', '192.168.1.151']
 
 
 # Application definition
@@ -88,7 +88,7 @@ DATABASES = {
         'NAME': 'desafiadb',
         'USER': 'desafia',
         'PASSWORD': 'desafia-password',
-        'HOST': os.getenv('POSTGRES_HOST', 'localhost'),
+        'HOST': os.getenv('POSTGRES_HOST', 'postgres'),
         'PORT': os.getenv('POSTGRES_PORT', '5432'),
     }
 }
@@ -139,7 +139,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = "api.Usuario"
 
 
-REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379')
+REDIS_URL = os.getenv('REDIS_URL', 'redis://redis:6379')
 
 CHANNEL_LAYERS = {
     'default': {

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+
+export PATH=$PATH:$HOME/.local/bin
+
+exec python manage.py runserver 0.0.0.0:8000
+# exec uvicorn config.asgi:application --host 0.0.0.0 --reload --reload-include '*.html'

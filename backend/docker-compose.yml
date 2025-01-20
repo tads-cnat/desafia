@@ -1,6 +1,17 @@
 version: "3.9"
+name: desafia-backend
+services: 
 
-services:
+  node:
+      container_name: desafia_backend
+      image: maaaure/desafia-backend
+      build:
+          context: ./
+          dockerfile: compose/Dockerfile
+      ports:
+          - "8000:8000"
+      networks:
+          - desafia_network
   postgres:
     image: postgres
     container_name: desafia_postgres
@@ -12,7 +23,6 @@ services:
       - "5432:5432"
     networks:
       - desafia_network
-
   redis:
     image: redis
     container_name: desafia_redis

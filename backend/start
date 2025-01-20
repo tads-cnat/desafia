@@ -1,2 +1,0 @@
-docker run --name desfia_postgres -e POSTGRES_USER=desafia -e POSTGRES_PASSWORD=desafia-password -e POSTGRES_DB=desafiadb -p 5432:5432 -d postgres
-docker run --name desafia_redis -p 6379:6379 redis
