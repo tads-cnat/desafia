@@ -12,8 +12,10 @@ jobs:
       - name: Set up Docker
         uses: docker/setup-buildx-action@v2
 
+      - name: Checking where am i
+        run: pwd && ls -la
+
       - name: Docker Compose Build and Up
-        working-directory: /home/runner/work/desafia
         run: sudo docker compose -f ./frontend/docker-compose.yml up -d --build
 
       - name: Docker login
