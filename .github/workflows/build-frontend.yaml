@@ -16,10 +16,10 @@ jobs:
         run: pwd && ls -la
 
       - name: Docker Compose Build and Up
-        run: sudo docker compose -f ./frontend/docker-compose.yml up -d --build
+        run: sudo docker compose -f ./frontend/docker-compose.yml build
 
       - name: Docker login
         run: sudo docker login -u maaaure -p ${{ secrets.DOCKER_HUB_TOKEN }}
 
       - name: Push image to registry
-        run: sudo docker compose push maaaure/desafia-frontend:latest
+        run: sudo docker compose -f ./frontend/docker-compose.yml push
