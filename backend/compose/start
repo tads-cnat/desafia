@@ -8,4 +8,5 @@ set -o nounset
 export PATH=$PATH:$HOME/.local/bin
 
 exec python manage.py runserver 0.0.0.0:8000
-# exec uvicorn config.asgi:application --host 0.0.0.0 --reload --reload-include '*.html'
+#exec daphne -b 0.0.0.0 -p 8000 config.asgi:application
+#exec uvicorn config.asgi:application --host 0.0.0.0 --reload --reload-include '*.html'
