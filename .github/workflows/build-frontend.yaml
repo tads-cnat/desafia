@@ -10,7 +10,7 @@ jobs:
         run: pwd
 
       - name: Docker Compose Build and Up
-        working-directory: frontend
+        working-directory: /home/runner/work/desafia
         run: sudo docker compose -f docker-compose.yml up -d --build
 
       - name: Docker login
