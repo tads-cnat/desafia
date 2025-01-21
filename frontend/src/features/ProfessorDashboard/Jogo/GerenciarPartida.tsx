@@ -166,7 +166,7 @@ function GerenciarPartida(): JSX.Element {
     if ([GameState.NEXT_QUESTION, GameState.TIMES_UP].includes(gameState)) {
         if (
             gameState === GameState.NEXT_QUESTION &&
-            questaoAtual === questionario?.questoes.length
+            questaoAtual > (questionario?.questoes?.length ?? 0)
         ) {
             broadcastAction(GameState.GAME_ENDED);
         }
