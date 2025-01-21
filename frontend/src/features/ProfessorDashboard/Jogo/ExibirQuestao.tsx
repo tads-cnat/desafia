@@ -10,7 +10,6 @@ interface ExibirQuestaoProps {
     showCounter?: boolean;
     totalQuestoes?: number;
     questaoAtual?: number;
-    time?: number;
 }
 
 function ExibirQuestao({
@@ -21,7 +20,6 @@ function ExibirQuestao({
     showCounter = true,
     totalQuestoes,
     questaoAtual,
-    time,
 }: ExibirQuestaoProps): JSX.Element {
     const alternativaColor: Record<number, string> = {
         0: "bg-success",
@@ -55,8 +53,9 @@ function ExibirQuestao({
                             {"   "}
                             {showCounter && (
                                 <Countdown
-                                    counter={time ?? 10}
+                                    counter={questao?.tempo_para_resposta ?? 10}
                                     onZero={onZero}
+                                    delay={5}
                                 />
                             )}
                         </h1>
