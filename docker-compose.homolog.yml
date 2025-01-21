@@ -1,0 +1,54 @@
+version: "3.9"
+name: desafia-full-stack
+services:
+  django:
+    container_name: desafia_backend
+    image: maaaure/desafia-backend
+    build:
+      context: ./backend
+      dockerfile: compose/Dockerfile
+    env_file:
+      - ./backend/.envs/.postgres
+      - ./backend/.envs/.django
+    ports:
+      - "8000:8000"
+    networks:
+      - desafia_network
+    depends_on:
+      - postgres
+      - redis
+
+  postgres:
+    image: postgres
+    container_name: desafia_postgres
+    env_file:
+      - ./backend/.envs/.postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - desafia_network
+  redis:
+    image: redis
+    container_name: desafia_redis
+    ports:
+      - "6379:6379"
+    networks:
+      - desafia_network
+  node:
+    container_name: desafia_frontend
+    image: maaaure/desafia-frontend
+    build:
+      context: ./frontend
+      dockerfile: compose/Dockerfile
+      args:
+        VITE_HOST: ${VITE_HOST}
+    ports:
+      - "80:80"
+    env_file:
+      - ./frontend/.envs/.azure
+    networks:
+      - desafia_network
+
+networks:
+  desafia_network:
+    driver: bridge
