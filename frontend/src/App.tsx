@@ -18,6 +18,7 @@ import Jogar from "./features/Jogo/Jogar";
 import MinhasPartidas from "./features/ProfessorDashboard/MinhasPartidas";
 import { AppRoutes } from "./utils/appRoutes";
 import GerenciarPartida from "./features/ProfessorDashboard/Jogo/GerenciarPartida";
+import Register from "./features/Auth/Register";
 
 function App() {
     return (
@@ -28,6 +29,10 @@ function App() {
                     <Routes>
                         {/* Rotas abertas para todos */}
                         <Route path={AppRoutes.LOGIN} element={<Login />} />
+                        <Route
+                            path={AppRoutes.SIGN_UP}
+                            element={<Register />}
+                        />
 
                         <Route element={<RequireAuth />}>
                             <Route element={<Layout />}>

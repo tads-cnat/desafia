@@ -42,43 +42,48 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
 
     return (
         <>
-            {label && (
-                <div className="label">
-                    <label htmlFor={id} className="label-text">
-                        {label}
-                    </label>
-                </div>
-            )}
-            <label
-                className={
-                    "input input-bordered flex items-center gap-2 " +
-                    (error ? ` input-accent` : "") +
-                    className
-                }
-            >
-                <input
-                    {...rest}
-                    {...field}
-                    type={type === "password" && showPassword ? "text" : type}
-                    placeholder={placeholder}
-                    className={"grow"}
-                    id={id}
-                    ref={ref}
-                />
-                {type === "password" && (
-                    <span
-                        className="w-6 h-6 inline-flex justify-center items-center cursor-pointer"
-                        onClick={() => setShowPassword((prev) => !prev)}
-                    >
-                        <i
-                            className={`fa-solid fa-${showPassword ? "eye" : "eye-slash"}`}
-                        />
-                    </span>
+            <div className="form-control">
+                {label && (
+                    <div className="label">
+                        <label htmlFor={id} className="label-text">
+                            {label}
+                        </label>
+                    </div>
                 )}
-            </label>
-            {error?.message && (
-                <p className="text-red-500 text-sm mt-1">{error.message}</p>
-            )}
+                <label
+                    className={
+                        "input input-bordered flex items-center gap-2 " +
+                        (error ? ` input-accent` : "") +
+                        className
+                    }
+                >
+                    <input
+                        {...rest}
+                        {...field}
+                        type={
+                            type === "password" && showPassword ? "text" : type
+                        }
+                        placeholder={placeholder}
+                        className={"grow"}
+                        id={id}
+                        ref={ref}
+                    />
+
+                    {type === "password" && (
+                        <span
+                            className="w-6 h-6 inline-flex justify-center items-center cursor-pointer"
+                            onClick={() => setShowPassword((prev) => !prev)}
+                        >
+                            <i
+                                className={`fa-solid fa-${showPassword ? "eye" : "eye-slash"}`}
+                            />
+                        </span>
+                    )}
+                </label>
+                {error?.message && (
+                    <p className="text-error text-sm mt-1">{error.message}</p>
+                )}
+            </div>
         </>
     );
 });

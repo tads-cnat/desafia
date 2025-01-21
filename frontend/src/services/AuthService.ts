@@ -9,7 +9,7 @@ class AuthService {
     }
 
     async login(username: string, password: string): Promise<LoginResponse> {
-        const res = await axios.post(`${this.serviceUrl}/`, {
+        const res = await axios.post(`${this.serviceUrl}/login/`, {
             username,
             password,
         });
@@ -24,6 +24,16 @@ class AuthService {
 
         return { ...res.data };
     }
+
+    async register(nome: string, username: string, password: string): Promise<LoginResponse> {
+        const res = await axios.post(`${this.serviceUrl}/register/`, {
+            nome,
+            username,
+            password,
+        });
+
+        return { ...res.data };
+    }
 }
 
-export default new AuthService("login");
+export default new AuthService("auth");

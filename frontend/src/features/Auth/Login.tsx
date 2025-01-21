@@ -2,10 +2,11 @@ import { FieldValues, useForm } from "react-hook-form";
 import Input from "../../components/Input";
 import AuthService from "../../services/AuthService";
 import useAuth from "../../store/AuthStore";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
 import { toast } from "sonner";
 import { useState } from "react";
+import { AppRoutes } from "../../utils/appRoutes";
 
 interface LoginForm {
     username?: string;
@@ -50,24 +51,43 @@ function Login(): JSX.Element {
                 className="min-w-sm"
                 onSubmit={handleSubmit(handleLoginSubmission)}
             >
-                <Input
-                    {...register("username", { required: true })}
-                    type="text"
-                    label="Nome de usuário"
-                    placeholder="Insira seu nome de usuário"
-                    control={control}
-                />
+                <div className="flex flex-col gap-4 rounded-box bg-base-200 p-6 max-w-md">
+                    <h1 className="text-3xl font-bold self-center">Entrar</h1>
 
-                <Input
-                    {...register("password", { required: true })}
-                    label="Senha"
-                    placeholder="Insira sua senha"
-                    type="password"
-                    control={control}
-                />
+                    <span className="self-center">
+                        Ainda não tem uma conta?{" "}
+                        <Link
+                            to={AppRoutes.SIGN_UP}
+                            className="link link-secondary"
+                        >
+                            Registre-se
+                        </Link>
+                    </span>
 
-                <div className="flex justify-end mt-2">
-                    <button className="btn btn-primary self-end">
+                    <div className="divider">OU</div>
+
+                    <Input
+                        {...register("username", { required: true })}
+                        type="text"
+                        label="Nome de usuário"
+                        control={control}
+                    />
+
+                    <Input
+                        {...register("password", { required: true })}
+                        label="Senha"
+                        type="password"
+                        control={control}
+                    />
+
+                    <div className="form-control">
+                        <label className="cursor-pointer label self-start gap-2">
+                            <input type="checkbox" className="checkbox" />
+                            <span className="label-text">Lembre de mim</span>
+                        </label>
+                    </div>
+
+                    <button className="btn btn-primary">
                         {loading ? (
                             <span className="loading loading-spinner loading-xs" />
                         ) : (
