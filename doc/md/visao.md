@@ -34,9 +34,31 @@ Nosso projeto visa desenvolver uma alternativa ao Kahoot, uma plataforma popular
 | diferente do     | _Kahoot/Quizziz_                                                                                                 |
 | nosso produto    | _oferece uma abordagem livre e gratuita, permitindo uma integração perfeita com o ambiente educacional do IFRN._ |
 
-## 3. Descrição das partes interessadas
+## 3. Arqueologia e Comparação de Requisitos de Sistemas Semelhantes
+Para embasar o levantamento de requisitos do Desafia, foram analisadas plataformas consolidadas no mercado, como Kahoot e Quizizz, identificando suas funcionalidades, pontos fortes e limitações. Esses sistemas contribuíram diretamente para a definição de prioridades e diferenciais do projeto:
 
-### 3.1. Resumo das partes interessadas
+### 3.1. Contribuições dos Sistemas Analisados
+**Kahoot**:
+
+- Pontos Fortes: Interface intuitiva, gamificação, execução síncrona de questionários e relatórios básicos de desempenho.
+- Limitações: Modelo de negócio pago para funcionalidades avançadas, restrições de personalização e dependência de conexão estável.
+- Influência no Desafia: Inspirou requisitos como "execução de questionário", "classificação e pontuação" e "monitoramento em tempo real".
+
+**Quizizz**:
+
+- Pontos Fortes: Modo assíncrono, biblioteca de questões compartilhadas e relatórios detalhados por aluno.
+- Limitações: Custo elevado para acesso completo e integração limitada com ambientes educacionais institucionais.
+- Influência no Desafia: Motivou requisitos como "configuração de privacidade de questões" e "exportação de questionários".
+
+3.2. Diferenciais do Desafia
+A análise dessas plataformas permitiu destacar os seguintes diferenciais para o **Desafia**:
+
+- Open Source e Gratuito: Eliminação de barreiras financeiras para o IFRN e instituições públicas.
+- Personalização: Adaptação às necessidades específicas do contexto educacional brasileiro.
+
+## 4. Descrição das partes interessadas
+
+### 4.1. Resumo das partes interessadas
 
 | Nome                          | Descrição                                                                                                             | Responsabilidades                                                                                                               |
 | ----------------------------- | --------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
@@ -44,7 +66,7 @@ Nosso projeto visa desenvolver uma alternativa ao Kahoot, uma plataforma popular
 | Alunos/Participantes          | Usuário que participa de uma partida, respondendo às questões do questionário, com o objetivo de aprender e competir. | Responder às questões, competir com outros participantes, aprender através da participação ativa.                               |
 | Desenvolvedores da Plataforma | A equipe responsável pelo desenvolvimento e manutenção da plataforma.                                                 | Desenvolver novos recursos, corrigir bugs, garantir a segurança e estabilidade do sistema, otimizar o desempenho da plataforma. |
 
-### 3.2. Ambiente do usuário
+### 4.2. Ambiente do usuário
 
 O uso da plataforma envolve várias pessoas, dependendo do contexto de uso. Em um cenário educacional típico, há um instrutor que cria os questionários e lideram as partidas, enquanto os alunos participam respondendo às questões.
 
@@ -52,9 +74,9 @@ Uma partida pode ter um ciclo relativamente curto, com duração de 5 a 30 minut
 
 O ambiente ideal para o acesso à plataforma é uma sala de aula, mas também pode ser acessada com os usuários separados, desde que haja conectividade com a internet. Além disso, a plataforma pode ser usada em conjunto com outras ferramentas de ensino ou colaboração existentes, como Google Classroom, Google Meet, Moodle, Slack ou Microsoft Teams, dependendo do contexto de uso.
 
-## 4. Necessidades dos Usuários
+## 5. Necessidades dos Usuários
 
-### 4.1. Requisitos funcionais
+### 5.1. Requisitos funcionais
 
 > Os requisitos funcionais estão listados de acordo com a prioridade acertada pela equipe, começando pelo requisito mais desejado ao menos desejado.
 
@@ -78,7 +100,7 @@ O ambiente ideal para o acesso à plataforma é uma sala de aula, mas também po
 | Registro de usuário                         | Permitir que os usuários registrem suas contas na plataforma para acessar os recursos completos.                                                |
 | Perfil de usuário                           | Permitir que os usuários registrados possam editar suas informações pessoais.                                                                   |
 
-### 4.2. Requisitos não-funcionais
+### 5.2. Requisitos não-funcionais
 
 | Nome            | Descrição                                                                                                                                                                                                              |
 | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -87,7 +109,7 @@ O ambiente ideal para o acesso à plataforma é uma sala de aula, mas também po
 | Usabilidade     | A interface do usuário deve ser intuitiva e fácil de usar, garantindo que os usuários possam navegar e interagir com a plataforma sem dificuldades, independentemente do seu nível de habilidade tecnológica.          |
 | Responsividade  | A interface móvel deve ser totalmente responsiva, adaptando-se de forma dinâmica e eficaz a uma ampla variedade de dispositivos móveis, incluindo smartphones e tablets, com diferentes tamanhos de tela e resoluções. |
 
-## 5. Glossário
+## 6. Glossário
 
 | Termo        | Descrição                                                                                                                                                                              |
 | ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
