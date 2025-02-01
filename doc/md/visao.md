@@ -51,6 +51,7 @@ Para embasar o levantamento de requisitos do Desafia, foram analisadas plataform
 - Influência no Desafia: Motivou requisitos como "configuração de privacidade de questões" e "exportação de questionários".
 
 3.2. Diferenciais do Desafia
+
 A análise dessas plataformas permitiu destacar os seguintes diferenciais para o **Desafia**:
 
 - Open Source e Gratuito: Eliminação de barreiras financeiras para o IFRN e instituições públicas.
