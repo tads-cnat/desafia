@@ -16,7 +16,7 @@ O **Documento de Visão** é um artefato de requisitos que descreve os objetivos
 
 ### Diagrama de Classes de Domínio
 
-![Diagrama de Classes de Domínio](img/dominio.drawio.png)
+![Diagrama de Classes de Domínio](img/dominio.png)
 
 ### Diagrama de Casos de Uso
 
