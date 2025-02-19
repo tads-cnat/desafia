@@ -1,5 +1,4 @@
-### Visão geral dos requisitos 
-
+### Visão geral dos requisitos
 
 | Data da Última Alteração | 25/10/2023 |
 | ------------------------ | ---------- |
@@ -23,3 +22,4 @@
 | REQ15         | Exportação de questionário                  | Média      | Alta                  | Elucidado | Baixo   | Marília Freire | 1.0    |
 | REQ16         | Registro de usuário                         | Baixa      | Média                 | Validado  | Alto    | Maure Andrade  | 1.0    |
 | REQ17         | Perfil de usuário                           | Baixa      | Alta                  | Elucidado | Baixo   | Maure Andrade  | 1.0    |
+
